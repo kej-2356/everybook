@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+  
+	<th:block layout:fragment="customTitle">
+		<title>회원 로그인 이력</title>
+	</th:block>
+	
+	<th:block layout:fragment="customCss">
+		<!-- overlayScrollbars -->
+  		<link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+		<!-- DataTables -->
+		<link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+		<link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+	</th:block>
+	
+	<th:block layout:fragment="customContents">
+		<div class="content-wrapper">
+			<section class="content-header">
+				<div class="register-logo">
+					<a>회원 로그인 이력</a>
+				</div>
+			</section>
+			
+			<section class="content">
+				<div class="container-fluid">
+					<div class="card">
+						<div class="card-body">
+							<div class="row">
+								<div class="col-md-12">
+									<table id="example1" class="table table-bordered table-striped">
+										<thead>
+											<tr>
+												<th>회원 아이디</th>
+												<th>로그인 시간</th>
+												<th>로그아웃 시간</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="l : ${memberlogin}" >
+												<td th:text= "${l.memberId}"></td>
+												<td th:text= "${l.loginDate}"></td>
+												<td th:text= "${l.logoutDate}"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					    <!-- /.card-body -->
+					</div>
+				    <!-- /.card -->
+				</div>
+		      	<!-- /.container-fluid -->
+		    </section>
+		</div>
+	</th:block>
+	
+	<th:block layout:fragment="customFooterScript">
+		<!-- OPTIONAL SCRIPTS -->
+		<script src="dist/js/demo.js"></script>
+		<!-- overlayScrollbars -->
+		<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+		<!-- ionicons.com 아이콘 -->
+		<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+		<!-- PAGE PLUGINS -->
+		<!-- jQuery Mapael -->
+		<script src="plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+		<script src="plugins/raphael/raphael.min.js"></script>
+		<script src="plugins/jquery-mapael/jquery.mapael.min.js"></script>
+		<script src="plugins/jquery-mapael/maps/usa_states.min.js"></script>
+		<!-- ChartJS -->
+		<script src="plugins/chart.js/Chart.min.js"></script>
+		<!-- DataTables -->
+		<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+		<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+		<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+		<!-- page script -->
+		<script>
+		  $(function () {
+		    $("#example1").DataTable({
+		      "responsive": true,
+		      "autoWidth": false,
+		    });
+		  });
+		</script>
+	</th:block>
+	
+	
+</html>

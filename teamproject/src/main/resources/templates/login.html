@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>EveryBook | 로그인</title>
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+	<!-- Ionicons -->
+	<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+	<!-- icheck bootstrap -->
+	<link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+	<!-- Theme style -->
+	<link rel="stylesheet" href="dist/css/adminlte.min.css">
+	<!-- Google Font: Source Sans Pro -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition login-page">
+	<div class="login-box">
+		<div class="login-logo">
+		  <a href="#"><b>Every</b>Book</a>
+		</div>
+	 	<!-- /.login-logo -->
+		<div class="card">
+			<div class="btn-group btn-group-toggle" data-toggle="buttons">
+	            <label class="btn btn-info">
+              		<input type="radio" name="options" id="memberLogin" autocomplete="off" checked=""> 회원
+	            </label>
+	            <label class="btn btn-info active">
+              		<input type="radio" name="options" id="officeLogin" autocomplete="off"> 직원
+	            </label>
+            </div>
+			<div class="card-body login-card-body">
+				<div id="memberForm" style="display: ">
+					<p class="login-box-msg">
+					<strong>회원</strong>
+					님 환영합니다.</p>
+					<form action="/loginMember" method="post">
+						<div class="input-group mb-3">
+							<input type="text" class="form-control" name="memberId" value="member_001" placeholder="아이디">
+							<div class="input-group-append">
+								<div class="input-group-text">
+									<span class="fas fa-envelope"></span>
+								</div>
+							</div>
+						</div>
+						<div class="input-group mb-3">
+							<input type="password" class="form-control" name="memberPw" value="pw001" placeholder="비밀번호">
+							<div class="input-group-append">
+								<div class="input-group-text">
+									<span class="fas fa-lock"></span>
+								</div>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-info btn-block">로그인</button>
+					</form>
+				</div>
+				<div id="officeForm" style="display: none;">
+					<p class="login-box-msg">
+					<strong>직원</strong>
+					님 환영합니다.</p>
+					<form action="/loginOfficer" method="post">
+						<div class="input-group mb-3">
+							<input type="text" class="form-control" name ="officerId" value="officer_01" placeholder="아이디">
+							<div class="input-group-append">
+								<div class="input-group-text">
+									<span class="fas fa-envelope"></span>
+								</div>
+							</div>
+						</div>
+						<div class="input-group mb-3">
+							<input type="password" class="form-control" name ="officerPw" value="pw001" placeholder="비밀번호">
+							<div class="input-group-append">
+								<div class="input-group-text">
+									<span class="fas fa-lock"></span>
+								</div>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-info btn-block">로그인</button>
+					</form>
+				</div>
+				<div class="social-auth-links text-center mb-3">
+					<p>- OR -</p>
+					<p class="mb-1">
+						<a href="bookList">비회원 통합검색</a>
+					</p>
+					<p class="mb-0">
+						<a href="addMember" class="text-center">회원가입</a>
+					</p>
+					<p>김은지가 만듬</p>
+				</div>
+				<!-- /.social-auth-links -->
+			</div>
+		  	<!-- /.login-card-body -->
+		</div>
+		<div class="row">
+			<div class="col-6">
+				<a href="/loginMember?memberId=member_001&memberPw=pw001" class="btn btn-block btn-primary">
+					<i></i> 회원 화면 바로가기
+				</a>
+			</div>
+			<div class="col-6">
+				<a href="/loginOfficer?officerId=officer_01&officerPw=pw001" class="btn btn-block btn-danger">
+					<i></i> 직원 화면 바로가기
+				</a>
+			</div>
+		</div>
+	</div>
+	<!-- /.login-box -->
+
+	<!-- jQuery -->
+	<script src="plugins/jquery/jquery.min.js"></script>
+	<!-- Bootstrap 4 -->
+	<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="dist/js/adminlte.min.js"></script>
+	
+	<script type="text/javascript">
+		$(function(){
+			$('#memberLogin').click(function(){
+				$('#memberForm').show();
+				$('#officeForm').hide();
+			});
+			$('#officeLogin').click(function(){
+				$('#officeForm').show();
+				$('#memberForm').hide();
+			});
+		});
+	</script>
+
+</body>
+</html>

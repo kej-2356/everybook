@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="team1.project.mapper.OfficerMapper">
+ 	
+ 	<resultMap type="Officer" id="officerResultMap">
+ 		<result property="officerId" column="officer_id"/>
+ 		<result property="officerPw" column="officer_pw"/>
+ 		<result property="officerName" column="officer_name"/>
+ 		<result property="officerBirth" column="officer_birth"/>
+ 		<result property="officerAddress" column="officer_address"/>
+ 		<result property="officerTel" column="officer_tel"/>
+ 		<result property="officerEmail" column="officer_email"/>
+ 		<result property="officerRegDate" column="officer_reg_date"/>
+ 		<result property="level" column="level_name"/>
+ 		<result property="library" column="library_name"/>
+ 		<result property="license" column="license_name"/>
+ 		<result property="career" column="career_name"/>
+ 	</resultMap>	
+ 	
+ 	<resultMap type="License" id="LicenseResultMap">
+ 		<result property="licenseCode" column="license_code"/>
+ 		<result property="licenseName" column="license_name"/>
+ 	</resultMap>
+	
+	<!-- 나의정보 수정 -->
+	<update id="myOfficeModify" parameterType="Officer">
+		UPDATE tb_officer
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="officerPw != null and officerPw !=''.toString()">officer_pw=#{officerPw},</if>
+			<if test="officerName != null and officerName !=''.toString()">officer_name=#{officerName},</if>
+			<if test="officerBirth != null and officerBirth !=''.toString()">officer_birth=#{officerBirth},</if>
+			<if test="officerAddress != null and officerAddress !=''.toString()">officer_address=#{officerAddress},</if>
+			<if test="officerTel != null and officerTel !=''.toString()">officer_tel=#{officerTel},</if>
+			<if test="officerEmail != null and officerEmail !=''.toString()">officer_email=#{officerEmail}</if>
+		</trim>
+		<where>
+	 		<if test="officerId != null and officerId !=''.toString()">officer_id=#{officerId}</if>
+		</where>
+	</update>
+	
+	<!-- 직원 - 나의정보 자격증조회  -->
+	<select id="getOfficerLicense" parameterType="String" resultMap="LicenseResultMap">
+		SELECT
+			c.license_name
+		FROM
+			tb_officer AS o
+			INNER JOIN
+			tb_officer_license AS l
+			INNER JOIN
+			tb_license AS c
+			ON
+			o.officer_id = l.officer_id
+			AND
+			l.license_code = c.license_code
+			WHERE
+			o.officer_id = #{SID}
+	</select>
+	
+	<!-- 직원 -> 나의정보 -->
+	<select id="getMyOffice" parameterType="String" resultMap="officerResultMap">
+		SELECT 
+			O.officer_id
+			,O.officer_pw
+			,O.officer_name
+			,O.officer_birth
+			,V.level_name
+			,B.library_name
+			,O.officer_address
+			,O.officer_tel
+			,O.officer_email
+			,O.officer_reg_date 
+			,C.career_name
+
+		FROM 
+			tb_officer AS O
+			INNER JOIN 
+			tb_career AS C
+			INNER JOIN
+			tb_level AS V
+			INNER JOIN
+			tb_library AS B
+			ON
+			O.officer_id=C.officer_id
+			AND
+			O.level_code = V.level_code
+			AND
+			B.library_code = O.library_code
+			WHERE
+			O.officer_id = #{SID}	
+	</select>
+	
+	<!-- 직원리스트 검색 -->
+	<select id="getSerchOfficer" parameterType="String" resultMap="officerResultMap">
+			SELECT 
+				o.officer_id 
+				,o.officer_pw 
+				,o.officer_name 
+				,o.officer_birth 
+				,v.level_name 
+				,l.library_name
+				,o.officer_address
+				,o.officer_tel
+				,o.officer_email
+				,o.officer_reg_date
+			FROM 
+				tb_officer AS o
+				INNER JOIN
+				tb_library AS l
+				INNER JOIN
+				tb_level AS v
+			ON
+			o.library_code = l.library_code
+			AND
+			o.level_code = v.level_code
+		<if test="sv != null and sv neq ''.toString()">
+			WHERE
+				${sk} like CONCAT('%',#{sv},'%')
+		</if>
+	</select>
+
+	<!-- 직원리스트 조회 -->
+	<select id="getOfficerList" resultMap="officerResultMap">	
+		SELECT 
+			o.officer_id 
+			,o.officer_pw 
+			,o.officer_name 
+			,o.officer_birth 
+			,v.level_name 
+			,l.library_name
+			,o.officer_address
+			,o.officer_tel
+			,o.officer_email
+			,o.officer_reg_date
+		FROM 
+			tb_officer AS o
+			INNER JOIN
+			tb_library AS l
+			INNER JOIN
+			tb_level AS v
+		ON
+		o.library_code = l.library_code
+		AND
+		o.level_code = v.level_code
+	</select>
+	
+	<!-- 직원등록 -> 아이디자동생성 -->
+	<select id="getOfficerId" resultMap="officerResultMap">
+		<![CDATA[
+	  	SELECT 
+		   (case 
+		   when COUNT(*) = 0 then 'officer_01'
+		   when COUNT(*) < 9 then CONCAT('officer_0',(max(SUBSTRING(officer_id,9))+1))
+		   when COUNT(*) < 100 then CONCAT('officer_',(max(SUBSTRING(officer_id,9))+1))
+		   ELSE CONCAT('officer_',(max(SUBSTRING(officer_id,9))+1))
+		   END) AS officer_id
+		FROM
+				tb_officer
+		]]>	
+	</select>
+	
+	<!-- 직원등록 -->
+	<insert id="addOfficer" parameterType="team1.project.vo.Officer">
+	  
+	  	INSERT INTO tb_officer(
+			officer_id
+			,officer_pw
+			,officer_name
+			,officer_birth
+			,level_code
+			,library_code
+			,officer_address
+			,officer_tel
+			,officer_email
+			,officer_reg_date
+		)VALUE(
+			#{officerId}
+			,#{officerPw}
+			,#{officerName}
+			,#{officerBirth}
+			,#{level}
+			,#{library}
+			,#{officerAddress}
+			,#{officerTel}
+			,#{officerEmail}
+			,NOW()
+			);
+	  </insert>
+  
+</mapper>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>직원관리 시스템</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+</th:block>
+
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>예산안 추가</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">예산안 추가</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-primary">
+            <div class="card-header">
+			    <h3 class="card-title">빈칸없이 써주십시오.</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                  <i class="fas fa-minus"></i></button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label for="inputName">도서관</label>
+                <input type="text" id="inputName" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="inputDescription">계정과목코드</label>
+                <input id="inputDescription" class="form-control"></input>
+              </div>
+              <div class="form-group">
+                <label for="inputStatus">금액</label>
+                <input id="inputDescription" class="form-control"></input>
+              </div>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <a href="#" class="btn btn-secondary">취소</a>
+          <input type="submit" value="예산내역 등록" class="btn btn-success float-right">
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+</th:block>
+
+<th:block layout:fragment="customFooterScript">
+		<!-- OPTIONAL SCRIPTS -->
+		<script src="dist/js/demo.js"></script>
+		<!-- overlayScrollbars -->
+		<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+		<!-- ionicons.com 아이콘 -->
+		<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+<!-- PAGE PLUGINS -->
+		<!-- jQuery Mapael -->
+		<script src="plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+		<script src="plugins/raphael/raphael.min.js"></script>
+		<script src="plugins/jquery-mapael/jquery.mapael.min.js"></script>
+		<script src="plugins/jquery-mapael/maps/usa_states.min.js"></script>
+		<!-- ChartJS -->
+		<script src="plugins/chart.js/Chart.min.js"></script>
+		<!-- PAGE SCRIPTS -->
+		<script src="dist/js/pages/dashboard2.js"></script>
+</th:block>
+
+</body>
+</html>
+	

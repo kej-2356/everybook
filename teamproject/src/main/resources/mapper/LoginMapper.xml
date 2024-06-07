@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team1.project.mapper.LoginMapper">
+
+	<resultMap type="Login" id="memberLogin">
+		<result property="loginCode" column="login_code"/>
+		<result property="memberId" column="member_id"/>
+		<result property="loginDate" column="login_date"/>
+		<result property="logoutDate" column="logout_date"/>
+	</resultMap>
+
+	<resultMap type="Officer" id="officerResultMap">
+ 		<result property="officerId" column="officer_id"/>
+ 		<result property="officerPw" column="officer_pw"/>
+ 		<result property="officerName" column="officer_name"/>
+ 		<result property="officerBirth" column="officer_birth"/>
+ 		<result property="level" column="level_code"/>
+ 		<result property="library" column="library_code"/>
+ 		<result property="officerAddress" column="officer_address"/>
+ 		<result property="officerTel" column="officer_tel"/>
+ 		<result property="officerEmail" column="officer_email"/>
+ 		<result property="officerRegDate" column="officer_reg_date"/>
+ 	</resultMap>
+
+	<resultMap type="Member" id="memberSelect">
+		<result property="memberId" column="member_id"/>
+		<result property="memberPw" column="member_pw"/>
+		<result property="memberName" column="member_name"/>
+		<result property="memberBirth" column="member_birth"/>
+		<result property="levelCode" column="level_code"/>
+		<result property="memberAddress" column="member_address"/>
+		<result property="memberTel" column="member_tel"/>
+		<result property="memberEmail" column="member_email"/>
+		<result property="libraryCode" column="library_code"/>
+		<result property="rentCount" column="rent_count"/>
+		<result property="reserveCount" column="reserve_count"/>
+		<result property="reviewCount" column="review_count"/>
+		<result property="warningCount" column="warning_count"/>
+		<result property="memberRegDate" column="member_reg_date"/>
+	</resultMap>
+	
+	<!-- 회원 로그인내역(직원) - 직원과 같은 도서관 소속인 회원만 -->
+	<select id="allLoginMember" resultMap="memberLogin">
+		SELECT 
+			member_id
+			, login_date
+			, logout_date
+		FROM 
+			tb_member_login
+	</select>
+	
+	<!-- 직원 로그아웃시 로그인내역 DB에 업데이트 -->
+	<update id="updateLoginOfficer" parameterType="Login">
+		UPDATE 
+			tb_officer_login
+		SET
+			logout_date=NOW()
+		WHERE  
+			login_code = #{loginCode}
+	</update>
+	
+	<!-- 회원 로그아웃시 로그인내역 DB에 업데이트 -->
+	<update id="updateLoginMember" parameterType="Login">
+		UPDATE 
+			tb_member_login
+		SET
+			logout_date=NOW()
+		WHERE
+			login_code = #{loginCode}
+	</update>
+	
+	<!-- 직원 로그인시 로그인내역 DB에 등록 -->
+	<insert id="addLoginOfficer" parameterType="Login">
+		<selectKey order="BEFORE" keyProperty="loginCode" resultType="String">
+			SELECT
+				(case COUNT(*)
+				when 0 then 'officer_login_1'
+				ELSE CONCAT('officer_login_',max(cast(SUBSTRING(login_code,15) AS DECIMAL))+1)
+				END) AS loginCode
+			FROM
+				tb_officer_login
+		</selectKey>
+			INSERT INTO tb_officer_login
+				(login_code
+				, officer_id
+				, login_date)
+			VALUES 
+				(#{loginCode}
+				, #{officerId}
+				, NOW())
+	</insert>
+	
+	<!-- 회원 로그인시 로그인내역 DB에 등록 -->
+	<insert id="addLoginMember" parameterType="Login">
+		<selectKey order="BEFORE" keyProperty="loginCode" resultType="String">
+			SELECT
+				(case COUNT(*)
+				when 0 then 'member_login_1'
+				ELSE CONCAT('member_login_',max(cast(SUBSTRING(login_code,14) AS DECIMAL))+1)
+				END) AS loginCode
+			FROM
+				tb_member_login
+		</selectKey>
+			INSERT INTO tb_member_login
+				(login_code
+				, member_id
+				, login_date)
+			VALUES 
+				(#{loginCode}
+				, #{memberId}
+				, NOW())
+	</insert>
+	
+	<!-- 직원 아이디로 직원 정보 출력 -->
+ 	<select id="getOfficerSelect" parameterType="String" resultMap="officerResultMap">
+		SELECT 
+			officer_id
+			,officer_pw
+			,level_code
+			,library_code
+		FROM
+			tb_officer
+		WHERE
+			officer_id = #{officerId}
+	</select>
+	
+	<!-- 회원 아이디로 회원 정보 출력 -->
+	<select id="getMemberSelect" parameterType="String" resultMap="memberSelect">
+		SELECT 
+			member_id 
+			,member_pw
+			,level_code
+			,library_code
+		FROM 
+			tb_member
+		WHERE
+			member_id=#{memberId}
+	</select>
+
+</mapper>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team1.project.mapper.PointStandardMapper">
+	<resultMap type="PointStandard" id="PsSelect">
+		<result property="psCode" column="point_standard_code"/>
+		<result property="psDivision" column="point_standard_division"/>
+		<result property="psName" column="point_standard_name"/>
+		<result property="psScore" column="point_standard_score"/>
+		<result property="psRegDate" column="point_standard_reg_date"/>
+		<association property="officer" javaType="Officer">
+			<result property="officerId" column="officer_id"/>
+			<result property="officerPw" column="officer_pw"/>
+		</association>
+	</resultMap>
+	<!-- 상벌점 기준 검색 select -->
+	<select id="searchPs"  parameterType="String" resultMap="PsSelect">
+		SELECT
+			*
+		FROM
+			tb_point_standard 
+		<if test="sv != null and sv neq ''.toString()">	
+			WHERE
+				${sk} like CONCAT('%',#{sv},'%')
+		</if>
+	</select>
+	<!-- 상벌점 기준 delete -->
+	<delete id="deletePs">
+		DELETE FROM tb_point_standard
+		WHERE point_standard_code = #{psCode} 
+		AND officer_id = (SELECT 
+							officer_id
+						 FROM tb_officer
+						 WHERE officer_id=#{officer.officerId} 
+						 AND officer_pw=#{officer.officerPw})
+	</delete>
+	<!-- 상벌점 기준 update -->
+	<update id="modifyPs" parameterType="PointStandard">
+		UPDATE tb_point_standard
+			<trim prefix="set" suffixOverrides=",">
+				<if test="psDivision != null and psDivision != ''.toString()">point_standard_division = #{psDivision},</if>
+				<if test="psName != null and psName != ''.toString()">point_standard_name = #{psName},</if>
+				<if test="psScore != null and psScore != ''.toString()">point_standard_score = #{psScore},</if>
+				<if test="officer.officerId != null and officer.officerId != ''.toString()">officer_id = #{officer.officerId}</if>
+			</trim>
+			<where>
+				<if test="psCode != null and psCode != ''.toString()">point_standard_code = #{psCode}</if>
+			</where>
+	</update>
+	<!-- 하나의 상벌점 기준 select -->
+	<select id="getSelectPs" resultSets="PointStandard" resultMap="PsSelect">
+		SELECT
+			*
+		FROM
+			tb_point_standard
+		WHERE
+			point_standard_code = #{psCode}	
+	</select>
+	<!-- 상벌점 기준 등록 insert -->
+	<insert id="addPs" parameterType="PointStandard">
+		<!-- 코드 자동 증가 -->
+		<selectKey order="BEFORE" keyProperty="psCode" resultType="String">
+			<![CDATA[
+			SELECT
+				(case 
+				when COUNT(*) = 0 then 'point_standard_001'
+				when COUNT(*) < 10 then CONCAT('point_standard_00',(max(SUBSTRING(point_standard_code,16))+1))
+				when COUNT(*) < 100 then CONCAT('point_standard_0',(max(SUBSTRING(point_standard_code,16))+1))
+				when COUNT(*) <  1000 then CONCAT('point_standard_',(max(SUBSTRING(point_standard_code,16))+1))
+				ELSE CONCAT('point_standard_',(max(SUBSTRING(point_standard_code,16))+1))
+				END) AS point_standard_code
+			FROM
+				tb_point_standard
+				]]>
+		</selectKey>
+		INSERT INTO tb_point_standard
+		(point_standard_code, point_standard_division, point_standard_name, point_standard_score, point_standard_reg_date, officer_id)
+		VALUES (#{psCode}, #{psDivision}, #{psName}, #{psScore}, NOW(), #{officer.officerId})
+	</insert>
+	<!-- 상벌점 기준 리스트 select -->
+	<select id="getPsList" resultSets="PointStandard" resultMap="PsSelect">
+		SELECT *
+		FROM tb_point_standard
+	</select>
+</mapper>

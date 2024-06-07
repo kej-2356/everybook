@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>오프라인 예약 등록</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+
+</th:block>
+               
+<th:block layout:fragment="customContents">
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<div class="content-header">
+		<div class="container-fluid">
+			<h1 class="m-0 text-dark">오프라인 예약 등록</h1>
+		</div><!-- /.container-fluid -->
+	</div>
+	<!-- /.content-header -->
+
+	<!-- Main content -->
+	<section class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="card  card-white">				
+						<!-- /.card-header -->
+						<div class="card-header">
+							
+							<!-- Book Search Form -->
+							<div class="row">
+								<div class="col-sm-2">			                
+									<a>도서 제목</a>																							               																																				
+								</div>	
+								<!-- SEARCH FORM -->
+								<div class="col-sm-10">	                     	
+									<div class="input-group input-group-sm">
+										<input class="form-control" type="search" placeholder="Book Name" aria-label="Search" id="searchBookLibraryCode">
+										<div class="input-group-append">
+											<button class="btn btn-navbar" type="submit" id="searchBook">
+												<i class="fas fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>	
+						<!-- /.card-header -->
+					
+						<!-- card-body -->	
+						<div class="card-body">
+							<!-- form start -->
+							<form class="form-horizontal">
+								<div class="form-group row">
+									<label for="inputEmail3" class="col-sm-2 col-form-label">도서 코드</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" placeholder="Book Code" name="bookCode">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="inputEmail3" class="col-sm-2 col-form-label">ISBN</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" placeholder="ISBN" name="bookIsbn">
+									</div>	
+								</div>
+								<div class="form-group row">
+									<label for="inputEmail3" class="col-sm-2 col-form-label">청구기호</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" placeholder="Library Book Code" name="bookLibraryCode">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="inputPassword3" class="col-sm-2 col-form-label">도서이름</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" placeholder="Book Name" name="bookName">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="inputPassword3" class="col-sm-2 col-form-label">출판사</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" placeholder="Publisher Code" name="publisher">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="inputPassword3" class="col-sm-2 col-form-label">저자</label>
+									<div class="col-sm-4">
+										<input type="text" class="form-control" placeholder="Writer Name" name="writer">
+									</div>
+									<label for="inputPassword3" class="col-sm-2 col-form-label">가격</label>
+									<div class="col-sm-4">
+										<input type="text" class="form-control" placeholder="Book Price" name="bookPrice">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="inputPassword3" class="col-sm-2 col-form-label">출간날짜</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" placeholder="Book Publish Date" name="bookPublishDate">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-2 col-form-label">도서상태</label>
+										<div class="col-sm-2">
+											<button type="button" class="fc-today-button btn btn-primary" name="bookSituation"></button>
+										</div>
+									<label class="col-sm-2 col-form-label">예약상태</label>
+									<div class="col-sm-2">
+										<button type="button" class="fc-today-button btn btn-primary" name="bookReservePossible"></button>
+									</div>
+									<label class="col-sm-2 col-form-label">예약 권수</label>
+									<div class="col-sm-2">
+										<button type="button" class="fc-today-button btn btn-primary" name="bookReserveCount"></button>
+									</div>
+								</div>                 
+							</form>
+							<div class="modal fade" id="modal-xl">
+								<div class="modal-dialog modal-xl">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h4 class="modal-title">도서 검색</h4>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">
+											<p id="searchResult"></p>
+											<table class="table table-bordered" style="text-align: center;">
+												<thead>
+													<tr>
+														<td>도서 제목</td>
+														<td>도서 코드</td>
+														<td>출판사</td>
+														<td>저자</td>
+														<td>도서상태</td>
+													</tr>	
+												</thead>
+												<tbody>
+												</tbody>
+											</table>
+										</div>
+										<div class="modal-footer justify-content-between">
+											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										</div>
+									<!-- /.modal-content -->
+									</div>
+								<!-- /.modal-dialog -->
+								</div>
+							</div>
+						<!-- /.card-body -->
+						</div>
+					<!-- /.card -->
+					</div>
+				</div>
+					
+				<div class="col-md-6">				
+					<!-- Book Serch Form -->
+					<div class="card card-white">
+						<div class="card-header">
+							<div class="row">
+								<div class="col-sm-2">			                
+									<a>회원 아이디</a>																							               																																				
+								</div>	
+								
+								<!-- SEARCH FORM -->
+								<div class="col-sm-10">		                     	
+									<div class="input-group input-group-sm">
+										<input class="form-control" type="search" placeholder="Member Id" aria-label="Search" id="searchMemberId" name="memberId">
+										<div class="input-group-append">
+											<button class="btn btn-navbar" type="submit" id="searchMember">
+												<i class="fas fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>		                    
+						<!-- /.card-header -->
+						</div>
+						
+					<!-- form start -->
+						<div class="card-body">
+							<!-- form start -->
+							<form class="form-horizontal">
+								<div class="form-group row">
+									<label for="inputEmail3" class="col-sm-2 col-form-label">회원 아이디</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" placeholder="Member Id" name="memberId">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="inputEmail3" class="col-sm-2 col-form-label">회원 이름</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" placeholder="Member Name" name="memberName">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="inputEmail3" class="col-sm-2 col-form-label">생년 월일</label>
+									<div class="col-sm-10">
+										<input type="Date" class="form-control" placeholder="Member birth" name="memberBirth">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="inputPassword3" class="col-sm-2 col-form-label">회원 레벨</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" placeholder="Member Level" name="levelCode">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="inputPassword3" class="col-sm-2 col-form-label">주소</label>
+									<div class="col-sm-10">
+										<input type="email" class="form-control" placeholder="Member Address" name="memberAddress">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="inputPassword3" class="col-sm-2 col-form-label">전화번호</label>
+									<div class="col-sm-10">
+										<input type="email" class="form-control" placeholder="Member Tel" name="memberTel">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="inputPassword3" class="col-sm-2 col-form-label">이메일</label>
+									<div class="col-sm-10">
+										<input type="email" class="form-control" placeholder="Member Email" name="memberEmail">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="inputPassword3" class="col-sm-2 col-form-label">현재대여</label>
+									<div class="col-sm-1">
+										<button type="button" class="fc-today-button btn btn-danger" name="rentCount"></button>
+									</div>
+									<label for="inputPassword3" class="col-sm-3 col-form-label">예약가능 여부</label>
+									<div class="col-sm-2">
+										<button type="button" class="fc-today-button btn btn-danger" name="memberReservePossible"></button>
+									</div>
+									<label for="inputPassword3" class="col-sm-3 col-form-label">예약가능권수</label> 
+									<div class="col-sm-1">
+										<button type="button" class="fc-today-button btn btn-danger" name="reserveCount"></button>  
+									</div>             
+								 </div>	            
+							</form>
+						<!-- /.card-body -->
+						</div>
+					<!-- /.card -->
+					</div>
+				<!-- /.col -->
+				</div>
+			<!-- /.row -->
+			</div>
+			
+			<div class="row">
+				<div class="col-md-12" style="text-align: center">				
+					<button type="button" class="fc-today-button btn btn-info" data-toggle="modal" data-target="#modal-primary">예약하기</button>			
+				</div>
+			</div>
+				
+			<!-- moadal -->
+			<div class="modal fade" id="modal-primary">
+				<div class="modal-dialog">
+					<div class="modal-content bg-default">
+						<div class="modal-header">
+							<h4 class="modal-title">예약관리</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<p>예약 하시겠습니까?</p>
+						</div>
+						<div class="modal-footer justify-content-between">
+							<button type="button" class="btn" data-dismiss="modal">Close</button>
+							<button type="button" class="btn">예약하기</button>
+						</div>
+					<!-- /.modal-content -->
+					</div>
+					<!-- /.modal-dialog -->
+				<!-- /.modal -->
+				</div>
+			</div>
+		</div>	
+	</section>
+	<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+</th:block>
+<th:block layout:fragment="customFooterScript">	
+<script type="text/javascript" th:inline="javascript">
+	/*<![CDATA[*/
+	
+	var library = /*[[ ${session.SLIBRARY} ]]*/;
+	
+	/*]]*/	
+</script>
+<script type="text/javascript">
+	//회원 아이디로 검색시 회원 정보 검색하여 화면에 출력
+	$(function(){
+		$('#searchMember').on('click',function(){
+			var value = $('#searchMemberId').val();
+			console.log(value);
+			if(value == '' || value == null || value == undefined || value == 0 || value == NaN){
+				alert('회원 id를 입력하세요');
+			}else {	
+			var request = $.ajax({
+	  			  url: "/reseve/getSelectMember",
+	  			  method: "get",
+	  			  data: { memberId : value },
+	  			  dataType: "json"
+	  			});
+	  			 
+	  			request.done(function( data ) {
+	  				console.log(JSON.stringify(data) + " <- ajax");
+	  				$('[name=memberId]').val(data.memberId);
+	  				$('[name=memberName]').val(data.memberName);
+	  				$('[name=memberBirth]').val(data.memberBirth);
+	  				if(data.levelCode == '6'){
+		  				$('[name=levelCode]').val('일반회원');
+	  				}
+	  				$('[name=memberAddress]').val(data.memberAddress);
+	  				$('[name=memberTel]').val(data.memberTel);
+	  				$('[name=memberEmail]').val(data.memberTel);
+	  				$('[name=rentCount]').val(data.rentCount);
+	  				$('[name=rentCount]').html(data.rentCount);
+	  				if(data.reserveCount == 3){
+		  				$('[name=memberReservePossible]').val('예약불가');
+		  				$('[name=memberReservePossible]').html('예약불가');
+	  					
+	  				}else{
+		  				$('[name=memberReservePossible]').val('예약가능');
+		  				$('[name=memberReservePossible]').html('가능');
+	  				}
+	  				$('[name=reserveCount]').val(3-data.reserveCount);
+	  				$('[name=reserveCount]').html(3-data.reserveCount);
+	  			});
+	  			 
+	  			request.fail(function( jqXHR, textStatus ) {
+	  			  alert( "회원 정볼를 찾을 수 없습니다.  :  " + textStatus );
+	  			});
+			}	
+		});
+		//책 제목 검색시 제목에 관련된 책 리스트 모달 창에 출력
+		$('#searchBook').on('click',function(){
+			var value = $('#searchBookLibraryCode').val();
+			console.log(value);
+			console.log(library);
+			var request = $.ajax({
+	  			  url: "/reserve/bookSearch",
+	  			  method: "get",
+	  			  data: { bookName : value, libraryCode : library},
+	  			  dataType: "json"
+	  			});
+	  			 
+  			request.done(function( data ) {
+  				//console.log(JSON.stringify(data) + " <- ajax");
+  				var tbody = $('tbody'); 
+  				var html = "<tr>"
+  				for(var i=0; i<data.length;i++){
+  					html += "<td><a class='searchBookList' href='#'data-bookLibraryCode='"+ data[i].bookLibraryCode +"'>"+data[i].bookName + "</a></td>"
+  					html += "<td class='bookLibraryCode'>"+data[i].bookLibraryCode+"</td>";
+  					html += "<td>"+data[i].publisher+"</td>";
+  					html += "<td>"+data[i].writer+"</td>";
+  					html += "<td>"+data[i].bookSituation+"</td>";
+  					html += "</tr>"
+  					tbody.html(html);
+  				}
+  				$('#searchResult').html('검색 결과 '+data.length+'건');
+				$('#modal-xl').modal();
+  			});
+  			 
+  			request.fail(function( jqXHR, textStatus ) {
+  			  alert( "요청에 실패하였습니다. :  " + textStatus );
+  			});
+		});
+	
+	});
+	//책 리스트에서 책 제목 클릭시 책에 관련된 정보 검색 후 화면에 출력 - 동적 바인딩
+	$(document).on('click','.searchBookList',function(){
+		var value = $(this).attr('data-bookLibraryCode');
+		console.log(value);
+		var request = $.ajax({
+  			  url: "/reserve/getSelectBook",
+  			  method: "get",
+  			  data: { bookLibraryCode : value, libraryCode : library},
+  			  dataType: "json"
+  			})
+			request.done(function( data ) {
+				console.log(JSON.stringify(data) + " <- ajax");
+				$('[name=bookCode]').val(data.bookCode);
+ 				$('[name=bookIsbn]').val(data.bookIsbn);
+ 				$('[name=bookLibraryCode]').val(data.bookLibraryCode);
+ 				$('[name=bookName]').val(data.bookName);
+ 				$('[name=publisher]').val(data.publisher);
+ 				$('[name=writer]').val(data.writer);
+ 				$('[name=bookPrice]').val(data.bookPrice);
+ 				$('[name=bookPublishDate]').val(data.bookPublishDate);
+ 				if(data.bookSituation == '보유 중'){
+	  				$('[name=bookSituation]').val(data.bookSituation);
+	  				$('[name=bookSituation]').html(data.bookSituation);
+	  				$('[name=bookReservePossible]').val('불가');
+	  				$('[name=bookReservePossible]').html('불가');
+	  				$('[name=bookReserveCount]').val('0');
+	  				$('[name=bookReserveCount]').html('0');
+ 				}else if(data.bookSituation == '대여 중'){
+	  				$('[name=bookSituation]').val(data.bookSituation);
+	  				$('[name=bookSituation]').html(data.bookSituation);
+	  				$('[name=bookReservePossible]').val('가능');
+	  				$('[name=bookReservePossible]').html('가능');
+	  				$('[name=bookReserveCount]').val('0');
+	  				$('[name=bookReserveCount]').html('0');
+ 				}else{	
+ 					if(data.reserveCount < 2){
+	  					$('[name=bookSituation]').val(data.bookSituation);
+		  				$('[name=bookSituation]').html(data.bookSituation);
+		  				$('[name=bookReservePossible]').val('가능');
+		  				$('[name=bookReservePossible]').html('가능');
+		  				$('[name=bookReserveCount]').val(data.reserveCount);
+		  				$('[name=bookReserveCount]').html(data.reserveCount);
+ 					}else{
+	  					$('[name=bookSituation]').val(data.bookSituation);
+		  				$('[name=bookSituation]').html(data.bookSituation);
+		  				$('[name=bookReservePossible]').val('불가');
+		  				$('[name=bookReservePossible]').html('불가');
+		  				$('[name=bookReserveCount]').val(data.reserveCount);
+		  				$('[name=bookReserveCount]').html(data.reserveCount);
+ 					}
+ 				}
+			});
+			 
+			request.fail(function( jqXHR, textStatus ) {
+			  alert( "요청에 실패하였습니다. :  " + textStatus );
+			});	
+			$('#modal-xl').modal('hide');	
+	});
+</script>
+</th:block>
+</html>

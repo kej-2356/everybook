@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+  
+	<th:block layout:fragment="customTitle">
+		<title>회원 상세보기</title>
+	</th:block>
+	
+	<th:block layout:fragment="customCss">
+	  <!-- overlayScrollbars -->
+	  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+	</th:block>
+	
+	<th:block layout:fragment="customContents">
+		<div class="content-wrapper">
+			<section class="content-header">
+				<div class="register-logo">
+					<a>회원 상세 정보</a>
+				</div>
+			</section>
+			
+			<section class="content">
+				<div class="container-fluid">
+					<div class="row">
+         				<div class="col-md-3">
+							<div class="card card-primary card-outline">
+								<div class="card-body box-profile">
+									<h3 class="profile-username text-center" th:text="${member.memberId}"></h3>
+							  		<p class="text-muted text-center" th:text="${memberLevelCode.levelCode}"></p>
+									<ul class="list-group list-group-unbordered mb-3">
+										<li class="list-group-item">
+										  <b>현재 대여권수</b>
+										  <a class="float-right" th:text="${member.rentCount}"></a>
+										</li>
+										<li class="list-group-item">
+										  <b>현재 예약권수</b>
+										  <a class="float-right" th:text="${member.reserveCount}"></a>
+										</li>
+										<li class="list-group-item">
+										  <b>현재 작성한 도서평 수</b>
+										  <a class="float-right" th:text="${member.reviewCount}"></a>
+										</li>
+										<li class="list-group-item">
+										  <b>현재 신고된 도서평 수</b>
+										  <a class="float-right" th:text="${member.warningCount}"></a>
+										</li>
+									</ul>
+									<a th:href="@{officeModifyMember(send_id=${member.memberId})}" class="btn btn-primary btn-block"><b>회원 정보 수정</b></a>
+								</div>
+								<!-- /.card-body -->
+							</div>
+				            <!-- /.card -->
+				            
+				            <!-- About Me Box -->
+							<div class="card card-primary">
+								<div class="card-header">
+								  <h3 class="card-title">상세 정보</h3>
+								</div>
+							  	<!-- /.card-header -->
+								<div class="card-body">
+								  <strong><ion-icon name="calendar"></ion-icon> 생년월일</strong>
+								  <p class="text-muted" th:text="${member.memberBirth}"></p>
+								  <hr>
+								  <strong><ion-icon name="map"></ion-icon> 주소</strong>
+								  <p class="text-muted" th:text="${member.memberAddress}"></p>
+								  <hr>
+								  <strong><ion-icon name="call"></ion-icon> 번호</strong>
+								  <p class="text-muted" th:text="${member.memberTel}"></p>
+								  <hr>
+								  <strong><ion-icon name="mail"></ion-icon> 이메일</strong>
+								  <p class="text-muted" th:text="${member.memberEmail}"></p>
+								  <hr>
+								  <strong><i class="fas fa-map-marker-alt mr-1"></i> 가입한 도서관</strong>
+								  <p class="text-muted" th:text="${member.libraryCode}"></p>
+								</div>
+								<!-- /.card-body -->
+							</div>
+            				<!-- /.card -->
+		            	</div>
+		            	
+						<div class="col-md-9">
+							<div class="card">
+								<div class="card-header p-2">
+									<ul class="nav nav-pills">
+										<li class="nav-item"><a class="nav-link active" href="#book" data-toggle="tab">대여/연체</a></li>
+										<li class="nav-item"><a class="nav-link" href="#review" data-toggle="tab">도서평</a></li>
+										<li class="nav-item"><a class="nav-link" href="#point" data-toggle="tab">상/벌점</a></li>
+									</ul>
+								</div>
+								
+								<div class="card-body">
+									<div class="tab-content">
+										<div class="active tab-pane" id="book">
+											<div class="card-tools">
+												<div class="form-group">
+													<select class="form-control select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true">
+														<option selected="selected" data-select2-id="3">대여/연체</option>
+														<option>대여중</option>
+														<option>연체중</option>
+													</select>
+								                </div>
+											</div>
+											<div class="card-body table-responsive p-0">
+												<table class="table table-hover text-nowrap">
+													<thead>
+														<tr>
+															<th>도서명</th>
+															<th>대여일</th>
+															<th>반납날짜</th>
+															<th>대여상태</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>책1</td>
+															<td>2920-01-11</td>
+															<td>2020-01-18</td>
+															<td>대여중</td>
+														</tr>
+														<tr>
+															<td>책2</td>
+															<td>2020-03-04</td>
+															<td>2020-04-11</td>
+															<td>연체중</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+										
+										<div class="tab-pane" id="review">
+											<div class="post">
+												<div class="user-block">
+													<strong>책 제목</strong>
+												</div>
+												<p>
+												 	도서평내용입니다.
+												</p>
+												<p>
+													<a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
+													<span class="float-right">
+												    <a class="link-black text-sm">
+														2020-06-11
+												    </a>
+													</span>
+												</p>
+											</div>
+										</div>
+									
+										<div class="tab-pane" id="point">
+											<div class="card-tools">
+												<div class="form-group">
+													<select class="form-control select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true">
+														<option selected="selected" data-select2-id="3">상점/벌점</option>
+														<option>상점</option>
+														<option>벌점</option>
+													</select>
+								                </div>
+											</div>
+											<div class="card-body table-responsive p-0">
+												<table class="table table-hover text-nowrap">
+													<thead>
+														<tr>
+															<th>상/벌점</th>
+															<th>사유</th>
+															<th>점수</th>
+															<th>받은 날짜</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>상점</td>
+															<td>책반납</td>
+															<td>1점</td>
+															<td>2020-05-11</td>
+														</tr>
+														<tr>
+															<td>벌점</td>
+															<td>도서평신고</td>
+															<td>-10점</td>
+															<td>2020-07-22</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+		            </div>
+				</div>
+			</section>
+		</div>
+	</th:block>
+	
+	<th:block layout:fragment="customFooterScript">
+			<!-- OPTIONAL SCRIPTS -->
+			<script src="dist/js/demo.js"></script>
+			<!-- overlayScrollbars -->
+			<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+			<!-- ionicons.com 아이콘 -->
+			<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+			<!-- PAGE PLUGINS -->
+			<!-- jQuery Mapael -->
+			<script src="plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+			<script src="plugins/raphael/raphael.min.js"></script>
+			<script src="plugins/jquery-mapael/jquery.mapael.min.js"></script>
+			<script src="plugins/jquery-mapael/maps/usa_states.min.js"></script>
+			<!-- ChartJS -->
+			<script src="plugins/chart.js/Chart.min.js"></script>
+	</th:block>
+	
+	
+	
+	
+	
+</html>

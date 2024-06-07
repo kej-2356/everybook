@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>예산 현황</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+</th:block>
+
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<div class="content-header">
+			<div class="container-fluid">
+				<h1 class="m-0 text-dark">예산 현황</h1>
+			</div><!-- /.container-fluid -->
+		</div>
+	<!-- /.content-header -->
+		<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				<!-- 예산현황 도서 -->
+				<div class="card">
+					<!-- start card-header -->
+					<div class="card-header">
+						<div class="row">
+							<div class="col-sm-8">
+								<form role="form">
+									<div class="row">
+										<div class="col-sm-3">
+											<div class="form-group">
+						                        <select class="form-control custom-select">
+						                          <option>예산 코드</option>
+						                          <option>도서관 코드</option>
+						                          <option>도서관 이름</option>
+						                          <option>계정과목 코드</option>
+						                          <option>계정과목 이름</option>
+						                          <option>등록자</option>
+						                        </select>
+						                    </div>
+										</div>
+										<div class="col-sm-9">
+											<div class="row">
+												<div class="col-sm-10">
+													<input class="form-control" type="search">
+												</div>
+												<div class="col-sm-2">
+													<div class="input-group-append">
+					                          			 <button class="btn btn-navbar" type="submit">
+					                           			  <i class="fas fa-search"></i>
+					                          			  </button>
+					                          		</div>
+				                          		</div>
+			                          		</div>
+										</div>
+				                    </div>							
+								</form>
+							</div>
+							<div class="col-sm-4">		
+								<div class="text-right">
+								<div class="btn-group">
+									<a class="btn btn-outline-info btn-flat" href="/addBudget">#예산 등록</a>
+									<button type="button" class="btn btn-outline-secondary btn-flat"  data-toggle="modal" data-target=".bs-modify-modal-lg">#예산 수정</button>
+									<button type="button" class="btn btn-outline-danger btn-flat"  data-toggle="modal" data-target=".bs-delete-sm">#예산 삭제</button>
+								</div>
+								</div>					
+							</div>
+						</div>
+						<div th:replace="budget/modifyBudget:: modifyBudgetFragment"></div>
+						<!-- start 기준 삭제  modal -->
+						<div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-sm">
+								<div class="modal-content">
+									
+									<!-- form start -->
+									<form role="form" action="#">
+										<div class="modal-header">
+											<h4 class="modal-title">지역코드 삭제하기</h4>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										</div>
+										<div class="modal-body">
+								            <div class="form-group">
+												<label>지역 코드</label>
+								         		<div>
+													<input type="text" class="form-control" value="region_001" readonly="readonly">
+								         		</div>
+								           	</div>
+											<div class="form-group">
+												<p>해당 지역코드을 삭제 하시겠습니까?</p>
+												<p><small>삭제를 원하시면 비밀 번호를 입력하세요.</small></p>	
+								            </div>
+											<div class="form-group">
+												<label>비밀번호 확인</label>
+								          		<div>
+													<input type="password" class="form-control" placeholder="비밀번호를 입력하세요">
+								          		</div>
+								           </div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary">지역코드 삭제</button>
+										</div>
+									</form>
+									<!-- form end -->
+								</div>	
+							</div>
+						</div>
+						<!--  end 기준 삭제 modal -->
+					</div>
+					<!--end card-header -->
+					
+					<div class="card-body">
+						<table id="region-table" class="table table-bordered table-hover" style="text-align: center;">
+		                  <thead>
+			                  <tr>
+			                  	<th><input type="checkbox"></th>
+			                    <th>예산 코드</th>
+			                    <th>도서관 코드</th>
+			                    <th>도서관 이름</th>
+								<th>계정과목 코드</th>
+								<th>계정과목 이름</th>
+								<th>금액</th>
+								<th>등록 날짜</th>
+								<th>등록 직원</th>
+			                  </tr>
+		                  </thead>
+		                  <tbody>
+			                  <tr>
+			                  	<td><input type="checkbox"></td>
+			                    <td>code_yeah</td>
+			                    <td>library_yeah</td>
+			                    <td>금암</td>
+								<td>account_</td>
+								<td>도서구입비</td>
+								<td>3000000</td>
+								<td>2020-06-04</td>
+								<td>id_001</td>
+			                  </tr>
+		                  </tbody>
+		                  <tfoot>
+			                  <tr>
+			                  	<th><input type="checkbox"></th>
+			                    <th>예산 코드</th>
+			                    <th>도서관 코드</th>
+			                    <th>도서관 이름</th>
+								<th>계정과목 코드</th>
+								<th>계정과목 이름</th>
+								<th>금액</th>
+								<th>등록 날짜</th>
+								<th>등록 직원</th>
+			                  </tr>
+		                  </tfoot>
+		                </table>
+					<!-- /.card-body -->
+					</div>
+				<!-- card -->	
+				</div>
+			<!--/. container-fluid -->	
+			</div>
+		<!-- /.content -->
+		</section>
+	<!-- /.content-wrapper -->
+	</div>
+</th:block>
+<th:block layout:fragment="customFooterScript">
+</th:block>
+
+</html>

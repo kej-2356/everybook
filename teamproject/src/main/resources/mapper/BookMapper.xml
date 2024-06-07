@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="team1.project.mapper.BookMapper">
+	<resultMap type="Book" id="bookResultMap">
+		<result property="bookCode" column="book_code"/>
+		<result property="libraryName" column="library_name"/>
+		<result property="libraryCode" column="library_code"/>
+		<result property="bookLibraryCode" column="book_library_code"/>
+		<result property="bookName" column="book_name"/>
+		<result property="categoryName" column="category_name"/>
+		<result property="categoryNumber" column="category_number"/>
+		<result property="categoryCode" column="category_code"/>
+		<result property="writerName" column="writer_name"/>
+		<result property="publisherName" column="publisher_name"/>
+		<result property="bookPublishDate" column="book_publish_date"/>
+		<result property="bookPrice" column="book_price"/>
+		<result property="bookIsbn" column="book_ISBN"/>
+		<result property="bookSituation" column="book_situation"/>
+		<result property="bookRegDate" column="book_reg_date"/>
+		<result property="bookImageURL" column="book_image"/>
+		<result property="group" column="book_reg_date"/>
+		<result property="bookDescription" column="book_description"/>
+		<result property="officerId" column="officer_id"/>
+	</resultMap>	
+	<select id="getBookDetail" parameterType="String" resultMap="bookResultMap">
+		SELECT 
+			b.book_code, 
+			b.library_code, 
+			b.book_library_code, 
+			b.book_image,
+			b.book_name, 
+			c.category_number, 
+			w.writer_name, 
+			p.publisher_name, 
+			b.book_publish_date, 
+			b.book_price, 
+			b.book_ISBN, 
+			b.book_description, 
+			b.book_situation, 
+			b.book_reg_date,
+			l.library_name
+		FROM
+			tb_book AS b
+			inner join
+			tb_category AS c
+			INNER join
+			tb_writer AS w
+			INNER join
+			tb_publisher AS p
+			INNER join
+			tb_library AS l
+			on
+			b.category_code = c.category_code
+			and
+			b.writer_code = w.writer_code
+			and
+			b.publisher_code = p.publisher_code
+			and
+			b.library_code = l.library_code
+		WHERE
+			book_code=#{bookCode}
+	</select>	
+
+	<select id="isbnSelectBook" parameterType="String" resultMap="bookResultMap">
+	SELECT
+		b.book_library_code,
+		b.book_image,
+		b.book_name,
+		b.book_ISBN,
+		b.book_description,
+		c.category_number,
+		w.writer_name,
+		p.publisher_name
+	FROM
+		tb_book AS b
+		inner join
+		tb_category AS c
+		INNER join
+		tb_writer AS w
+		INNER join
+		tb_publisher AS p
+		on
+		b.category_code = c.category_code
+		and
+		b.writer_code = w.writer_code
+		and
+		b.publisher_code = p.publisher_code
+	WHERE 
+		b.book_ISBN = #{bookIsbn}
+		AND
+		b.library_code = #{libraryCode}
+	</select>
+		
+	<insert id="addBook">
+	<selectKey order="BEFORE" keyProperty="bookCode" resultType="String">
+	<![CDATA[
+	SELECT 
+		(case 
+		when COUNT(*) = 0 then 'bk_0001'
+		when COUNT(*) < 9 then CONCAT('bk_000',(MAX(SUBSTR(book_code,4))+1))
+		when COUNT(*) < 99 then CONCAT('bk_00',(MAX(SUBSTR(book_code,4))+1))
+		when COUNT(*) < 999 then CONCAT('bk_0',(MAX(SUBSTR(book_code,4))+1))
+		ELSE CONCAT('bk_',(MAX(SUBSTR(book_code,4))+1))
+		END) AS book_code
+	FROM
+		tb_book
+	]]>	
+	</selectKey>
+	INSERT INTO tb_book
+		(book_code, library_code, book_library_code, book_image, book_name, category_code, writer_code, publisher_code, book_publish_date, book_price, book_ISBN, book_situation, book_description, book_reg_date, officer_id)
+		VALUES (#{bookCode}, #{libraryCode}, #{bookLibraryCode}, #{bookImageURL}, #{bookName}, #{categoryCode}, #{writerCode}, #{publisherCode}, #{bookPublishDate}, #{bookPrice}, #{bookIsbn}, '보유 중', #{bookDescription}, NOW(), #{officerId})
+	</insert>
+
+	
+	<!-- 대여코드로 북 이름과 ISBN 출력 -->
+	<select id="getBookName" parameterType="String" resultMap="bookResultMap">
+		SELECT
+			 b.book_name
+			,b.book_ISBN
+			,r.rent_code
+			,r.book_code
+		FROM
+			tb_book AS b
+			INNER join
+			tb_rent AS r
+			on
+			b.book_code = r.book_code
+		WHERE
+			r.rent_code = #{rentCode}
+	</select>
+	
+
+	<!-- 도서제목과 저자로 같은 책 몇 권 있는지 조회하기 -->
+	<select id="sameNameCount" parameterType="String" resultType="int">
+	SELECT
+		COUNT(*)
+	FROM
+		tb_book AS b
+		join
+		tb_writer AS w
+		on
+		b.writer_code = w.writer_code
+	WHERE
+		b.library_code = #{libraryCode}	
+		and
+		b.book_name = #{bookName}
+		and
+		w.writer_name = #{writer}
+	</select>
+	<!-- 대여중인 도서 예약 권수 조회 --> 
+	<select id="reserveBookCount" parameterType="String" resultMap="bookResultMap">
+		SELECT
+			b.book_code
+			, b.library_code
+			, b.book_isbn
+			, b.book_library_code
+			, b.book_name
+			, p.publisher_name
+			, w.writer_name
+			, b.book_price
+			, b.book_publish_date
+			, b.book_reg_date
+			, b.book_situation
+			,COUNT(*) as reserveCount
+		FROM
+			tb_book AS b 
+			INNER JOIN
+			tb_publisher AS p
+			INNER JOIN
+			tb_writer AS w
+			INNER JOIN 
+			tb_rting_reserve AS r
+			on
+			b.publisher_code = p.publisher_code
+			and
+			b.writer_code = w.writer_code
+			AND
+			b.book_code = r.book_code
+		WHERE
+			b.book_library_code = #{bookLibraryCode}
+			and
+			b.library_code = #{libraryCode}
+		GROUP BY b.book_code
+	</select>
+
+  <!-- 도서관책코드로 하나의 도서관에서 도서정보 검색 -->
+  <select id="officeBookSerch" parameterType="String" resultMap="bookResultMap" resultSets="Book">
+  	SELECT
+		b.book_code
+		, b.library_code
+		, b.book_isbn
+		, b.book_library_code
+		, b.book_name
+		, p.publisher_name
+		, w.writer_name
+		, b.book_price
+		, b.book_publish_date
+		, b.book_reg_date
+		, b.book_situation
+	FROM
+		tb_book AS b 
+		INNER JOIN
+		tb_publisher AS p
+		INNER JOIN
+		tb_writer AS w
+		on
+		b.publisher_code = p.publisher_code
+		and
+		b.writer_code = w.writer_code
+	WHERE
+		b.book_library_code = #{bookLibraryCode}
+		and
+		b.library_code = #{libraryCode}
+  </select>
+  
+  <!-- 도서 이름으로 검색하여 도서리스트 출력 -->
+  <select id="officeBookSerchList" parameterType="String" resultMap="bookResultMap" resultSets="Book">
+  	SELECT
+		b.book_code
+		, b.library_code
+		, b.book_isbn
+		, b.book_library_code
+		, b.book_name
+		, p.publisher_name
+		, w.writer_name
+		, b.book_price
+		, b.book_publish_date
+		, b.book_reg_date
+		, b.book_situation
+	FROM
+		tb_book AS b 
+		INNER JOIN
+		tb_publisher AS p
+		INNER JOIN
+		tb_writer AS w
+		on
+		b.publisher_code = p.publisher_code
+		and
+		b.writer_code = w.writer_code
+	WHERE
+		b.book_name like CONCAT('%',#{bookName},'%')
+		and
+		b.library_code = #{libraryCode}
+  </select>
+  
+  <!-- [admin] 소장도서목록 리스트 -->
+  <select id="officeBookList" resultMap="bookResultMap">
+  	SELECT 
+		 b.book_library_code
+		, b.book_name
+		, c.category_name
+		, w.writer_name
+		, p.publisher_name
+		, b.book_price
+		, b.book_ISBN
+		, b.book_situation
+		, b.book_reg_date
+		, b.officer_id
+	FROM 
+		tb_book AS b
+		INNER JOIN
+		tb_writer AS w
+		INNER JOIN
+		tb_publisher AS p
+		INNER JOIN
+		tb_category AS c
+		ON
+		b.writer_code = w.writer_code
+		AND
+		b.category_code = c.category_code
+		AND
+		b.publisher_code = p.publisher_code
+  
+  </select>
+  
+  </mapper>

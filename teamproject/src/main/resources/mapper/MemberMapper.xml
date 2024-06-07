@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team1.project.mapper.MemberMapper">
+
+	<resultMap type="Officer" id="officerSelect">
+		<result property="libraryCode" column="library_code"/>
+	</resultMap>
+
+	<resultMap type="Library" id="librarySelect">
+		<result property="libraryCode" column="library_code"/>
+		<result property="libraryName" column="library_name"/>
+	</resultMap>
+
+	<resultMap type="Member" id="memberSelect">
+		<result property="memberId" column="member_id"/>
+		<result property="memberPw" column="member_pw"/>
+		<result property="memberName" column="member_name"/>
+		<result property="memberBirth" column="member_birth"/>
+		<result property="levelCode" column="level_code"/>
+		<result property="memberAddress" column="member_address"/>
+		<result property="memberTel" column="member_tel"/>
+		<result property="memberEmail" column="member_email"/>
+		<result property="libraryCode" column="library_code"/>
+		<result property="rentCount" column="rent_count"/>
+		<result property="reserveCount" column="reserve_count"/>
+		<result property="reviewCount" column="review_count"/>
+		<result property="warningCount" column="warning_count"/>
+		<result property="memberStauts" column="member_stauts"/>
+		<result property="memberRegDate" column="member_reg_date"/>
+		<result property="memberRegDate" column="member_reg_date"/>
+		<result property="officerId" column="officer_id"/>
+	</resultMap>
+	
+	<!-- 회원리스트(직원) - 직원과 같은 도서관 소속인 회원만 -->
+	<select id="officeListMember" parameterType="String" resultMap="memberSelect">
+		SELECT
+		DISTINCT
+			m.member_id
+			, m.member_pw
+			, m.member_name
+			, m.member_birth
+			,(
+				select
+				level_name
+				from
+				tb_level AS l
+				where
+				l.level_code = m.level_code
+			)as level_code
+			, m.member_address
+			, m.member_tel
+			, m.member_email
+			, m.library_code
+			, m.rent_count
+			, m.reserve_count
+			, m.review_count
+			, m.warning_count
+			, m.member_stauts
+		FROM
+			tb_member AS m
+			INNER join
+			tb_officer AS o
+		where
+			m.library_code = o.library_code
+		AND
+			o.library_code = #{libraryCode}
+	</select>
+	
+	
+	
+	<!-- 회원삭제 -->
+	<delete id="deleteMember" parameterType="String">
+		DELETE 
+		FROM 
+			tb_member 
+		WHERE
+			member_id=#{memberId}
+	</delete>
+	
+	<!-- 도서관 지역에 따른 회원 검색 -->
+	<select id="searchRegionMember" parameterType="String" resultMap="memberSelect">
+	   SELECT
+	      m.*
+	   FROM
+	      tb_member AS m
+	      JOIN 
+	      tb_library AS l
+	      join
+	      tb_region AS r
+	      on
+	      m.library_code = l.library_code
+	      and
+	      l.region_code = r.region_code
+	   WHERE   
+	      m.member_id = #{memberId}
+	      and
+	      r.region_minor =   (SELECT
+	                     r.region_minor
+	                  FROM
+	                     tb_library AS l
+	                     join
+	                     tb_region AS r
+	                     ON
+	                     l.region_code = r.region_code
+	                  WHERE
+	                     l.library_code = #{libraryCode})
+	</select>
+	
+	<!-- 주소 3개로 나눠서 출력 -->
+	<select id="getMemberAddress" parameterType="String" resultType="Map">
+		SELECT 
+			SUBSTRING_INDEX(member_address,' ',1) AS regionMagjor
+			,SUBSTRING_INDEX(SUBSTRING_INDEX(member_address,' ',2),' ',-1) AS regionMinor
+			,SUBSTRING_INDEX(member_address,' ',-1) AS regionDetail
+		FROM 
+			tb_member
+		WHERE 
+			member_id = #{memberId}	
+	</select>
+	
+	<!-- 중복된 아이디 체크 -->
+	<select id="selectCheckMemberId" parameterType="String" resultType="boolean">
+		SELECT
+			CASE COUNT(*)
+			WHEN 1 THEN FALSE
+			ELSE TRUE
+			END 
+		FROM
+			tb_member
+		WHERE 
+			member_id = #{memberId}
+	</select>
+	
+	<!-- 전체회원리스트 -->
+	<select id="allListMember" resultMap="memberSelect">
+		SELECT 
+			member_id
+			, member_pw
+			, member_name
+			, member_birth
+			,( 
+				select
+					level_name
+				from
+					tb_level AS l
+				where
+					l.level_code = m.level_code
+			)as level_code
+			, member_address
+			, member_tel
+			, member_email
+			, library_code
+			, rent_count
+			, reserve_count
+			, review_count
+			, warning_count
+			, member_stauts
+		FROM 
+			tb_member AS m 
+	</select>
+	
+	<!-- 회원수정-->
+	<update id="ModifyMember" parameterType="Member">
+		UPDATE 
+			tb_member
+		SET
+			member_pw = #{memberPw}
+			,member_name = #{memberName}
+			,member_birth = #{memberBirth}
+			,member_address = #{memberAddress}
+			,member_tel = #{memberTel}
+			,member_email = #{memberEmail}
+		WHERE 
+			member_id = #{memberId}
+	</update>
+	
+	<!-- 회원상세보기(마이페이지) -->
+	<select id="DetailMember" parameterType="String" resultMap="memberSelect">
+		SELECT 
+			member_id
+			,member_pw
+			,member_name
+			,member_birth
+			,( 
+				select
+					level_name
+				from
+					tb_level AS l
+				where
+					l.level_code = m.level_code
+			)as level_code
+			,member_address
+			,member_tel
+			,member_email
+			,(
+				SELECT
+					library_name
+				FROM 
+					tb_library as l
+				WHERE 
+					l.library_code = m.library_code
+			)as library_code
+		FROM
+			tb_member as m
+		WHERE
+			member_id = #{memberId}
+	</select>
+	
+	 <!-- 한명회원정보조회 -->
+	 <select id="selectgetMember" parameterType="String" resultMap="memberSelect">
+	 	SELECT 
+	 		member_id
+	 		, member_pw
+	 		, member_name
+	 		, member_birth
+	 		, level_code
+	 		, member_address
+	 		, member_tel
+	 		, member_email
+	 		, library_code
+	 		, rent_count
+	 		, reserve_count
+	 		, review_count
+	 		, warning_count
+	 		, member_reg_date
+		FROM 
+			tb_member
+		where
+			member_id = #{memberId}
+	 </select>
+	
+	<!-- 회원등록 -->
+	<insert id="addMember" parameterType="Member">
+		INSERT INTO tb_member
+			(member_id
+			, member_pw
+			, member_name
+			, member_birth
+			, level_code
+			, member_address
+			, member_tel
+			, member_email
+			, library_code
+			, rent_count
+			, reserve_count
+			, review_count
+			, warning_count
+			, member_reg_date
+			, officer_id)
+		VALUES
+			(#{memberId}
+			, #{memberPw}
+			, #{memberName}
+			, #{memberBirth}
+			, 6
+			, #{memberAddress}
+			, #{memberTel}
+			, #{memberEmail}
+			, #{libraryCode}
+			, 0
+			, 0
+			, 0
+			, 0
+			, now()
+			, NULLIF(#{officerId},'%00'))
+	</insert>
+
+
+</mapper>

@@ -1,0 +1,19 @@
+{
+	"response":{
+		"request":{
+			"isbn13":"9788972756194;9788943305840;"},
+			"resultNum":200,"docs":[
+				{"book":{"no":1,"bookname":"82년생 김지영 :조남주 장편소설 ","authors":"지은이: 조남주","publisher":"민음사","publication_year":"2016","isbn13":"9788937473135","addition_symbol":"","vol":"","class_no":"813.7","bookImageURL":"https://bookthumb-phinf.pstatic.net/cover/112/111/11211133.jpg?type=m1&udate=20180530"}},
+				{"book":{"no":2,"bookname":"언어의 온도 :말과 글에는 나름의 따뜻함과 차가움이 있다 ","authors":"지은이: 이기주","publisher":"말글터","publication_year":"2016","isbn13":"9791195522125","addition_symbol":"","vol":"","class_no":"818","bookImageURL":"http://image.aladin.co.kr/product/14842/6/cover/k742532452_1.jpg"}},
+				{"book":{"no":3,"bookname":"가면산장 살인사건 ","authors":"지은이: 히가시노 게이고 ;옮긴이: 김난주","publisher":"재인","publication_year":"2014","isbn13":"9788990982575","addition_symbol":"","vol":"","class_no":"833.6","bookImageURL":"http://image.aladin.co.kr/product/4745/51/cover/899098257x_2.jpg"}},
+				{"book":{"no":4,"bookname":"라플라스의 마녀 :히가시노 게이고 장편소설 ","authors":"지은이: 히가시노 게이고 ;옮긴이: 양윤옥","publisher":"현대문학","publication_year":"2016","isbn13":"9788972757573","addition_symbol":"","vol":"","class_no":"833.6","bookImageURL":"http://image.aladin.co.kr/product/7288/55/cover/8972757578_1.jpg"}},
+				{"book":{"no":5,"bookname":"채식주의자:한강 연작소설","authors":"한강","publisher":"창비","publication_year":"2007","isbn13":"9788936433598","addition_symbol":"","vol":"","class_no":"813.6","bookImageURL":"https://bookthumb-phinf.pstatic.net/cover/033/094/03309417.jpg?type=m1&udate=20180609"}},
+				{"book":{"no":6,"bookname":"7년의 밤 :정유정 장편소설 ","authors":"지은이: 정유정","publisher":"은행나무","publication_year":"2011","isbn13":"9788956604992","addition_symbol":"","vol":"","class_no":"813.7","bookImageURL":"http://image.aladin.co.kr/product/14712/55/cover/k202532053_1.jpg"}},
+				{"book":{"no":7,"bookname":"살인자의 기억법 :김영하 장편소설 ","authors":"지은이: 김영하","publisher":"문학동네","publication_year":"2013","isbn13":"9788954622035","addition_symbol":"","vol":"","class_no":"813.7","bookImageURL":"https://bookthumb-phinf.pstatic.net/cover/072/622/07262295.jpg?type=m1&udate=20180314"}},
+				{"book":{"no":8,"bookname":"기린의 날개 ","authors":"히가시노 게이고 지음 ;김난주 옮김","publisher":"재인","publication_year":"2017","isbn13":"9788990982674","addition_symbol":"","vol":"","class_no":"833.6","bookImageURL":"http://image.aladin.co.kr/product/10147/75/cover/8990982677_1.jpg"}},
+				{"book":{"no":9,"bookname":"나는 나로 살기로 했다 :냉담한 현실에서 어른살이를 위한 to do list ","authors":"글·그림: 김수현","publisher":"마음의숲","publication_year":"2016","isbn13":"9791187119845","addition_symbol":"","vol":"","class_no":"818","bookImageURL":"http://image.aladin.co.kr/product/16751/86/cover/k642534567_2.jpg"}},
+				{"book":{"no":10,"bookname":"오직 두 사람 :김영하 소설 ","authors":"지은이: 김영하","publisher":"문학동네","publication_year":"2017","isbn13":"9788954645614","addition_symbol":"","vol":"","class_no":"813.7","bookImageURL":"http://image.aladin.co.kr/product/10949/50/cover/8954645615_2.jpg"}}
+			]
+		}
+	}
+}

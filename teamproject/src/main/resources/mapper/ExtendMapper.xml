@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="team1.project.mapper.ExtendMapper">
+  	<resultMap type="Rent" id="rentResultMap">
+	<result property="rentCode" column="rent_code"/>
+	<result property="bookCode" column="book_code"/>
+	<result property="rentDate" column="rent_date"/>
+	<result property="rentRegDate" column="rent_reg_date"/>
+	<result property="rentReturnDate" column="rent_return_date"/>
+	<result property="officerId" column="officer_id"/>
+		
+		<association property="library" javaType="Library">
+			<result property="libraryName" column="library_name"/>
+		</association>
+		<association property="member" javaType="Member">
+			<result property="memberId" column="member_id"/>
+		</association>				
+		<association property="officer" javaType="Officer">
+			<result property="officerId" column="officer_id"/>
+		</association>	
+		<association property="book" javaType="Book">
+			<result property="bookName" column="book_name"/>
+			<result property="bookSituation" column="book_situation"/>
+		</association>
+	</resultMap>
+	
+	<!-- 연장신청 -->
+	<update id="myRentExtend" parameterType="String">
+		UPDATE tb_rent
+	SET
+		rent_return_date=DATE_ADD(rent_return_date, INTERVAL 7 DAY)
+	WHERE 
+		rent_code=#{rentCode}
+	
+	</update>
+	
+	<!-- 현재 대여중인 도서리스트 -->
+	<select id="myRentList" resultMap="rentResultMap" parameterType="String">
+		SELECT
+			r.rent_code
+			, l.library_name
+			, b.book_name
+			, r.rent_reg_date
+			, r.rent_return_date
+			, b.book_situation
+		FROM
+			tb_rent AS r
+			INNER JOIN
+			tb_book AS b
+			INNER JOIN 
+			tb_library AS l
+		ON  
+			r.book_code = b.book_code			
+		AND
+			b.library_code = l.library_code
+		AND
+			b.book_situation = '대여 중'
+		AND
+			member_id = #{SID}  		
+	</select>  
+  
+  
+  </mapper>

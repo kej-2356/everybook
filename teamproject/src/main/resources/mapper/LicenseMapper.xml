@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="team1.project.mapper.LicenseMapper">
+  
+  	<resultMap type="OfficerLicense" id="OfficerLicenseResultMap">
+	  	<result property="officerLicenseCode" column="officer_license_code"/>
+	  	<result property="officerId" column="officer_id"/>
+	  	<result property="licenseCode" column="license_code"/>
+	  	<result property="licenseName" column="license_name"/>
+	  	<result property="officerLicenseDate" column="officer_license_date"/>
+	  	<result property="officerLicenseRegDate" column="officer_license_reg_date"/>
+  	</resultMap>
+  	
+  	<!-- 자격증이름으로 코드 추출 -->
+  	<select id="getLicenseCodeSearch" parameterType="String" resultMap="OfficerLicenseResultMap" resultSets="OfficerLicense">
+  		SELECT
+			license_code
+		FROM
+			tb_license
+		WHERE
+			license_name like CONCAT('%',#{licenseNameSk},'%')
+  	</select>
+  	
+  	<!-- 자격증 등록 -->
+  	<insert id="addLicense" parameterType="OfficerLicense">
+  	<selectKey keyProperty="officerLicenseCode" resultType="String" order="BEFORE">
+  		<![CDATA[
+		SELECT 
+			(case 
+			when COUNT(*) = 0 then 'officer_license_001'
+			when COUNT(*) < 9 then CONCAT('officer_license_00',(MAX(CONVert(SUBSTR(officer_license_code,17), SIGNED INTEGER))+1))
+			when COUNT(*) < 99 then CONCAT('officer_license_0',(MAX(CONVert(SUBSTR(officer_license_code,17), SIGNED INTEGER))+1))
+			when COUNT(*) < 999 then CONCAT('officer_license_',(MAX(CONVert(SUBSTR(officer_license_code,17), SIGNED INTEGER))+1))
+			ELSE CONCAT('library_',(max(CONVert(SUBSTR(officer_license_code,17), SIGNED INTEGER))+1))
+			END) AS officer_license_code
+		FROM
+			tb_officer_license
+		]]>	
+  	</selectKey>
+  		INSERT INTO tb_officer_license
+			(officer_license_code
+			, officer_id
+			, license_code
+			, officer_license_date
+			, officer_license_reg_date
+		)VALUES(
+			#{officerLicenseCode}
+			, #{officerId}
+			, #{licenseCode}
+			, #{officerLicenseDate}
+			, NOW()
+		)
+  	</insert>
+  	
+  	<!-- 자격증 신규등록 -->
+  	<insert id="addNewLicense" parameterType="OfficerLicense">
+  	<selectKey keyProperty="officerLicenseCode" resultType="String" order="BEFORE">
+  		<![CDATA[
+		SELECT 
+			(case 
+			when COUNT(*) = 0 then 'officer_license_001'
+			when COUNT(*) < 9 then CONCAT('officer_license_00',(MAX(CONVert(SUBSTR(officer_license_code,17), SIGNED INTEGER))+1))
+			when COUNT(*) < 99 then CONCAT('officer_license_0',(MAX(CONVert(SUBSTR(officer_license_code,17), SIGNED INTEGER))+1))
+			when COUNT(*) < 999 then CONCAT('officer_license_',(MAX(CONVert(SUBSTR(officer_license_code,17), SIGNED INTEGER))+1))
+			ELSE CONCAT('library_',(max(CONVert(SUBSTR(officer_license_code,17), SIGNED INTEGER))+1))
+			END) AS officer_license_code
+		FROM
+			tb_officer_license
+		]]>	
+  	</selectKey>
+  		INSERT INTO tb_officer_license
+			(officer_license_code
+			, officer_id
+			, license_name
+			, officer_license_date
+			, officer_license_reg_date
+		)VALUES(
+			#{officerLicenseCode}
+			, #{officerId}
+			, #{licenseName}
+			, #{officerLicenseDate}
+			, NOW()
+			)
+  	</insert>
+  </mapper>

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>대여 관리</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+<link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<!-- overlayScrollbars -->
+<link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+</th:block>
+
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<div class="content-header">
+			<div class="register-logo">
+	    		<b>대여 관리</b>
+	  		</div>
+		</div>
+		<!-- /.content-header -->
+	 	<!-- Main content -->
+		<section class="content" style="background-color: white">
+		               <div class="card-header">
+			<div class="row">
+			                
+			                	<div class="col-sm-2">			                
+									<a>청구 기호</a>																							               																																				
+			                	</div>	
+		                      <!-- SEARCH FORM -->
+		                     	<div class="col-sm-4">	                     	
+			                        <div class="input-group input-group-sm">
+			                          <input class="form-control" type="search" placeholder="#Book Library Code" aria-label="Search" id="searchBookLibraryCode">
+			                          <div class="input-group-append">
+			                            <button class="btn btn-navbar" type="submit" id="searchBook">
+			                              <i class="fas fa-search"></i>
+			                            </button>
+			                          </div>
+			                        </div>
+		                        </div>
+		                    	                    
+	          
+			                
+			                	<div class="col-sm-2">			                
+									<a>회원 아이디</a>																							               																																				
+			                	</div>	
+		                      <!-- SEARCH FORM -->
+		                     	<div class="col-sm-4">		                     	
+		                        <div class="input-group input-group-sm">
+		                          <input class="form-control" type="search" placeholder="#Member Id" aria-label="Search" id="searchMemberId">
+		                          <div class="input-group-append">
+		                            <button class="btn btn-navbar" type="submit" id="searchMember">
+		                              <i class="fas fa-search"></i>
+		                            </button>
+		                          </div>
+		                        </div>
+		                        </div>
+		                    	                    
+	              		</div>
+		</div>
+	              <!-- /.card-header -->
+		<!-- form start -->
+		<form action="/addBookRent" method="post">
+		<div class="row">
+				<div class="col-md-6">				
+				  <!-- Book Serch Form -->
+		            <div class="card card-white">
+              
+              
+                <div class="card-body">
+	              <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">청구기호</label>
+	                    <div class="col-sm-10">
+	                      <input type="text" class="form-control" placeholder="Library Book Code" name="bookLibraryCode" id="bookLibraryCode">
+	                    </div>
+                  </div>
+                  <div class="form-group row">
+                  	<label for="inputEmail3" class="col-sm-2 col-form-label">도서 코드</label>
+	                	<div class="col-sm-10">
+	                      <input type="text" class="form-control" placeholder="Book Code" name="bookCode" id="bookCode">
+	                    </div>
+	                  </div>
+	              <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">ISBN</label>
+	                    <div class="col-sm-10">
+	                      <input type="text" class="form-control" placeholder="ISBN" name="bookIsbn" id="bookIsbn">
+	                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">도서이름</label>
+	                    <div class="col-sm-10">
+	                      <input type="text" class="form-control" placeholder="Book Name" name="bookName" id="bookName">
+	                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">도서관코드</label>
+	                    <div class="col-sm-10">
+	                      <input type="text" class="form-control" placeholder="Library Code" name="libraryCode" id="libraryCode">
+	                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">저자</label>
+	                    <div class="col-sm-4">
+	                      <input type="text" class="form-control" placeholder="Writer Name" name="writerName" id="writerName">
+	                    </div>
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">가격</label>
+	                    <div class="col-sm-4">
+	                      <input type="text" class="form-control" placeholder="Book Price" name="bookPrice" id="bookPrice">
+	                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">출간날짜</label>
+	                    <div class="col-sm-4">
+	                      <input type="text" class="form-control" placeholder="Book Publish Date" name="bookPublishDate" id="bookPublishDate">
+	                    </div>
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">등록날짜</label>
+	                    <div class="col-sm-4">
+	                      <input type="text" class="form-control" placeholder="Book Reg Date" name="bookRegDate" id="bookRegDate">
+	                    </div>
+                  </div>
+                  <div class="form-group row">
+                  	<label for="inputPassword3" class="col-sm-2 col-form-label">도서상태</label>
+                  	<div class="col-sm-4">
+                  		<button type="button" class="fc-today-button btn btn-primary" name="bookSituation" id="bookSituation"></button>
+                  	</div>
+                  	<label for="inputPassword3" class="col-sm-2 col-form-label">대여여부</label>
+                  	<div class="col-sm-4">
+                  		<button type="button" class="fc-today-button btn btn-primary" name="rentCanSituation" id="rentCanSituation"></button>
+                  	</div>
+                  </div>                 
+                </div>
+                <!-- /.card-body -->
+              
+            </div>
+            <!-- /.card -->
+          </div>
+		<!-- /.col -->
+						
+				<div class="col-md-6">				
+					  <!-- Member Serch Form -->
+			          <div class="card card-white">
+	                <div class="card-body">
+	                  <div class="form-group row">
+	                    <label for="inputEmail3" class="col-sm-2 col-form-label">회원 아이디</label>
+		                    <div class="col-sm-10">
+		                      <input type="text" class="form-control" placeholder="Member Id" name="memberId">
+		                    </div>
+	                  </div>
+	                  <div class="form-group row">
+	                    <label for="inputEmail3" class="col-sm-2 col-form-label">회원 이름</label>
+		                    <div class="col-sm-10">
+		                      <input type="text" class="form-control" placeholder="Member Name" name="memberName">
+		                    </div>
+		              </div>
+	                  <div class="form-group row">
+	                    <label for="inputEmail3" class="col-sm-2 col-form-label">생년 월일</label>
+		                    <div class="col-sm-10">
+		                      <input type="Date" class="form-control" placeholder="Member Birth" name="memberBirth">
+		                    </div>
+	                  </div>
+	                  <div class="form-group row">
+	                    <label for="inputPassword3" class="col-sm-2 col-form-label">회원 레벨</label>
+		                    <div class="col-sm-10">
+		                      <input type="text" class="form-control" placeholder="level Code" name="levelCode">
+		                    </div>
+	                  </div>
+	                  <div class="form-group row">
+	                    <label for="inputPassword3" class="col-sm-2 col-form-label">주소</label>
+		                    <div class="col-sm-10">
+		                      <input type="text" class="form-control" placeholder="Member Address" name="memberAddress">
+		                    </div>
+	                  </div>
+	                  <div class="form-group row">
+	                    <label for="inputPassword3" class="col-sm-2 col-form-label">전화번호</label>
+		                    <div class="col-sm-10">
+		                      <input type="text" class="form-control" placeholder="Member Tel" name="memberTel">
+		                    </div>
+	                  </div>
+	                  <div class="form-group row">
+	                    <label for="inputPassword3" class="col-sm-2 col-form-label">이메일</label>
+		                    <div class="col-sm-10">
+		                      <input type="email" class="form-control" placeholder="Member Email" name="memberEmail">
+		                    </div>
+	                  </div>
+	                  <div class="form-group row">
+                  		<label for="inputPassword3" class="col-sm-2 col-form-label">현재대여중</label>
+		                  	<div class="col-sm-4">
+		                  		<button type="button" class="fc-today-button btn btn-danger" name="rentCount"></button>
+		                  	</div>
+                  			<label for="inputPassword3" class="col-sm-3 col-form-label">대여가능권수</label>                 	
+                  			<button type="button" class="fc-today-button btn btn-danger" name="rentCan"></button>               
+                  	  </div>	            
+	                </div>
+	                <!-- /.card-body -->
+	              
+	            </div>
+	            <!-- /.card -->
+	          </div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+			<!-- modalRent_button -->
+				<div class="col-md-12" style="text-align: center; margin-bottom: 10px">				
+					<button type="submit" class="fc-today-button btn btn-info" disabled="disabled" id="rentBtn">대여하기</button>			
+				<div class="btnText" style="color: red">
+				</div>
+				</div>
+			<!-- /modalRent_button -->      
+			</form>
+     	
+     	<div class="col-12">
+            <div class="card">
+              <div class="card-header">
+               <form role="form" action="/OfficeRentListSerch" method="get">
+							<div class="row">
+								<div class="col-sm-3">
+									<div class="form-group">
+				                        <select class="form-control custom-select" name="sk">
+				                          <option value= "rent_code">대여 코드</option>
+				                          <option value= "r.member_id">회원 아이디</option>
+				                          <option value= "r.rent_date">대여 날짜(YYYYMMdd)</option>
+				                          <option value= "b.book_name">도서 이름</option>
+				                          <option value= "b.book_library_code">청구기호</option>
+				                          <option value= "w.writer_name">저자</option>
+				                          <option value= "c.category_name">카테고리</option>
+				                          <option value= "p.publisher_name">도서 출판사</option>
+				                        </select>
+				                    </div>
+								</div>
+								<div class="col-sm-9">
+									<div class="row">
+										<div class="col-sm-10">
+											<input class="form-control" type="text" name="sv" placeholder="대여중인 도서 검색하기">
+										</div>
+										<div class="col-sm-2">
+											<div class="input-group-append">
+			                          			 <button class="btn btn-navbar" type="submit">
+			                           			  <i class="fas fa-search"></i>
+			                          			  </button>
+			                          		</div>
+		                          		</div>
+	                          		</div>
+								</div>
+		                    </div>							
+						</form>
+		              </div>
+		           <!-- /.card-header -->
+		           
+		           <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">	 
+	                	<div class="row">
+	                		<div class="col-sm-12">
+				                <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" role="grid" aria-describedby="example2_info">
+				                  <thead>
+				                    <tr>
+				                      <th>대여코드</th>
+				                      <th>대여회원</th>
+				                      <th>대여날짜</th>
+				                      <th>도서이름</th>
+				                      <th>청구기호</th>
+				                      <th>저자</th>
+				                      <th>카테고리</th>
+				                      <th>도서출판사</th>
+				                      <th>상태</th>
+				                      <th>반납처리</th>
+				                  	  <th>삭제</th>
+				                    </tr>
+				                  </thead>
+				                  <tbody>
+				                    <tr th:each="O : ${officeRentList}">
+				                      <td th:text="${O.rentCode}"></td>
+				                      <td th:text="${O.memberId}"></td>
+				                      <td th:text="${O.rentDate}"></td>
+				                      <td th:text="${O.book.bookName}"></td>
+				                      <td th:text="${O.book.bookLibraryCode}"></td>
+				                      <td th:text="${O.writer}"></td>
+				                      <td th:text="${O.category}"></td>
+				                      <td th:text="${O.publisher}"></td>
+				                      <td th:text="${O.book.bookSituation}"></td>
+				                     <td>
+				                      	<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-update" style="color: white">#반납처리</a>
+				                     </td>
+				                     <td>
+				                      	<button type="button" class="btn btn-danger btn-sm RentDeleteBtn" style="color: white" th:value="${O.rentCode}">삭제(서)</button>
+							         </td>
+				                    </tr>
+				                  </tbody>
+				                </table>   
+	                		</div>                		
+	                	</div>
+	               	</div>
+                         
+          </div>
+           <!-- /.card -->
+       </div>              
+                <!-- modal -->  
+                <div class="modal fade" id="modal-update">
+			        <div class="modal-dialog">
+			          <div class="modal-content bg-default">
+			            <div class="modal-header">
+			              <h4 class="modal-title">대여도서관리</h4>
+			              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			                <span aria-hidden="true">&times;</span></button>
+			            </div>
+			            <div class="modal-body">
+			              <p>해당 도서를 '반납' 처리하여 포인트 1점 추가됩니다.</p>
+			              <p style="text-align: center; margin-top: 20px">정말 하시겠습니까?</p>
+			            </div>
+			            <div class="modal-footer justify-content-between">
+			              <button type="button" class="btn" data-dismiss="modal" style="background-color: Snow; border: outset;">Close</button>
+			              <button type="button" class="btn" style="background-color: Snow; border: outset;">#반납처리하기</button>
+			            </div>
+			          </div>
+			          <!-- /.modal-content -->
+			        </div>
+			        <!-- /.modal-dialog -->
+	      		</div>
+	      				      	
+                <div class="modal fade" id="deleteModal">
+			        <form action="/officeRentDelete" method="post">
+			        <div class="modal-dialog">
+			          <div class="modal-content bg-default" style="width: 70%;">
+			            <div class="modal-header">
+			              <h4 class="modal-title">대여도서관리</h4>
+			              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			                <span aria-hidden="true">&times;</span></button>
+			            </div>
+			            <div class="modal-body">
+			            <label>대여 코드</label>
+			            <input type="text" id="deleteRentCode" readonly="readonly" name="rentCode" style="margin-left: 7px; text-align: center; background-color: Snow; width: 95px; border: ridge;">
+			           	<p style="text-align: center; margin-top: 20px"> 정말 삭제 하시겠습니까?</p>
+			            </div>
+			            <div class="modal-footer justify-content-between">
+			              <button type="button" class="btn" data-dismiss="modal" style="background-color: Snow; border: outset;">Close</button>
+			              <button type="submit" class="btn" style="background-color: Snow; border: outset;">삭제하기(서)</button>
+			            </div>
+			          </div>
+			          <!-- /.modal-content -->
+			        </div>
+			        </form>
+			        <!-- /.modal-dialog -->
+	      		</div>		      	
+          <!-- modal -->
+			<!-- <div class="modal fade" id="modalRent">
+		        <div class="modal-dialog">
+		        
+		        
+		          <div class="modal-content bg-default">
+		            <div class="modal-header">
+		              	<h4 class="modal-title">대여관리</h4>
+		              	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                <span aria-hidden="true">&times;</span></button>
+		            </div>
+		            <div class="modal-body">
+		              	<p>대여 하시겠습니까?</p>
+		            </div>
+		            <div class="modal-footer justify-content-between">
+		              <button type="button" class="btn" data-dismiss="modal" style="background-color: Snow; border: outset;">Close</button>
+		              <button type="button" id="addRentBtn" class="btn" style="background-color: Snow; border: outset;">#대여하기</button>
+		            </div>
+		          </div>
+		          /.modal-content	
+		                
+		        </div>
+		        /.modal-dialog
+      		</div> -->
+      		<!-- /.modal -->
+	</section>
+</div>
+<!-- /.content-wrapper -->
+</th:block>
+<th:block layout:fragment="customFooterScript">
+<!-- jQuery -->
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables -->
+<script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script>
+	$(function(){
+		//데이터테이블
+		$("#example1").DataTable({
+	      "responsive": true,
+	      "autoWidth": false,
+	    });
+	    $('#example2').DataTable({
+	      "paging": true,
+	      "lengthChange": false,
+	      "searching": false,
+	      "ordering": true,
+	      "info": true,
+	      "autoWidth": false,
+	      "responsive": true,
+	    });
+	    
+		//삭제 버튼 클릭시 모달
+		$('.RentDeleteBtn').click(function(){
+			console.log("삭제클릭");
+			var value = $(this).val();
+			console.log(value);
+			var request = $.ajax({
+			  url: "/selectRent",
+  			  method: "get",
+  			  data: { rentCode : value },
+  			  dataType: "json"
+			});
+			request.done(function( data ) {
+	 			console.log(JSON.stringify(data) + " <- ajax");
+				$('#deleteRentCode').val(data.rentCode);
+				$('#deleteModal').modal();
+  			});
+			request.fail(function( jqXHR, textStatus ) {
+  			  alert( "Request failed: " + textStatus );
+  			});
+		})
+		
+		//회원 아이디로 검색시 회원 정보 검색하여 화면에 출력
+		$('#searchMember').on('click',function(){
+			var value = $('#searchMemberId').val();
+			console.log(value);
+			if(value == '' || value == null || value == undefined || value == 0 || value == NaN){
+				alert('회원 id를 입력하세요');				
+			}else {
+				var request = $.ajax({
+		  			  url: "/rent/getSelectMember",
+		  			  method: "get",
+		  			  data: { memberId : value },
+		  			  dataType: "json"
+		  			});
+				request.done(function( data ) {
+	  				console.log(JSON.stringify(data) + " <- ajax");
+	  				$('[name=memberId]').val(data.memberId);
+	  				$('[name=memberName]').val(data.memberName);
+	  				$('[name=memberBirth]').val(data.memberBirth);
+	  				$('[name=levelCode]').val(data.levelCode);
+	  				$('[name=memberAddress]').val(data.memberAddress);
+	  				$('[name=memberTel]').val(data.memberTel);
+	  				$('[name=memberEmail]').val(data.memberEmail);
+	  				$('[name=rentCount]').html(data.rentCount+"권");
+	  				
+	  				//레벨이 일반회원일때(5,6,7) 대여가능횟수는 5권
+	  				if(data.levelCode == '5' || data.levelCode == '6' || data.levelCode == '7'){
+	  					var rentCanCount = 5; //대여가능횟수
+	  					console.log("data.rentCount = " + data.rentCount); //현재 대여권수
+	  					var rentCan = rentCanCount-data.rentCount; //남은 대여가능 횟수
+	  					console.log("rentCan = " + rentCan);
+	  					$('[name=levelCode]').val('일반회원');
+	  					$('[name=rentCan]').html(rentCan+"권");
+	  				//레벨이 우수회원일때(4) 대여가능횟수는 7권
+	  				}else if(data.levelCode == '4'){
+	  					var rentCanCount = 7; //대여가능횟수
+	  					console.log("data.rentCount = " + data.rentCount); //현재 대여권수
+	  					var rentCan = rentCanCount-data.rentCount; //남은 대여가능 횟수
+	  					console.log("rentCan = " + rentCan);
+	  					$('[name=levelCode]').val('우수회원');
+	  					$('[name=rentCan]').html(rentCan+"권");
+	  				//레벨이 제재회원일때(8) 대여가능횟수는 3권
+	  				}else if(data.levelCode == '8'){
+	  					var rentCanCount = 3; //대여가능횟수
+	  					console.log("rentCanCount = " + rentCanCount);
+	  					console.log("data.rentCount = " + data.rentCount); //현재 대여권수
+	  					var rentCan = rentCanCount-data.rentCount; //남은 대여가능 횟수
+	  					console.log("rentCan = " + rentCan); 
+	  					$('[name=levelCode]').val('제재회원');
+	  					$('[name=rentCan]').html(rentCan+"권");
+	  				}else{
+	  					var rentCanCount = 0; //대여가능횟수
+	  					console.log("data.rentCount = " + data.rentCount); //현재 대여권수
+	  					var rentCan = rentCanCount-data.rentCount; //남은 대여가능 횟수
+	  					console.log("rentCan = " + rentCan);
+	  					$('[name=levelCode]').val('휴먼회원');
+	  					$('[name=rentCan]').html(rentCan+"권");
+	  					console.log($('[name=rentCan]').html());
+	  				}
+	  				//대여가능 권수가 0권이 아니거나 도서상태가 대여 가능이면 대여하기 버튼 활성화
+	  				if($('[name=rentCan]').html() != "0권" && $('[name=rentCanSituation]').html() == '대여가능' && $('[name=rentCan]').html() != ''){
+	  					$('#rentBtn').removeAttr("disabled");
+	  					$('.btnText').text("");
+	  				}else if($('[name=rentCan]').html() == "0권"){
+	  					$('#rentBtn').attr("disabled","disabled");
+	  					$('.btnText').text("회원의 대여 가능 횟수가 제한됩니다.");
+	  				}
+			});
+				request.fail(function( jqXHR, textStatus ) {
+		  			  alert( "회원 정볼를 찾을 수 없습니다.  :  " + textStatus );
+		  			});
+			};
+			
+			$('#addRentBtn').click(function(){
+				$('.form-horizontal').submit();
+			});
+			
+		});
+			//도서로 검색시 도서정보 검색하여 화면에 출력
+			$('#searchBook').on('click',function(){
+				var value = $('#searchBookLibraryCode').val();
+				console.log(value);
+				if(value == '' || value == null || value == undefined || value == 0 || value == NaN){
+					alert('청구기호를 입력하세요');				
+				}else {
+					var request = $.ajax({
+			  			  url: "/rent/getSelectBook",
+			  			  method: "get",
+			  			  data: { bookLibraryCode : value },
+			  			  dataType: "json"
+			  			});
+					request.done(function( data ) {
+		  				console.log(JSON.stringify(data) + " <- ajax");
+		  				$('[name=bookLibraryCode]').val(data.bookLibraryCode);
+		  				$('[name=bookCode]').val(data.bookCode);
+		  				$('[name=bookIsbn]').val(data.bookIsbn);
+		  				$('[name=bookName]').val(data.bookName);
+		  				$('[name=libraryCode]').val(data.libraryCode);
+		  				$('[name=writerName]').val(data.writerName);
+		  				$('[name=bookPrice]').val(data.bookPrice);
+		  				$('[name=bookPublishDate]').val(data.bookPublishDate);
+		  				$('[name=bookRegDate]').val(data.bookRegDate);
+		  				$('[name=bookSituation]').html(data.bookSituation);
+		  				
+		  				if(data.bookSituation == '예약 중'|| data.bookSituation == '대여 중'){
+		  					$('[name=rentCanSituation]').html('대여불가');
+		  				}else{
+		  					$('[name=rentCanSituation]').html('대여가능');
+		  				}
+		  				//대여가능 권수가 0이 아니거나 도서상태가 대여 가능이면 대여하기 버튼 활성화
+		  				if($('[name=rentCanSituation]').html() == '대여가능' && $('[name=rentCan]').html() != "0권" && $('[name=rentCan]').html() != ''){
+		  					$('#rentBtn').removeAttr("disabled");
+		  					$('.btnText').text("");
+		  				}else if($('[name=rentCanSituation]').html() == '대여불가'){
+		  					$('#rentBtn').attr("disabled","disabled");
+		  					$('.btnText').text("해당 도서는 "+data.bookSituation+" 상태로 대여할 수 없습니다.");
+		  				}else if($('[name=rentCanSituation]').html() == '대여가능'){
+		  					$('.btnText').text("");
+		  				}
+		  				});
+					request.fail(function( jqXHR, textStatus ) {
+			  			  alert( "도서 정보를 찾을 수 없습니다.  :  " + textStatus );
+			  			});
+				}
+			});
+			
+	})
+</script>
+</th:block>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+
+	<th:block layout:fragment="customTitle">
+		<title>작가 리스트</title>
+	</th:block>
+	
+	<th:block layout:fragment="customCss">
+		<!-- overlayScrollbars -->
+  		<link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+		<!-- DataTables -->
+		<link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+		<link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+	</th:block>
+
+	<th:block layout:fragment="customContents">
+		<div class="content-wrapper">
+		 	<section class="content-header">
+				<div class="register-logo">
+					<a>작가 리스트</a>
+				</div>
+				<div class="col-md-1 offset-11">
+					<button class="btn btn-block btn-success" data-toggle="modal" data-target="#exampleModal">작가 등록</button>
+				</div>
+			</section>
+		<section class="content">
+			<div class="card card-info">
+	            <div class="card-body">
+	            	<div class="row ">
+	            		<div class="col-md-12">
+		            		<table id="example1" class="table table-bordered table-striped">
+								<thead>
+									<tr>
+									  <th>작가코드</th>
+									  <th>작가이름</th>
+									  <th>등록날짜</th>
+									  <th>등록자</th>
+									  <th data-orderable="false">수정</th>
+									  <th data-orderable="false">삭제</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each=" w : ${writerList}">
+										<td th:text="${w.writerCode}"></td>
+										<td th:text="${w.writerName}"></td>
+										<td th:text="${w.writerRegDate}"></td>
+					                    <td th:text="${w.officer}"></td>
+					                    <td>
+											<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal2" th:data-code="${w.writerCode}" th:data-name="${w.writerName}">
+												<i class="fas fa-pencil-alt"></i>
+												수정
+											</button>
+										</td>
+										<td>
+											<button type="button" class="btn btn-danger btn-sm del" th:data-send="${w.writerCode}">
+												<i class="fas fa-trash"></i>
+												삭제
+											</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>	
+           			</div>
+	            </div>
+	            <!-- /.card-body -->
+	            
+	            <!-- 모달 부분 -->
+	            <!-- 작가 등록 -->
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+						  		<h5 class="modal-title" id="exampleModalLabel">작가 등록</h5>
+						  		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							    	<span aria-hidden="true">&times;</span>
+							  	</button>
+							</div>
+							<form action="/addWriter" method="post">
+								<div class="modal-body">
+									<div class="form-group">
+										<label for="recipient-name" class="col-form-label">작가 이름:</label>
+										<input type="text" class="form-control" name="writerName">
+									</div>
+									<div class="form-group">
+										<label for="recipient-name" class="col-form-label">등록자:</label>
+										<input type="text" class="form-control" name="officer" th:value="${session.SID}">
+									</div>
+								</div>
+								<div class="modal-footer">
+							  		<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+							  		<button type="submit" class="btn btn-primary">등록완료</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- /작가 등록 -->
+				
+				<!-- 작가 수정 -->
+				<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+						  		<h5 class="modal-title" id="exampleModalLabel">작가 수정</h5>
+						  		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							    	<span aria-hidden="true">&times;</span>
+							  	</button>
+							</div>
+							<form action="/modifyWriter" method="post">
+								<div class="modal-body">
+									<div class="form-group">
+										<label for="recipient-name" class="col-form-label">작가 코드:</label>
+										<input type="text" class="form-control" id="writerCode" name="writerCode" readonly>
+									</div>
+									<div class="form-group">
+										<label for="recipient-name" class="col-form-label">작가 이름:</label>
+										<input type="text" class="form-control" id="writerName" name="writerName">
+									</div>
+									<div class="form-group">
+										<label for="recipient-name" class="col-form-label">등록자:</label>
+										<input type="text" class="form-control" name="officer" th:value="${session.SID}">
+									</div>
+								</div>
+								<div class="modal-footer">
+							  		<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+							  		<button type="submit" class="btn btn-primary">수정완료</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- /작가 수정 -->
+				<!-- /모달 부분 -->
+	          </div>
+          </section>	
+         </div> 
+	</th:block>
+	
+	<th:block layout:fragment="customFooterScript">
+		<!-- OPTIONAL SCRIPTS -->
+		<script src="dist/js/demo.js"></script>
+		<!-- overlayScrollbars -->
+		<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+		<!-- ionicons.com 아이콘 -->
+		<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+		<!-- PAGE PLUGINS -->
+		<!-- jQuery Mapael -->
+		<script src="plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+		<script src="plugins/raphael/raphael.min.js"></script>
+		<script src="plugins/jquery-mapael/jquery.mapael.min.js"></script>
+		<script src="plugins/jquery-mapael/maps/usa_states.min.js"></script>
+		<!-- ChartJS -->
+		<script src="plugins/chart.js/Chart.min.js"></script>
+		<!-- DataTables -->
+		<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+		<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+		<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		
+		<!-- page script -->
+		<script>
+			$(function () {
+			
+				//데이터 테이블  
+				$('#example1').DataTable({
+				  "responsive": true,
+				  "autoWidth": false,
+				});
+			 
+				//모달에 내용보여주기
+				$('#exampleModal2').on('show.bs.modal', function (event) {
+					var button = $(event.relatedTarget)
+					var code = button.data('code')
+					var name = button.data('name') 
+					
+					console.log(code);
+					var modal = $(this)
+					modal.find('#writerCode').val(code)
+					modal.find('#writerName').val(name)
+				})
+				
+				
+			  	//삭제버튼 클릭시 뜨는 alert 창 
+				$('#example1 tbody').on('click', '.del', function () {
+					swal ({
+						title : "삭제하시겠습니까?"
+						,icon : "error"
+						, buttons: {
+						    cancel: "취소",
+						    confirm: "삭제",
+						  }
+						,closeOnClickOutside : false
+					})
+				 	.then((del) => {
+				  		if(del){
+				  			console.log($(this).data('send'));
+				   		$.ajax({
+				               //url: "/deleteWriter",
+				               type: "get",
+				               data: { writerCode : $(this).data('send')},
+				               dataType: "json",
+				               success: function (data) {
+				               	console.log(data);
+				                   if(data > 0){
+				               		swal("삭제 성공", " ", "success");
+				               		location.reload(true);
+				                   }else{
+				                   	swal("삭제실패!", " ", "error");
+				                   }
+				               },
+				               error: function (xhr, ajaxOptions, thrownError) {
+				                   swal("Error deleting!", "Please try again", "error");
+				               }
+				           });
+				  		}
+				  	});
+				}); 
+		    
+			});
+		</script>
+	</th:block>
+	
+	
+	
+</html>

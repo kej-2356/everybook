@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head th:fragment="headFragment">
+<!-- 사용자 지정 타이틀 -->
+<th:block layout:fragment="customTitle"></th:block>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="Unicat project">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
+<link href="plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<!-- 사용자 지정 css -->
+<th:block layout:fragment="customCss"></th:block>
+
+<!-- 사용자 지정 headScript -->
+<th:block layout:fragment="customHeadScript"></th:block>
+</head>
+</html>

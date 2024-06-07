@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="team1.project.mapper.ApplyMapper">
+ 	
+ 	<resultMap type="Apply" id="applyResultMap">
+ 		<result property="applyCode" column="apply_code"/>
+ 		<result property="memberId" column="member_id"/>
+ 		<result property="library" column="library_name"/>
+ 		<result property="bookName" column="book_name"/>
+ 		<result property="bookIsbn" column="book_ISBN"/>
+ 		<result property="applyPublishDate" column="apply_publish_date"/>
+ 		<result property="applyPublisher" column="apply_publisher"/>
+ 		<result property="applyWriter" column="apply_writer"/>
+ 		<result property="applyRegDate" column="apply_reg_date"/>	
+ 		<result property="applyPrice" column="apply_price"/>	
+ 		<result property="applySituation" column="apply_situation"/>	
+ 	</resultMap>
+ 	
+ 	<!-- 신청관리 - 신청도서리스트 - 삭제 -->
+ 	<delete id="deleteOfficeApply" parameterType="String">
+ 		DELETE FROM 
+ 			tb_book_apply 
+ 		WHERE 
+ 			apply_code=#{applyCode}
+ 	</delete>
+ 	
+ 	<!-- 신청관리 - 신청도서리스트 - 수정처리 -->
+ 	<update id="ModifyOfficeBookApply">
+ 		UPDATE tb_book_apply
+	SET
+		member_id=#{memberId},
+		apply_price=#{applyPrice},
+		apply_situation=#{applySituation},
+		book_name=#{bookName},
+		book_ISBN=#{bookIsbn},
+		apply_reg_date=#{applyRegDate}
+	WHERE 
+		apply_code=#{applyCode}
+ 	</update>
+ 	
+ 	<!-- 신청관리 - 신청도서리스트 - 수정화면 조회 -->
+ 	<select id="ModifyOfficeApply" parameterType="String" resultMap="applyResultMap">
+		SELECT
+ 			apply_code
+			,book_name
+			,book_ISBN
+			,member_id
+			,apply_price
+			,apply_reg_date
+			,apply_situation
+		FROM
+			tb_book_apply
+		WHERE
+			apply_code = #{applyCode} 	
+ 	</select>
+ 	
+ 	<!-- 신청관리 - 신청도서리스트 - 검색 -->
+ 	<select id="officeApplySearch" parameterType="String" resultMap="applyResultMap">
+ 		SELECT
+ 			apply_code
+			,book_name
+			,book_ISBN
+			,member_id
+			,apply_price
+			,apply_reg_date
+			,apply_situation
+		FROM
+			tb_book_apply
+ 		<if test="sv != null and sv neq ''.toString()">
+			WHERE
+				${sk} like CONCAT('%',#{sv},'%')
+		</if>
+ 	</select>
+ 	
+ 	<!-- 신청관리 - 신청도서리스트 -->
+ 	<select id="officeApplyList" parameterType="String" resultMap="applyResultMap">
+ 		SELECT
+ 			apply_code
+			,book_name
+			,book_ISBN
+			,member_id
+			,apply_price
+			,apply_reg_date
+			,apply_situation
+		FROM
+			tb_book_apply
+ 	</select>
+ 	
+ 	<!-- 나의신청도서 삭제 - 코드검색 -->
+ 	<select id="getApplyCode" parameterType="String" resultMap="applyResultMap">
+ 		SELECT
+			apply_code
+		FROM
+			tb_book_apply
+		WHERE
+			apply_code = #{applyCode}
+ 	</select>
+ 	
+ 	<!-- 나의신청도서 삭제 -->
+ 	<delete id="deleteBookApply" parameterType="String">
+ 		DELETE FROM 
+ 		tb_book_apply 
+ 		WHERE 
+ 		apply_code=#{applyCode}
+ 	</delete>
+ 	
+ 	<!-- 나의 신청도서 리스트 -->
+ 	<select id="myApplyList" resultMap="applyResultMap" parameterType="String">
+ 	SELECT
+		a.apply_code
+		, l.library_name
+		, a.member_id
+		, a.book_name
+		, a.book_ISBN
+		, a.apply_publish_date
+		, a.apply_publisher
+		, a.apply_writer
+		, a.apply_reg_date
+	FROM 
+		tb_book_apply AS a
+		INNER JOIN
+		tb_library AS l
+	ON
+		a.library_code = l.library_code
+	AND
+		member_id = #{SID}
+ 	</select>
+ 		
+ 	<!-- 희망도서 신청 -->
+	<insert id="addBookApply" parameterType="team1.project.vo.Apply">
+		<selectKey keyProperty="applyCode" resultType="String" order="BEFORE">
+		<![CDATA[
+			SELECT 
+			   (case 
+			   when COUNT(*) = 0 then 'apply_0001'
+			   when COUNT(*) < 9 then CONCAT('apply_000',(max(SUBSTRING(apply_code,7))+1))
+			   when COUNT(*) < 99 then CONCAT('apply_00',(max(SUBSTRING(apply_code,7))+1))
+			   when COUNT(*) < 999 then CONCAT('apply_0',(max(SUBSTRING(apply_code,7))+1))
+			   ELSE CONCAT('apply_',(max(SUBSTRING(apply_code,7))+1))
+			   END) AS apply_code
+			FROM
+		   		tb_book_apply
+		]]>
+		</selectKey>
+		INSERT INTO tb_book_apply(
+			apply_code
+			, library_code
+			, member_id
+			, book_name
+			, book_ISBN
+			, apply_price
+			, apply_publish_date
+			, apply_publisher
+			, apply_writer
+			, apply_reg_date
+			)VALUE(
+			#{applyCode}
+			, #{library}
+			, #{memberId}
+			, #{bookName}
+			, #{bookIsbn}
+			, #{applyPrice}
+			, #{applyPublishDate}
+			, #{applyPublisher}
+			, #{applyWriter}
+			, NOW()
+			)	
+	</insert> 
+	
+ 
+ </mapper>

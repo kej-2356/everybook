@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>직원관리 시스템</title>
+</th:block>
+<th:block layout:fragment="customCss">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+</th:block>
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<div class="content-header">
+			<div class="container-fluid">
+				<h1 class="m-0 text-dark">도서 현황</h1>
+			</div><!-- /.container-fluid -->
+		</div>
+		<!-- /.content-header -->
+	 	<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				<!-- Info boxes -->
+				<div class="row">
+					<div class="col-12 col-sm-6 col-md-3">
+					<div class="info-box">
+						<span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+					
+						<div class="info-box-content">
+							<span class="info-box-text">대출중인 도서</span>
+						  	<span class="info-box-number">
+						    	10
+						    	<small>%</small>
+						  	</span>
+						</div>
+					  	<!-- /.info-box-content -->
+					</div>
+					<!-- /.info-box -->
+					</div>
+					<!-- /.col -->
+					<div class="col-12 col-sm-6 col-md-3">
+						<div class="info-box mb-3">
+							<span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+							<div class="info-box-content">
+								<span class="info-box-text">반납예정 도서</span>
+								<span class="info-box-number">41,410</span>
+							</div>
+							<!-- /.info-box-content -->
+						</div>
+						<!-- /.info-box -->
+					</div>
+					<!-- /.col -->
+				 
+				 	<!-- fix for small devices only -->
+				 	<div class="clearfix hidden-md-up"></div>
+				
+					<div class="col-12 col-sm-6 col-md-3">
+						<div class="info-box mb-3">
+							<span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+							
+							<div class="info-box-content">
+								<span class="info-box-text">연체중인 도서</span>
+								<span class="info-box-number">760</span>
+							</div>
+							<!-- /.info-box-content -->
+						</div>
+						<!-- /.info-box -->
+					</div>
+				 	<!-- /.col -->
+					<div class="col-12 col-sm-6 col-md-3">
+						<div class="info-box mb-3">
+							<span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+							
+							<div class="info-box-content">
+								<span class="info-box-text">회원 수</span>
+								<span class="info-box-number">2,000</span>
+							</div>
+							<!-- /.info-box-content -->
+						</div>
+						<!-- /.info-box -->
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- /.row -->
+			</div><!--/. container-fluid -->
+			
+			<div class="col-md-12">
+	        	<!-- 인기대출 도서 -->
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">인기대출 도서</h3>
+					
+						<div class="card-tools">
+						  <span class="badge badge-danger">8 New Books</span>
+						  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+						  </button>
+						</div>
+					</div>
+					<!-- /.card-header -->
+					<div class="card-body p-0">
+						<ul class="users-list clearfix">
+							<li>
+								<img src="dist/img/user1-128x128.jpg" alt="User Image">
+								<a class="users-list-name" href="#">Alexander Pierce</a>
+								<span class="users-list-date">Today</span>
+							</li>
+							<li>
+								<img src="dist/img/user8-128x128.jpg" alt="User Image">
+								<a class="users-list-name" href="#">Norman</a>
+								<span class="users-list-date">Yesterday</span>
+							</li>
+							<li>
+								<img src="dist/img/user7-128x128.jpg" alt="User Image">
+								<a class="users-list-name" href="#">Jane</a>
+								<span class="users-list-date">12 Jan</span>
+							</li>
+							<li>
+								<img src="dist/img/user6-128x128.jpg" alt="User Image">
+								<a class="users-list-name" href="#">John</a>
+								<span class="users-list-date">12 Jan</span>
+							</li>
+							<li>
+								<img src="dist/img/user2-160x160.jpg" alt="User Image">
+								<a class="users-list-name" href="#">Alexander</a>
+								<span class="users-list-date">13 Jan</span>
+							</li>
+							<li>
+								<img src="dist/img/user5-128x128.jpg" alt="User Image">
+								<a class="users-list-name" href="#">Sarah</a>
+								<span class="users-list-date">14 Jan</span>
+							</li>
+							<li>
+								<img src="dist/img/user4-128x128.jpg" alt="User Image">
+								<a class="users-list-name" href="#">Nora</a>
+								<span class="users-list-date">15 Jan</span>
+							</li>
+							<li>
+								<img src="dist/img/user3-128x128.jpg" alt="User Image">
+								<a class="users-list-name" href="#">Nadia</a>
+								<span class="users-list-date">15 Jan</span>
+							</li>
+						</ul>
+					  	<!-- /.users-list -->
+					</div>
+		         	<!-- /.card-body -->
+				<div class="card-footer text-center">
+					<a href="javascript::">View All Books</a>
+				</div>
+				<!-- /.card-footer -->
+				</div>
+	            <!--/.card -->
+            </div>
+			<!-- /.col -->
+			<div class="col-md-12">
+	            <!-- TABLE: 공지사항 -->
+				<div class="card">
+					<div class="card-header border-transparent">
+						<h3 class="card-title">공지사항</h3>
+					
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+						</div>
+					</div>
+					<!-- /.card-header -->
+					<div class="card-body p-0">
+						<div class="table-responsive">
+							<table class="table m-0">
+								<thead>
+									<tr>
+										<th>분류</th>
+										<th>제목</th>
+										<th>도서관 명</th>
+										<th>작성일</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><a>OR9842</a></td>
+										<td><a href="#">#휴관일 안내</a></td>
+										<td><span class="badge badge-success">금암</span></td>
+										<td>
+											<div class="sparkbar" data-color="#00a65a" data-height="20">2020-06-04</div>
+										</td>
+									</tr>
+									<tr>
+										<td>OR1848</td>
+										<td><a href="#">#쪽구름 도서관 부분 개관</a></td>
+										<td><span class="badge badge-warning">쪽구름</span></td>
+										<td>
+											<div class="sparkbar" data-color="#f39c12" data-height="20">2020-06-25</div>
+										</td>
+									</tr>
+									<tr>
+										<td>OR7429</td>
+										<td><a href="#">#2020년 전주시 생애 첫 도서관 이야기 참가자 모집안내(5/26변경)</a></td>
+										<td><span class="badge badge-danger">전체</span></td>
+										<td>
+											<div class="sparkbar" data-color="#f56954" data-height="20">2020-06-25</div>
+										</td>
+									</tr>
+									<tr>
+										<td>OR7429</td>
+										<td><a href="#">#삼천도서관 개방형 창의도서관 조성 공사에 따른 휴관 공고</a></td>
+										<td><span class="badge badge-info">삼천</span></td>
+										<td>
+											<div class="sparkbar" data-color="#00c0ef" data-height="20">2020-06-25</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					  	<!-- /.table-responsive -->
+					</div>
+					<!-- /.card-body -->
+					<div class="card-footer clearfix">
+					  <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">#공지사항 리스트</a>
+					</div>
+					<!-- /.card-footer -->
+				</div>
+            	<!-- /.card -->
+			</div>
+			<!-- /.col -->
+		</section>
+		<!-- /.content -->
+	</div>
+	<!-- /.content-wrapper -->
+	
+</th:block>
+<th:block layout:fragment="customFooterScript">
+		<!-- OPTIONAL SCRIPTS -->
+		<script src="dist/js/demo.js"></script>
+		<!-- overlayScrollbars -->
+		<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+		<!-- ionicons.com 아이콘 -->
+		<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+		<!-- PAGE PLUGINS -->
+		<!-- jQuery Mapael -->
+		<script src="plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+		<script src="plugins/raphael/raphael.min.js"></script>
+		<script src="plugins/jquery-mapael/jquery.mapael.min.js"></script>
+		<script src="plugins/jquery-mapael/maps/usa_states.min.js"></script>
+		<!-- ChartJS -->
+		<script src="plugins/chart.js/Chart.min.js"></script>
+</th:block>
+</html>

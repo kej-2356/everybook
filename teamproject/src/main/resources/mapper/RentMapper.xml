@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="team1.project.mapper.RentMapper">
+	
+	<resultMap type="Rent" id="rentResultMap">
+		<result property="rentCode" column="rent_code"/>
+		<result property="rentDate" column="rent_date"/>
+		<result property="rentRegDate" column="rent_reg_date"/>
+		<result property="rentReturnDate" column="rent_return_date"/>
+		<result property="writer" column="writer_name"/>
+		<result property="category" column="category_name"/>
+		<result property="publisher" column="publisher_name"/>
+		<result property="libraryName" column="library_name"/>
+		<result property="libraryCode" column="library_code"/>
+		<result property="memberId" column="member_id"/>
+		<result property="officerId" column="officer_id"/>
+
+		<association property="book" javaType="Book">
+			<result property="bookCode" column="book_code"/>
+			<result property="bookName" column="book_name"/>
+			<result property="bookSituation" column="book_situation"/>
+			<result property="bookLibraryCode" column="book_library_code"/>
+			<result property="bookIsbn" column="book_ISBN"/>
+		</association>
+	</resultMap>
+	
+	<!-- 대여관리 - 대여처리 -->
+	<insert id="addBookRent">
+	<selectKey order="BEFORE" keyProperty="rentCode" resultType="String">
+	<![CDATA[
+	SELECT 
+		(case 
+		when COUNT(*) = 0 then 'rent_0001'
+		when COUNT(*) < 9 then CONCAT('rent_000',(MAX(SUBSTR(rent_code,6))+1))
+		when COUNT(*) < 99 then CONCAT('rent_00',(MAX(SUBSTR(rent_code,6))+1))
+		when COUNT(*) < 999 then CONCAT('rent_0',(MAX(SUBSTR(rent_code,6))+1))
+		ELSE CONCAT('bk_',(MAX(SUBSTR(rent_code,6))+1))
+		END) AS rent_code
+	FROM
+		tb_rent
+	]]>	
+	</selectKey>
+	INSERT INTO tb_rent(
+		rent_code
+		, library_code
+		, member_id
+		, book_code
+		, rent_date
+		, rent_return_date
+		, rent_reg_date
+		, officer_id
+	)VALUES(
+		#{rentCode}
+		, #{libraryCode}
+		, #{memberId}
+		, #{bookCode}
+		, CURDATE()
+		, DATE_ADD(CURDATE(), INTERVAL 7 DAY)
+		, NOW()
+		, #{officerId}
+	)
+	</insert>
+	
+	<!-- 추천 도서 : 최근 5건의 대여 도서의 isbn select -->
+	  <select id="selectIsbn" parameterType="String" resultType="String">
+	  	SELECT
+			b.book_ISBN
+		FROM
+			tb_rent AS r
+			join
+			tb_book AS b
+			on
+			r.book_code = b.book_code
+		WHERE
+			r.member_id = #{memberId}
+		ORDER BY 
+			r.rent_date desc
+		LIMIT 5	
+	  </select>
+	<!-- 대여관리 - 대여리스트 검색 -->
+	<select id="OfficeRentListSerch" parameterType="String" resultMap="rentResultMap">
+		SELECT
+			r.rent_code
+			, r.member_id
+			, b.book_name
+			, b.book_library_code
+			, w.writer_name
+			, c.category_name
+			, p.publisher_name
+			, b.book_situation
+			, r.rent_date
+		FROM
+			tb_rent AS r
+			INNER JOIN
+			tb_book AS b
+			INNER JOIN 
+			tb_writer AS w
+			INNER JOIN
+			tb_category AS c
+			INNER JOIN
+			tb_publisher AS p
+		ON  
+			r.book_code = b.book_code		
+		AND
+			b.writer_code = w.writer_code	
+		AND
+			b.category_code = c.category_code
+		AND
+			b.publisher_code = p.publisher_code
+		AND
+			b.book_situation = '대여 중'
+		<if test="sv != null and sv neq ''.toString()">
+		WHERE
+			${sk} like CONCAT ('%',#{sv},'%')
+		</if>
+		ORDER BY
+			r.rent_date			
+	</select>
+	
+	<!-- 대여관리 - 삭제 - 코드검색 -->
+	<select id="getRentCode" parameterType="String" resultMap="rentResultMap">
+		SELECT
+			rent_code
+		FROM
+			tb_rent
+		WHERE
+			rent_code = #{rentCode}
+	</select>
+	
+	<!-- 대여관리 - 대여도서리스트 삭제 -->
+	<delete id="officeRentDelete" parameterType="String">
+		DELETE FROM 
+		tb_rent 
+		WHERE 
+		rent_code=#{rentCode}
+	</delete>
+	
+	
+	<!-- 대여관리 - 현재 '대여 중'인 도서리스트 -->
+	<select id="officeRentList" resultMap="rentResultMap" parameterType="String">
+		SELECT
+			r.rent_code
+			, r.member_id
+			, b.book_name
+			, b.book_library_code
+			, w.writer_name
+			, c.category_name
+			, p.publisher_name
+			, b.book_situation
+			, r.rent_date
+		FROM
+			tb_rent AS r
+			INNER JOIN
+			tb_book AS b
+			INNER JOIN 
+			tb_writer AS w
+			INNER JOIN
+			tb_category AS c
+			INNER JOIN
+			tb_publisher AS p
+		ON  
+			r.book_code = b.book_code		
+		AND
+			b.writer_code = w.writer_code	
+		AND
+			b.category_code = c.category_code
+		AND
+			b.publisher_code = p.publisher_code
+		AND
+			b.book_situation = '대여 중'
+		ORDER BY
+			r.rent_date
+	</select>
+
+	<!-- 나의 대여 이력 - 검색 -->
+	<select id="myRentHistorySearch" parameterType="String" resultMap="rentResultMap">
+		SELECT
+			r.rent_code
+			, l.library_name
+			, b.book_name
+			, r.rent_date
+			, r.rent_return_date
+		FROM
+			tb_rent AS r
+			INNER JOIN
+			tb_book AS b
+			INNER JOIN 
+			tb_library AS l
+		ON  
+			r.book_code = b.book_code			
+		AND
+			b.library_code = l.library_code
+		AND
+			member_id = #{SID}
+		<if test="sv != null and sv neq ''.toString()">
+		WHERE
+			${sk} like CONCAT ('%',#{sv},'%')
+		</if>	
+	</select>
+
+	<!-- 나의 대여 이력 -->
+	<select id="myRentHistoryList" resultMap="rentResultMap" parameterType="String">
+		SELECT
+			r.rent_code
+			, l.library_name
+			, b.book_name
+			, r.rent_date
+			, r.rent_return_date
+		FROM
+			tb_rent AS r
+			INNER JOIN
+			tb_book AS b
+			INNER JOIN 
+			tb_library AS l
+		ON  
+			r.book_code = b.book_code			
+		AND
+			b.library_code = l.library_code
+		AND
+			member_id = #{SID} 		
+	</select> 
+  
+</mapper>

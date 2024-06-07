@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+		<div th:fragment="headermenuFragment" class="menu d-flex flex-column align-items-end justify-content-start text-right menu_mm trans_400">
+	<!-- Begin Headermenu -->	
+	<!-- Menu -->
+			<div class="menu_close_container"><div class="menu_close"><div></div><div></div></div></div>
+			<div class="search">
+				<form action="#" class="header_search_form menu_mm">
+					<input type="search" class="search_input menu_mm" placeholder="검색" required="required">
+					<button class="header_search_button d-flex flex-column align-items-center justify-content-center menu_mm">
+						<i class="fa fa-search menu_mm" aria-hidden="true"></i>
+					</button>
+				</form>
+			</div>
+			<nav class="menu_nav">
+				<ul class="menu_mm">
+					<li class="menu_mm"><a href="#">통합검색</a></li>
+					<li class="menu_mm"><a href="#">나의 도서관</a></li>
+					<li class="menu_mm"><a href="#">공지사항</a></li>
+					<li class="menu_mm"><a href="#">이용안내</a></li>
+					<li class="menu_mm"><a href="#">도서관 위치</a></li>
+				</ul>
+			</nav>
+		</div>
+	
+	<!-- End Headermenu -->	
+</html>

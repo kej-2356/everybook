@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+	<!-- Begin Left Column -->
+		<!-- Main Sidebar Container -->	
+		<aside class="main-sidebar sidebar-dark-primary elevation-4"  th:fragment="leftmenuFragment">
+			<!-- Brand Logo -->
+			<a href="office" class="brand-link">
+				<img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+				     style="opacity: .8">
+				<span class="brand-text font-weight-light">everyBook</span>
+			</a>
+					
+			<!-- Sidebar -->
+			<div class="sidebar">
+				<!-- Sidebar user panel (optional) -->
+				<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+					<div class="image">
+						<img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+					</div>
+					<div class="info">
+						<a href="myOffice" class="d-block">관리자님</a>
+					</div>
+				</div>
+			
+				<!-- Sidebar Menu -->
+				<nav class="mt-2">
+					<!-- 드롭버튼 -->				
+					<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+				    	<li class="nav-header">User Management</li>
+				    	<!-- 드롭버튼 -->				
+				     	<!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
+						<li class="nav-item has-treeview">
+							<a href="#" class="nav-link">
+							<ion-icon name="person-circle"></ion-icon>
+							<p>
+								회원 관리 (김)
+								<i class="fas fa-angle-left right"></i>
+							</p>
+						    </a>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeMemberList" class="nav-link">
+									<p>회원 리스트 (김)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeAddMember" class="nav-link">
+									<p>회원 등록 (김)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeMemberLogin" class="nav-link">
+									<p>회원 로그인 이력 (김)</p>
+							    </a>
+							  </li>
+							</ul>
+						</li>
+						<li class="nav-item has-treeview">
+							<a href="#" class="nav-link">
+						    <ion-icon name="people-circle"></ion-icon>
+							<p>
+								직원 관리(서)
+								<i class="fas fa-angle-left right"></i>
+							</p>
+						    </a>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="myOffice" class="nav-link">
+									<p>내 정보(서)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officerList" class="nav-link">
+									<p>직원 리스트(서)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="addOfficer" class="nav-link">
+									<p>직원 등록(서)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="addOfficerLicense" class="nav-link">
+									<p>자격증 등록(서)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="addOfficerCareer" class="nav-link">
+									<p>경력 등록(서)</p>
+							    </a>
+							  </li>
+							</ul>
+						</li>
+						<li class="nav-item has-treeview">
+							<a href="#" class="nav-link">
+						    <ion-icon name="gift"></ion-icon>
+							<p>
+								상벌점 관리(유)
+								<i class="fas fa-angle-left right"></i>
+							</p>
+						    </a>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officePointStandard" class="nav-link">
+									<p>상벌점 기준(유)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="#" class="nav-link">
+									<p>#회원 상벌점 등록(유)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officePointHistoryList" class="nav-link">
+									<p>상벌점 내역 리스트(유)</p>
+							    </a>
+							  </li>
+							</ul>
+						</li>
+					</ul>
+					<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+				    	<li class="nav-header">Book Management</li>
+						<li class="nav-item has-treeview">
+							<a href="#" class="nav-link">
+						    <ion-icon name="library"></ion-icon>
+							<p>
+								도서 관리
+								<i class="fas fa-angle-left right"></i>
+							</p>
+						    </a>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeBooklist" class="nav-link">
+									<p>소장 도서 리스트(서)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeAddbook" class="nav-link">
+									<p>소장 도서 등록(유)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeBookApply" class="nav-link">
+									<p>신청 도서 리스트(서)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeLostList" class="nav-link">
+									<p>#분실 도서 리스트(김)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeBrokenList" class="nav-link">
+									<p>#파손 도서 리스트(김)</p>
+							    </a>
+							  </li>
+							</ul>
+						</li>
+						<li class="nav-item has-treeview">
+							<a href="#" class="nav-link">
+						    <ion-icon name="book"></ion-icon>
+							<p>
+								도서평 관리
+								<i class="fas fa-angle-left right"></i>
+							</p>
+						    </a>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeReviewList" class="nav-link">
+									<p>도서평 리스트(김)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeWarningList" class="nav-link">
+									<p>도서평 신고 리스트(김)</p>
+							    </a>
+							  </li>
+							</ul>
+						</li>
+						<li class="nav-item has-treeview">
+							<a href="#" class="nav-link">
+						    <ion-icon name="file-tray-full"></ion-icon>
+							<p>
+								대여 / 반납 / 예약 관리
+								<i class="fas fa-angle-left right"></i>
+							</p>
+						    </a>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeBookRent" class="nav-link">
+									<p>대여 신청 리스트(서)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeBookReturn" class="nav-link">
+									<p>반납 신청 리스트(서)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeRtingReserveList" class="nav-link">
+									<p>오프라인 예약 신청 리스트(유)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeRtingReserveAdd" class="nav-link">
+									<p>오프라인 예약 신청 등록(유)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeRtcanReserveList" class="nav-link">
+									<p>온라인 예약 신청 리스트(유)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeRtcanReserveAdd" class="nav-link">
+									<p>온라인 예약 신청 등록(유)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeBookOverdue" class="nav-link">
+									<p>연체 도서 리스트(서)</p>
+							    </a>
+							  </li>
+							</ul>
+						</li>
+						<li class="nav-item has-treeview">
+							<a href="#" class="nav-link">
+						    <ion-icon name="receipt"></ion-icon>
+							<p>
+								#도서 수서 관리
+								<i class="fas fa-angle-left right"></i>
+							</p>
+						    </a>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="#" class="nav-link">
+									<p>#구매 예정 도서 리스트(유)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="#" class="nav-link">
+									<p>#구매 예정 도서 등록(유)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="#" class="nav-link">
+									<p>#주문 도서 리스트(유)</p>
+							    </a>
+							  </li>
+							</ul>
+						</li>
+					</ul>
+					<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+				    	<li class="nav-header">Library Mangement</li>
+						<li class="nav-item has-treeview">
+							<a href="#" class="nav-link">
+								<ion-icon name="list"></ion-icon>
+								<p>
+									지역관리(유)
+									<i class="fas fa-angle-left right"></i>
+								</p>
+							</a>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeRegion" class="nav-link">
+									<p>지역 리스트(유)</p>
+							    </a>
+							  </li>
+							</ul>
+						</li>
+						<li class="nav-item has-treeview">
+							<a href="#" class="nav-link">
+								<ion-icon name="list"></ion-icon>
+								<p>
+									도서관 관리(유)
+									<i class="fas fa-angle-left right"></i>
+								</p>
+							</a>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeLibrary" class="nav-link">
+									<p>도서관 리스트(유)</p>
+							    </a>
+							  </li>
+							</ul>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<ion-icon name="list"></ion-icon>
+								<p>
+									작가/출판사 관리(김)
+									<i class="fas fa-angle-left right"></i>
+								</p>
+							</a>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeWriterList" class="nav-link">
+									<p>작가 리스트(김)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officePublisherList" class="nav-link">
+									<p>출판사 리스트(김)</p>
+							    </a>
+							  </li>
+							</ul>
+						</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<ion-icon name="list"></ion-icon>
+								<p>
+									#게시판 관리
+									<i class="fas fa-angle-left right"></i>
+								</p>
+							</a>
+						</li>
+						<li class="nav-item has-treeview">
+							<a href="#" class="nav-link">
+						    <ion-icon name="server"></ion-icon>
+							<p>
+								예산 관리
+								<i class="fas fa-angle-left right"></i>
+							</p>
+						    </a>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="listBudget" class="nav-link">
+									<p>#예산 리스트(김)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="listAccount" class="nav-link">
+									<p>계정 과목 리스트(유)</p>
+							    </a>
+							  </li>
+							</ul>
+						</li>
+					</ul>
+					<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+				    	<li class="nav-header">messeage</li>
+						<li class="nav-item">
+							<a href="#" class="nav-link">
+								<ion-icon name="bar-chart"></ion-icon>
+								<p>
+									#메세지 관리
+									<i class="fas fa-angle-left right"></i>
+								</p>
+							</a>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeMessageText" class="nav-link">
+									<p>#메세지 등록(유)</p>
+							    </a>
+							  </li>
+							</ul>
+							<ul class="nav nav-treeview">
+							  <li class="nav-item">
+							    <a href="officeMessageSend" class="nav-link">
+									<p>#메세지 내역 리스트(유)</p>
+							    </a>
+							  </li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+				<!-- /.sidebar-menu -->
+			</div>
+			<!-- /.sidebar -->
+		</aside>			
+	<!-- End Left Column -->
+</html>

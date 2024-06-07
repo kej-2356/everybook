@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>온라인 도서 예약 리스트 등록</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</th:block>
+
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<div class="content-header">
+			<div class="container-fluid">
+				<h1 class="m-0 text-dark">대여 가능한 도서 온라인 예약 등록</h1>
+			</div><!-- /.container-fluid -->
+		</div>
+		<!-- /.content-header -->
+	 	
+	 	<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				
+				<div class="card">
+					<!-- start card-header -->
+					<div class="card-header">
+						<div class="row">
+							<div class="col-sm-9">
+								<label>현재 미승인 예약 건수 : <strong th:text="${num}"></strong> 건</label>
+							</div>
+							<div class="col-sm-3">
+								<div class="btn-group">
+									<button type="button" class="btn btn-outline-secondary btn-flat">승인</button>
+									<button type="button" class="btn btn-outline-info btn-flat">#출력</button>
+								</div>							
+							</div>
+						</div>	
+						<!-- start 기준 등록  modal -->
+						<div class="modal fade bs-ok-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-lg">
+								<div class="modal-content">
+									<div class="modal-header">
+								        <h4 class="modal-title">예약 승인</h4>
+								        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								     </div>
+								     <form action="officeRtcanReserveModify" method="post">
+									     <div class="modal-body">
+									        <label>해당도서 예약 내역을 승인 하시겠습니까?</label>
+									        <input type="text" name="rtcanCode" hidden="hidden">
+									        <input type="text" name="officerId" hidden="hidden" th:value="${session.SID}">
+							          		<div>
+												<select class="form-control" name="rtcanSituation">
+													<option value="승인" selected="selected">승인</option>
+													<option value="거절">거절</option>
+												</select>
+							          		</div>
+							          		<div id="noReason" hidden="hidden" style="margin-top: 5px;">
+							          			<label>거절 이유를 선택하세요.</label>
+							          			<select class="form-control" name="noReason">
+							          				<option>거절 이유</option>
+							          				<option>해당 도서 없음</option>
+							          				<option></option>
+							          			</select>
+							          		</div>
+									     </div>
+									     <div class="modal-footer">
+									        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+									        <button type="submit" class="btn btn-primary" id="modalBtn">승인</button>
+										</div>
+								     </form>
+								</div>
+							</div>
+						</div>
+						<!--  end 기준 등록 modal -->
+					</div>
+					<!--end card-header -->
+					
+					<div class="card-body">
+						<table id="reserve-table" class="table table-bordered table-hover" style="text-align: center;">
+		                  <thead>
+			                  <tr>
+			                  	<th><input type="checkbox" name="checkAll"></th>
+			                    <th>예약 코드</th>
+			                    <th>예약 회원 아이디</th>
+			                    <th>예약 도서 코드</th>
+			                    <th>예약 도서 청구 코드</th>
+			                    <th>예약 도서 제목</th>
+			                    <th>예약날짜</th>
+			                    <th>상태</th>
+			                  </tr>
+		                  </thead>
+		                  <tbody>
+			                  <tr th:each="l : ${rtcanReserveList}">
+			                  	<td><input type="checkbox" name="checkRow" th:value="${l.rtcanCode}" ></td>
+			                    <td th:text="${l.rtcanCode}"></td>
+			                    <td th:text="${l.memberId}"></td>
+			                    <td th:text="${l.book.bookCode}"></td>
+			                    <td th:text="${l.book.bookLibraryCode}"></td>
+			                    <td th:text="${l.book.bookName}"></td>
+			                    <td th:text="${l.rtcanDate}"></td>
+			                    <td th:text="${l.rtcanSituation}"></td>
+			                  </tr>
+		                  </tbody>
+		                  <tfoot>
+			                  <tr>
+			                  	<th></th>
+			                    <th>예약 코드</th>
+			                    <th>예약 회원 아이디</th>
+			                    <th>예약 도서 코드</th>
+			                    <th>예약 도서 청구 코드</th>
+			                    <th>예약 도서 제목</th>
+			                    <th>예약날짜</th>
+			                    <th>상태</th>
+			                  </tr>
+		                  </tfoot>
+		                </table>
+					</div>
+					<!-- /.card-body -->
+				</div>
+			</div>
+		</section>
+		<!-- /.content -->
+	</div>
+	<!-- /.content-wrapper -->
+	
+</th:block>
+<th:block layout:fragment="customFooterScript">
+<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/dist/js/checkbox.js"></script>
+<script type="text/javascript">
+$(function(){
+	//반응형 테이블
+    $("#reserve-table").DataTable({
+    	"paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+    });
+	//체크박스 체크 후 해당 도서 승인 모달
+	$('.btn-outline-secondary').on('click',function(){
+		var checked =$('[name=checkRow]:checked');
+		if(checked.length == 1){
+			$('[name=rtcanCode]').val(checked.val());
+			$('.bs-ok-modal-lg').modal();
+		}else if(checked.length >1 ){
+			alert("다중 선택");
+		}else{
+			alert("승인 할 도서를 선택하세요");
+		}
+	});
+	//승인 모달에서 거절 선택시 거절 이유 보이게 하는 스크립트
+	var modalSelected = $('[name=rtcanSituation]')
+	$(modalSelected).on('change',function(){
+		if(modalSelected.val() == '거절'){
+			$('#noReason').prop('hidden',false);
+		}else{
+			$('#noReason').prop('hidden',true);
+		}
+	});	
+	
+})
+</script>
+</th:block>
+</html>
