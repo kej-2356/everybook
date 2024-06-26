@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>메세지 발송 내역</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+</th:block>
+
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<div class="content-header">
+			<div class="container-fluid">
+				<h1 class="m-0 text-dark">메세지 발송 내역 리스트</h1>
+			</div><!-- /.container-fluid -->
+		</div>
+		<!-- /.content-header -->
+	 	
+	 	<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				
+				<div class="card">
+					<!-- start card-header -->
+					<div class="card-header">
+						<form role="form">
+							<div class="row">
+								<div class="col-sm-3">
+									<div class="form-group">
+				                        <select class="form-control custom-select">
+				                          <option>option 1</option>
+				                          <option>option 2</option>
+				                        </select>
+				                    </div>
+								</div>
+								<div class="col-sm-9">
+									<div class="row">
+										<div class="col-sm-10">
+											<input class="form-control" type="search">
+										</div>
+										<div class="col-sm-2">
+											<div class="input-group-append">
+			                          			 <button class="btn btn-navbar" type="submit">
+			                           			  <i class="fas fa-search"></i>
+			                          			  </button>
+			                          		</div>
+		                          		</div>
+	                          		</div>
+								</div>
+		                    </div>							
+						</form>
+					</div>
+					<!--end card-header -->
+					
+					<div class="card-body">
+						<table class="table table-bordered table-hover" style="text-align: center;">
+		                  <thead>
+			                  <tr>
+			                  	<th><input type="checkbox"></th>
+			                    <th>메세지 코드</th>
+			                    <th>도서관 코드</th>
+			                    <th>회원 ID</th>
+			                    <th>전화번호</th>
+			                    <th>분류</th>
+			                    <th>내용</th>
+			                    <th>등록날짜</th>
+			                    <th>등록자</th>
+			                  </tr>
+		                  </thead>
+		                  <tbody>
+			                  <tr>
+			                  	<td><input type="checkbox"></td>
+			                    <td>code</td>
+			                    <td>도서관</td>
+			                    <td>memeber001</td>
+			                    <td>010-2222-2222</td>
+			                    <td>예약</td>
+			                    <td>예약 만료시간 3시간 남았습니다.</td>
+			                    <td>2020.06.10</td>
+			                    <td>id001</td>
+			                  </tr>
+		                  </tbody>
+		                  <tfoot>
+			                  <tr>
+			                  	<th><input type="checkbox"></th>
+			                    <th>메세지 코드</th>
+			                    <th>도서관 코드</th>
+			                    <th>회원 ID</th>
+			                    <th>전화번호</th>
+			                    <th>분류</th>
+			                    <th>내용</th>
+			                    <th>등록날짜</th>
+			                    <th>등록자</th>
+			                  </tr>
+		                  </tfoot>
+		                </table>
+					</div>
+					<!-- /.card-body -->
+					<div class="card-footer clearfix">
+						<ul class="pagination pagination-sm m-0 float-right">
+							<li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+							<li class="page-item"><a class="page-link" href="#">1</a></li>
+							<li class="page-item"><a class="page-link" href="#">2</a></li>
+							<li class="page-item"><a class="page-link" href="#">3</a></li>
+							<li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- /.content -->
+	</div>
+	<!-- /.content-wrapper -->
+
+</th:block>
+
+</html>

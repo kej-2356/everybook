@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>회원 상벌점 등록</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</th:block>
+
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<div class="content-header">
+			<div class="container-fluid">
+				<h1 class="m-0 text-dark">회원 상벌점 등록</h1>
+			</div><!-- /.container-fluid -->
+		</div>
+		<!-- /.content-header -->
+	 	
+	 	<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				
+				<div class="card">
+					<!-- start card-header -->
+					<div class="card-header">
+						<div class="row">
+							<div class="col-sm-9">
+								<form role="form">
+									<div class="row">
+										<div class="col-sm-3">
+											<select class="form-control">
+												<option> 상태 </option>
+											</select>									
+										</div>
+										<div class="col-sm-9">
+											<div class="row">
+												<div class="col-sm-10">
+													<input class="form-control" type="search" placeholder="Search" aria-label="Search">
+												</div>
+												<div class="col-sm-2">
+													<div class="input-group-append">
+														<button class="btn btn-navbar" type="submit">
+															<i class="fas fa-search"></i>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div class="col-sm-3">
+								<button type="button" class="btn btn-outline-info btn-flat"  data-toggle="modal" data-target=".bs-add-modal-lg">#승인</button>
+							</div>
+						</div>
+						<!-- start 기준 등록  modal -->
+						<div class="modal fade bs-add-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-lg">
+								<div class="modal-content">
+									<div class="modal-header">
+								        <h4 class="modal-title">회원 상벌점 승인</h4>
+								        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								     </div>
+								     <div class="modal-body">
+								        <label for="inputEmail3">해당 내역을 승인 하시겠습니까?</label>
+						          		<div>
+											<select class="form-control">
+												<option>승인</option>
+												<option>거절</option>
+											</select>
+						          		</div>
+								     </div>
+								     <div class="modal-footer">
+								        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+								        <button type="button" class="btn btn-primary">승인</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--  end 기준 등록 modal -->
+					</div>
+					<!--end card-header -->
+					
+					<div class="card-body">
+						<table id="list-table" class="table table-bordered table-hover" style="text-align: center;">
+		                  <thead>
+			                  <tr>
+			                  	<th><input type="checkbox" name="checkAll"></th>
+			                    <th>상벌점 내역 코드</th>
+			                    <th>회원 아이디</th>
+			                    <th>상벌점 기준 코드</th>
+			                    <th>상벌점 점수 이름</th>
+			                    <th>점수</th>
+			                    <th>상태</th>
+			                    <th>등록날짜</th>
+			                  </tr>
+		                  </thead>
+		                  <tbody>
+			                  <tr th:each="p : ${psStandbyPhList}">
+			                  	<td><input type="checkbox" name="checkRow" th:value="${p.phCode}"></td>
+			                    <td>[[${p.phCode}]]</td>
+			                    <td>[[${p.memberId}]]</td>
+			                    <td>[[${p.psCode}]]</td>
+			                    <td>[[${p.psName}]]</td>
+			                    <td>[[${p.psScore}]]</td>
+			                    <td>[[${p.phCondition}]]</td>
+			                    <td>[[${p.phRegDate}]]</td>
+			                    <td>[[${p.officerId}]]</td>
+			                  </tr>
+		                  </tbody>
+		                  <tfoot>
+			                  <tr>
+			                  	<th><input type="checkbox"></th>
+			                    <th>상벌점 내역 코드</th>
+			                    <th>회원 아이디</th>
+			                    <th>상벌점 기준 코드</th>
+			                    <th>상벌점 점수 이름</th>
+			                    <th>점수</th>
+			                    <th>상태</th>
+			                    <th>등록날짜</th>
+			                  </tr>
+		                  </tfoot>
+		                </table>
+					</div>
+					<!-- /.card-body -->
+				</div>
+			</div>
+		</section>
+		<!-- /.content -->
+	</div>
+	<!-- /.content-wrapper -->
+</th:block>
+<th:block layout:fragment="customFooterScript">
+<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/dist/js/checkbox.js"></script>
+<script src="/dist/js/commonAjax.js"></script>
+<script>
+//반응형 테이블
+$("#list-table").DataTable({
+	"paging": true,
+    "lengthChange": false,
+    "searching": false,
+    "ordering": true,
+    "info": true,
+    "autoWidth": false,
+    "responsive": true,
+});
+</script>
+</th:block>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/default}">
+  	<th:block layout:fragment="customCss">
+		<link href="plugins/colorbox/colorbox.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+		<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+		<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">  	
+		<link rel="stylesheet" type="text/css" href="styles/courses.css">
+		<link rel="stylesheet" type="text/css" href="styles/course.css">
+		<link rel="stylesheet" type="text/css" href="styles/courses_responsive.css">
+		<link rel="stylesheet" type="text/css" href="styles/course_responsive.css">
+  	</th:block>
+	<th:block layout:fragment="customTitle">
+		<title> 도서 예약 내역  </title>
+	</th:block>
+	<!-- header 부분에 메뉴 활성화 -->
+	<th:block layout:fragment="customHeader">
+		<nav class="main_nav_contaner ml-auto">
+			<ul class="main_nav">
+				<li><a href="bookList">!통합검색</a></li>
+				<li class="active"><a href="mylibrary">!나의 도서관</a></li>
+				<li><a href="#">#공지사항</a></li>
+				<li><a href="libraryList">!이용안내</a></li>
+				<li><a href="#">#도서관 위치</a></li>
+			</ul>
+			<div class="search_button"><i class="fa fa-search" aria-hidden="true"></i></div>
+		</nav>
+	</th:block>
+	
+	<th:block layout:fragment="customContents">	
+		<!-- Home -->
+	<div class="home">
+		<div class="breadcrumbs_container">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="breadcrumbs">
+							<ul>
+								<li><a href="index">!EveryBook</a></li>
+								<li><a href="mylibrary">!나의 도서관</a></li>
+								<li><a href="">나의 서재</a></li>
+								<li><a href="myReserve">!도서 예약 내역</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>			
+	</div>
+	
+		<!-- Courses -->
+
+	<div class="courses">
+		<div class="container">
+			<div class="row">
+
+				<!-- Courses Main Content -->
+				<div class="col-lg-8">
+					<div class="courses_search_container">
+						<form action="#" id="courses_search_form" class="courses_search_form d-flex flex-row align-items-center justify-content-start">
+							<input type="date" class="courses_search_input" placeholder="도서명" required="required">
+							<input type="date" class="courses_search_input" placeholder="도서명" required="required">
+							<button type="submit" class="courses_search_button ml-auto">search now</button>
+						</form>
+					</div>
+					<div class="courses_container">
+						<div class="table-responsive" style="margin: 10px 10px;">
+							<table class="table">
+								<thead>
+									<tr>									
+										<th> 도서관명 </th>
+										<th> 상벌점 내역 </th>
+										<th> 점수 </th>
+										<th> 총 점수</th>
+										<th> 취득 날짜 </th>
+									</tr>	
+								</thead>
+							</table>							
+						</div>
+						<div class="row pagination_row">
+							<div class="col">
+								<div class="pagination_container d-flex flex-row align-items-center justify-content-start">
+									<ul class="pagination_list">
+										<li class="active"><a href="#">1</a></li>
+										<li><a href="#">2</a></li>
+										<li><a href="#">3</a></li>
+										<li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+									</ul>
+									<div class="courses_show_container ml-auto clearfix">
+										<div class="courses_show_content">
+											<span>목록 수: </span>
+											<select id="courses_show_select" class="courses_show_select">
+												<option>10</option>
+												<option>30</option>
+												<option>50</option>	
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>	
+				<!-- Courses Sidebar -->
+				<div class="col-lg-4">
+					<div class="course_container">	
+						<div class="course_tabs_container">
+							<div class="tab_panels">
+								<div class="tab_panel active">
+									<div class="tab_panel_title">나의 도서관</div>
+									<div class="tab_panel_content">
+										<div class="tab_panel_faq">
+											<!-- Accordions -->
+											<div class="accordions">
+												
+												<div class="elements_accordions">
+			
+													<div class="accordion_container">
+														<div class="accordion d-flex flex-row align-items-center"><div>나의 서재</div></div>
+														<div class="accordion_panel">
+															<p><a href="addExpand">!대여 도서 / 연장 신청</a></p>
+															<p><a href="myRent">!나의 대여 이력 / 도서평 작성</a></p>
+															<p><a href="myReserve">!도서 예약 내역</a></p>
+															<p><a href="myApply">!나의 신청 도서</a></p>
+															<p><a href="reviewList">!나의 도서평 내역</a></p>
+														</div>
+													</div>
+			
+													<div class="accordion_container">
+														<div class="accordion d-flex flex-row align-items-center active"><div><a href="addBookApply">!희망 도서 신청(서)</a></div></div>
+													</div>
+			
+													<div class="accordion_container">
+														<div class="accordion d-flex flex-row align-items-center"><div><a href="myPoint">!나의 점수 내역(유)</a></div></div>
+													</div>
+			
+												</div>
+			
+											</div>	
+										</div>
+									</div>
+								</div>			
+							</div>					
+						</div>
+					</div>
+
+				</div>
+				
+			</div>
+		</div>		
+	</div>
+	
+	
+	</th:block>
+	
+	<th:block layout:fragment="customFooterScript">
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="styles/bootstrap4/popper.js"></script>
+		<script src="styles/bootstrap4/bootstrap.min.js"></script>
+		<script src="plugins/greensock/TweenMax.min.js"></script>
+		<script src="plugins/greensock/TimelineMax.min.js"></script>
+		<script src="plugins/scrollmagic/ScrollMagic.min.js"></script>
+		<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+		<script src="plugins/easing/easing.js"></script>
+		<script src="plugins/parallax-js-master/parallax.min.js"></script>
+		<script src="plugins/colorbox/jquery.colorbox-min.js"></script>
+		<script src="js/courses.js"></script>
+		<script src="js/course.js"></script>
+	</th:block>
+	
+</html>

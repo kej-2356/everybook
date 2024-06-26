@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team1.project.mapper.ReviewMapper">
+
+	<resultMap type="Review" id="reviewSelect">
+		<result property="reviewCode" column="review_code"/>
+		<result property="bookCode" column="book_code"/>
+		<result property="memberId" column="member_id"/>
+		<result property="reviewContent" column="review_content"/>
+		<result property="reviewRegDate" column="review_reg_date"/>
+	</resultMap>
+	
+	<!-- ISBN이 같은 도서의 도서평 내역 -->
+	<select id="ISBNReveiwList" parameterType="String" resultMap="reviewSelect">
+		SELECT 
+			r.review_code 
+			, r.book_code 
+			, r.member_id 
+			, r.review_content 
+			, r.review_reg_date 
+			,(
+				SELECT 
+					COUNT(*)
+				FROM 
+					tb_warning AS w
+				WHERE
+					w.review_code = r.review_code 
+			) AS warningCount
+		FROM 
+			tb_review AS r
+			INNER join
+			tb_book AS b
+		on
+			b.book_ISBN = (
+				SELECT 
+				book_ISBN
+				FROM tb_book
+				WHERE
+				book_code = #{bookCode}
+			) 
+		WHERE
+		 b.book_code = r.book_code	
+	</select>
+	
+	<!-- 같은 도서관 코드가진 회원의 도서평 내역(직원) -->
+	<select id="officeReviewList" parameterType="String" resultMap="reviewSelect">
+		SELECT
+		 r.review_code
+		 ,(
+		 	select
+		 		b.book_name
+		 	from
+		 		tb_book AS b
+		 	where
+			 	b.book_code = r.book_code
+		 )AS book_code
+		 , r.member_id
+		 , r.review_content
+		 , r.review_reg_date
+		FROM 
+			tb_review AS r
+		 	INNER JOIN
+		 	tb_member AS m
+		where
+			r.member_id = m.member_id
+			and
+			m.library_code = #{libraryCode}	 
+	</select>
+	
+	
+	<!-- 도서평 삭제 -->
+	<delete id="deleteReview" parameterType="String">
+		DELETE 
+		FROM 
+			tb_review 
+		WHERE 
+			review_code=#{reviewCode}
+	</delete>
+	
+	<!-- 도서평수정(회원) -->
+	<update id="updateReview" parameterType="String">
+		UPDATE 
+			tb_review
+		SET
+			review_content=#{reviewContent}
+			,review_reg_date=NOW()
+		WHERE 
+			review_code = #{reviewCode}
+	</update>	
+	
+
+	<!-- 한 회원의 도서평내역(회원) -->
+	<select id="selectReview" parameterType="String" resultMap="reviewSelect">
+		SELECT 
+			r.review_code
+			,(
+				SELECT 
+					b.book_name
+				FROM 
+					tb_book AS b
+				WHERE 
+					b.book_code = r.book_code
+			) as book_code
+			, r.member_id
+			, r.review_content
+			, r.review_reg_date
+		FROM 
+			tb_review AS r 
+		WHERE 
+			r.member_id = #{memberId}
+	</select>
+	
+	<!-- 도서평 등록 -->
+	<insert id="addReview" parameterType="Review">
+		<selectKey order="BEFORE" keyProperty="reviewCode" resultType="String">
+			SELECT
+				(case COUNT(*)
+				when 0 then 'review_1'
+				ELSE CONCAT('review_',max(cast(SUBSTRING(review_code,8) AS DECIMAL))+1)
+				END) AS review_code
+			FROM
+				tb_review
+		</selectKey>
+			INSERT INTO tb_review
+				(review_code
+				, book_code
+				, member_id
+				, review_content
+				, review_reg_date)
+			VALUES 
+				(#{reviewCode}
+				, #{bookCode}
+				, #{memberId}
+				, #{reviewContent}
+				, NOW())
+	</insert>
+
+</mapper>

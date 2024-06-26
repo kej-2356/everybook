@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team1.project.mapper.LibraryMapper">
+	<resultMap type="Library" id="librarySelect">
+		<result property="libraryCode" column="library_code"/>
+		<result property="libraryName" column="library_name"/>
+		<result property="librarySetup" column="library_setup"/>
+		<result property="libraryOpen" column="library_open"/>
+		<result property="libraryTel" column="library_tel"/>
+		<result property="libraryPage" column="library_page"/>
+		<result property="libraryRegDate" column="library_reg_date"/>
+		<result property="officerId" column="officer_id"/>
+		<result property="officerPw" column="officer_pw"/>
+		<association property="region" javaType="region">
+			<result property="regionCode" column="region_code"/>
+			<result property="regionMajor" column="region_major"/>
+			<result property="regionMinor" column="region_minor"/>
+		</association>
+	</resultMap>
+	<!-- 지역코드로 해당 지역 도서관 출력 -->
+	<select id="selectLibraryCode" parameterType="String" resultMap="librarySelect">
+		SELECT
+			library_code
+			,library_name 
+		FROM
+			tb_library
+		WHERE
+			region_code = #{regionCode}
+	</select>
+
+	<!-- 도서이름으로 도서코드 추출 -->
+	<select id="getLibraryCodeSearch" parameterType="String" resultMap="librarySelect" resultSets="Library">
+		SELECT
+			library_code
+		FROM
+			tb_library
+		WHERE
+			library_name like CONCAT('%',#{libraryNameSk},'%')
+	</select>
+
+	<!-- 리스트를 위한 전체 행 갯수 -->
+	<select id="getLibraryCount" resultType="int">
+		SELECT 
+			COUNT(*) 
+		FROM tb_library
+	</select>
+	<!-- 조건에 따른 리스트 제한있는 검색 -->
+	<select id="getLimitLibrarySearch" parameterType="String" resultSets="Library" resultMap="librarySelect">
+		SELECT
+			l.*,
+			r.region_major,
+			r.region_minor
+		FROM
+			tb_library AS l
+			inner join	
+			tb_region AS r
+			on
+			l.region_code = r.region_code	
+		<if test="sv != null and sv neq ''.toString()">	
+				WHERE
+					${sk} like CONCAT('%',#{sv},'%')
+		</if>
+			LIMIT #{currentPage}, #{rowPerPage}	
+	</select>
+	<!-- 조건에 따른 검색 -->
+	<select id="searchLibrary" resultSets="Library" resultMap="librarySelect">
+		SELECT
+			l.*,
+			r.region_major,
+			r.region_minor
+		FROM
+			tb_library AS l
+			inner join	
+			tb_region AS r
+			on
+			l.region_code = r.region_code
+			<if test="sv != null and sv neq ''.toString()">	
+				WHERE
+					${sk} like CONCAT('%',#{sv},'%')
+			</if>
+	</select>
+	<!-- 도서관 삭제 delete -->
+	<delete id="deleteLibrary">
+		DELETE FROM tb_library 
+		WHERE library_code= #{libraryCode} 
+		AND officer_id = (SELECT 
+							officer_id
+						 FROM tb_officer
+						 WHERE officer_id=#{officerId} 
+						 AND officer_pw=#{officerPw})
+	</delete>
+	<!-- 도서관 수정  update -->
+	<update id="modifyLibrary" parameterType="Library">
+		UPDATE tb_library
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="region.regionCode != null and region.regionCode != ''.toString()">region_code=#{region.regionCode},</if>
+			<if test="libraryName != null and libraryName != ''.toString()">library_name=#{libraryName},</if>
+			<if test="librarySetup != null and librarySetup != ''.toString()">library_setup=#{librarySetup},</if>
+			<if test="libraryOpen != null and libraryOpen != ''.toString()">library_open=#{libraryOpen},</if>
+			<if test="libraryTel != null and libraryTel != ''.toString()">library_tel=#{libraryTel},</if>
+			<if test="libraryPage != null and libraryPage != ''.toString()">library_page=#{libraryPage},</if>
+			<if test="libraryTel != null and libraryTel != ''.toString()">library_tel= #{libraryTel},</if>
+			<if test="libraryRegDate != null and libraryRegDate != ''.toString()">library_reg_date=NOW(),</if>
+			<if test="officerId != null and officerId != ''.toString()">officer_id=#{officerId}</if>
+		</trim>
+		<where>
+			<if test="libraryCode != null and libraryCode != ''.toString()">library_code=#{libraryCode}</if>
+		</where>
+	</update>
+	<!-- 하나의 도서관 select -->
+	<select id="getSelectLibrary" parameterType="java.util.Map" resultSets="Library" resultMap="librarySelect">
+		SELECT
+			l.library_code,
+			l.region_code,
+			l.library_name,
+			l.library_setup,
+			l.library_open,
+			l.library_tel,
+			l.library_page,
+			l.library_reg_date,
+			l.officer_id,
+			r.region_major,
+			r.region_minor
+		FROM
+			tb_library AS l
+			inner JOIN
+			tb_region AS r
+			ON
+			l.region_code = r.region_code
+		WHERE
+			library_code = #{libraryCode}
+	</select>
+	<!-- 도서관 입력 insert -->
+	<insert id="addLibrary" parameterType="Library">
+		<selectKey order="BEFORE" keyProperty="libraryCode" resultType="String">
+		<![CDATA[
+			SELECT 
+   				(case 
+   				when COUNT(*) = 0 then 'library_001'
+ 				when COUNT(*) < 9 then CONCAT('library_00',(MAX(CONVert(SUBSTR(library_code,9), SIGNED INTEGER))+1))
+				when COUNT(*) < 99 then CONCAT('library_0',(MAX(CONVert(SUBSTR(library_code,9), SIGNED INTEGER))+1))
+   				when COUNT(*) < 999 then CONCAT('library_',(MAX(CONVert(SUBSTR(library_code,9), SIGNED INTEGER))+1))
+   				ELSE CONCAT('library_',(max(CONVert(SUBSTR(library_code,9), SIGNED INTEGER))+1))
+   				END) AS library_code
+			FROM
+				tb_library
+		]]>	
+		</selectKey>
+		INSERT INTO tb_library
+			(library_code, library_name, library_setup, library_open, library_tel, library_page, library_reg_date, officer_id, region_code)
+		VALUES (#{libraryCode}, #{libraryName}, #{librarySetup}, #{libraryOpen}, #{libraryTel}, #{libraryPage}, NOW(), #{officerId}, #{region.regionCode})
+	</insert>
+	<!-- 도서관 출력 갯수 limit select -->
+	<select id="getLimitLibraryList" parameterType="java.util.Map" resultSets="Library" resultMap="librarySelect">
+		SELECT 
+			*
+		FROM tb_library AS l
+			INNER join
+				tb_region AS r
+			on
+				l.region_code = r.region_code
+		ORDER BY r.region_major ASC, r.region_minor ASC
+		LIMIT #{currentPage}, #{rowPerPage}	
+	</select>
+	<!-- 도서관 리스트 출력 select -->
+	<select id="getLibraryList" resultSets="Library" resultMap="librarySelect">
+		SELECT 	*
+		FROM tb_library AS l
+			INNER join
+				tb_region AS r
+			on
+				l.region_code = r.region_code
+	</select>
+</mapper>

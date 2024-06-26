@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/default}">
+	<th:block layout:fragment="customCss">
+		<link href="plugins/colorbox/colorbox.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+		<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+		<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
+		<link rel="stylesheet" type="text/css" href="styles/course.css">
+		<link rel="stylesheet" type="text/css" href="styles/course_responsive.css">
+		<link rel="stylesheet" type="text/css" href="styles/blog_single.css">
+		<link rel="stylesheet" type="text/css" href="styles/blog_single_responsive.css">
+		<link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+	</th:block>
+	<th:block layout:fragment="customTitle">
+	<title> 희망 도서 신청</title>
+	</th:block>
+
+	<!-- header 부분에 메뉴 활성화 -->
+	<th:block layout:fragment="customHeader">
+		<nav class="main_nav_contaner ml-auto">
+			<ul class="main_nav">
+				<li><a href="/bookList">통합검색(서)</a></li>
+				<li class="active"><a href="/myLibrary">나의 도서관(서)</a></li>
+				<li><a href="#">#공지사항</a></li>
+				<li><a href="/libraryList">이용안내(유)</a></li>
+				<li><a href="#">#도서관 위치</a></li>
+			</ul>
+			<div class="search_button"><i class="fa fa-search" aria-hidden="true"></i></div>
+		</nav>
+	</th:block>
+	<th:block layout:fragment="customContents">
+		<div class="home">
+			<div class="breadcrumbs_container">
+				<div class="container">
+					<div class="row">
+						<div class="col">
+							<div class="breadcrumbs">
+								<ul>
+									<li><a href="index">EveryBook</a></li>
+									<li><a href="myLibrary">나의 도서관</a></li>
+									<li><a href="">희망도서 신청(서)</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="course">
+		<!-- Contact -->
+			<div class="contact">
+				<!-- Contact Info -->
+	
+				<div class="contact_info_container">
+					<div class="container">
+						<div class="row">
+							<!-- Contact Form -->
+							<div class="col-lg-8">
+								<div class="contact_form">
+									<form action="/addBookApply" class="comment_form" id="applyForm" method="post">
+										<div class="row">
+											<div class="form_title col-sm-2" style="text-align: center; line-height: 3;">아이디</div>
+												<div class="col-sm-10" style="margin-bottom: 20px">
+													<input type="text" class="comment_input" name="memberId" th:value="${session.SID}" readonly="readonly">
+												</div>
+											<div class="form_title col-sm-2" style="text-align: center; line-height: 3;">도서관 코드</div>
+												<div class="col-sm-10" style="margin-bottom: 20px">
+													<input type="text" class="comment_input" name="library" th:value="${session.SLIBRARY}" readonly="readonly">
+												</div>
+											<div class="form_title col-sm-2" style="text-align: center; line-height: 3;">도서 이름</div>
+												<div class="col-sm-10" style="margin-bottom: 20px">
+													<input type="text" class="comment_input" name="bookName" id="bookName">
+												</div>
+											<div class="form_title col-sm-2" style="text-align: center; line-height: 3;">ISBN</div>
+												<div class="col-sm-10" style="margin-bottom: 20px">
+													<input type="text" class="comment_input" name="bookIsbn" id="Isbn" placeholder="ISBN 13자리를 입력하여주세요.">
+												</div>
+											<div class="form_title col-sm-2" style="text-align: center; line-height: 3;">도서 가격</div>
+												<div class="col-sm-10" style="margin-bottom: 20px">
+													<input type="text" class="comment_input" name="applyPrice" placeholder="선택">
+												</div>
+											<div class="form_title col-sm-2" style="text-align: center; line-height: 3;">발간일</div>
+												<div class="col-sm-10" style="margin-bottom: 20px">
+													<input type="text" class="comment_input" name="applyDate" placeholder="선택">
+												</div>
+											<div class="form_title col-sm-2" style="text-align: center; line-height: 3;">출판사</div>
+												<div class="col-sm-10" style="margin-bottom: 20px">
+													<input type="text" class="comment_input" name="applyPublisher" placeholder="선택">
+												</div>
+											<div class="form_title col-sm-2" style="text-align: center; line-height: 3;">저자</div>
+												<div class="col-sm-10" style="margin-bottom: 20px">
+													<input type="text" class="comment_input" name="applyWriter" placeholder="선택">
+												</div>											
+										</div>
+										
+										<div class="row">
+											<div class="col-sm-1 offset-9">
+												<button type="button" class="comment_button" data-toggle="modal" data-target=".bs-example-modal-sm" id="apply">신청하기(서)</button>
+											</div>
+										</div>
+									
+										<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+										<div class="modal-dialog modal-sm">
+											<div class="modal-content">
+												<div class="modal-header">
+											        <h4 class="modal-title">희망 도서 신청</h4>
+											        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+											     </div>
+											     <div class="modal-body">
+											        <p>희망 도서를 신청하시겠습니까?</p>
+											     </div>
+											     <div class="modal-footer">
+											        <button type="button"class="btn btn-default" data-dismiss="modal">닫기</button>
+											        <button type="submit" class="btn btn-primary">도서 신청(서)</button>
+											     </div>
+											</div>
+										</div>
+										</div>							
+									</form>									
+								</div>
+							</div>
+							<div class="col-lg-4">
+					<div class="course_container">	
+						<div class="course_tabs_container">
+							<div class="tab_panels">
+								<div class="tab_panel active">
+									<div class="tab_panel_title">나의 도서관</div>
+									<div class="tab_panel_content">
+										<div class="tab_panel_faq">
+											<!-- Accordions -->
+											<div class="accordions">
+												
+												<div class="elements_accordions">
+			
+													<div class="accordion_container">
+														<div class="accordion d-flex flex-row align-items-center"><div>나의 서재</div></div>
+														<div class="accordion_panel">
+															<p><a href="addExtend">대여 도서 / 연장 신청(서)</a></p>
+															<p><a href="myRent">나의 대여 이력(서) / 도서평 작성(김)</a></p>
+															<p><a href="myReserve">도서 예약 내역(유)</a></p>
+															<p><a href="myApply">나의 신청 도서(서)</a></p>
+															<p><a href="reviewList">나의 도서평 내역(김)</a></p>
+														</div>
+													</div>
+			
+													<div class="accordion_container">
+														<div class="accordion d-flex flex-row align-items-center active"><div><a href="addBookApply">희망 도서 신청(서)</a></div></div>
+													</div>
+			
+													<div class="accordion_container">
+														<div class="accordion d-flex flex-row align-items-center"><div><a href="#">#나의 점수 내역(유)</a></div></div>
+													</div>
+			
+												</div>
+			
+											</div>	
+										</div>
+									</div>
+								</div>			
+							</div>					
+						</div>
+					</div>
+
+				</div>
+						</div>
+					</div>				
+				</div>						
+			</div>			
+		</div>	
+	</th:block>
+	<th:block layout:fragment="customFooterScript">
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="styles/bootstrap4/popper.js"></script>
+		<script src="styles/bootstrap4/bootstrap.min.js"></script>
+		<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+		<script src="plugins/easing/easing.js"></script>
+		<script src="plugins/parallax-js-master/parallax.min.js"></script>
+		<script src="plugins/colorbox/jquery.colorbox-min.js"></script>
+		<script src="js/courses.js"></script>
+		<script src="js/course.js"></script>
+	<script type="text/javascript">
+	$(function (){
+		
+		$('#apply').click(function(){	
+			var bookName = $('#bookName');
+			var isbn = $('#Isbn');
+		 if(bookName.val() == ""){
+		        alert("도서 이름을 입력하세요");
+		        bookName.focus();
+		        return false;
+		      }
+		 if(isbn.val() == ""){
+				 alert("ISBN 코드를 입력하세요");
+				 isbn.focus();
+		        return false;
+			 }
+		})				
+	})
+	
+	</script>
+	</th:block>
+	
+</html>

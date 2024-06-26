@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+	<!-- Begin Header -->	
+	<!-- Header -->
+	<header class="header" th:fragment="headerFragment">
+		<!-- Top Bar -->
+		<div class="top_bar">
+			<div class="top_bar_container">
+				<div class="container">
+					<div class="row">
+						<div class="col">
+							<th:block th:if="${session.SLEVEL} == null">
+								<div class="top_bar_content d-flex flex-row align-items-center justify-content-start">
+									<a href="/addMember" style="margin-left: 75%; color: white;"> join </a>
+									<div class="top_bar_login ml-auto">
+										<div class="login_button"><a href="/">Login</a></div>
+									</div>
+								</div>
+							</th:block>
+							<th:block th:if="${session.SLEVEL} == '4' or ${session.SLEVEL} == '5' or ${session.SLEVEL} == '6' or ${session.SLEVEL} == '7' or ${session.SLEVEL} == '8'">
+								<div class="top_bar_content d-flex flex-row align-items-center justify-content-start">
+									<a href="/memberDetail" style="margin-left: 75%; color: white;"> 내 정보(김) </a>
+									<div class="top_bar_login ml-auto">
+										<div class="login_button"><a href="/logout">Logout</a></div>
+									</div>
+								</div>
+							</th:block>
+							<th:block th:if="${session.SLEVEL} == '1' or ${session.SLEVEL} == '2' or ${session.SLEVEL} == '3'">
+								<div class="top_bar_content d-flex flex-row align-items-center justify-content-start">
+									<a href="/office" style="margin-left: 75%; color: white;"> 직원 업무 </a>
+									<div class="top_bar_login ml-auto">
+										<div class="login_button"><a href="/logout">Logout</a></div>
+									</div>
+								</div>
+							</th:block>
+								
+						</div>
+					</div>
+				</div>
+			</div>				
+		</div>
+			
+		<!-- Header Content -->
+		<div class="header_container">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="header_content d-flex flex-row align-items-center justify-content-start">
+							<div class="logo_container">
+								<a href="/index">
+									<div class="logo_text">Every<span>Book</span></div>
+								</a>
+							</div>
+							<!-- 상단 메뉴 활성화 -->
+							<th:block layout:fragment="customHeader"></th:block>
+							<div class="hamburger menu_mm">
+									<i class="fa fa-bars menu_mm" aria-hidden="true"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Header Search Panel -->
+		<div class="header_search_container">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="header_search_content d-flex flex-row align-items-center justify-content-end">
+							<form action="#" class="header_search_form">
+								<input type="search" class="search_input" placeholder="Search" required="required">
+								<button class="header_search_button d-flex flex-column align-items-center justify-content-center">
+									<i class="fa fa-search" aria-hidden="true"></i>
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>			
+		</div>	
+				
+	</header>
+
+</html>

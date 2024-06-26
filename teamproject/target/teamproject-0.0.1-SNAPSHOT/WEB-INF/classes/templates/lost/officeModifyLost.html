@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+
+	<th:block layout:fragment="customTitle">
+		<title>분실 도서 수정</title>
+	</th:block>
+	
+	<th:block layout:fragment="customCss">
+		<!-- overlayScrollbars -->
+ 		<link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+		<!-- Tempusdominus Bbootstrap 4 -->
+		<link rel="stylesheet" href="../../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+	</th:block>
+
+	<th:block layout:fragment="customContents">
+		<div class="content-wrapper">
+		 	<section class="content-header">
+				<div class="register-logo">
+					<a>분실 도서 수정</a>
+				</div>
+			</section>
+			<section class="content">
+				<div class="card card-primary">
+					<div class="card-body">
+						<div class="form-group">
+							<label for="inputName">분실 도서 명</label>
+							<input type="text" id="inputName" class="form-control" disabled>
+						</div>
+						<div class="form-group">
+							<label for="inputDescription">분실 상황 및 처리 결과</label>
+							<textarea id="inputDescription" class="form-control" rows="4"></textarea>
+						</div>
+		                <div class="form-group">
+							<label for="inputDescription">분실 날짜</label>
+		                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
+		                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" disabled/>
+		                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+		                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+		                        </div>
+		                    </div>
+		                </div>
+						<div class="form-group">
+							<label for="inputStatus">분실 도서 처리 상황</label>
+							<select class="form-control custom-select">
+								<option selected="" disabled="">처리중</option>
+								<option>처리완료</option>
+							</select>
+						</div>
+				        <div>
+							<input type="submit" value="수정 등록" class="btn btn-success float-right">
+						</div>
+					</div>
+			        <!-- /.card-body -->
+				</div>
+         	</section>	
+         </div> 
+	</th:block>
+	<th:block layout:fragment="customFooterScript">
+		<!-- OPTIONAL SCRIPTS -->
+		<script src="dist/js/demo.js"></script>
+		<!-- overlayScrollbars -->
+		<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+		<!-- ionicons.com 아이콘 -->
+		<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+		<!-- PAGE PLUGINS -->
+		<!-- jQuery Mapael -->
+		<script src="plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+		<script src="plugins/raphael/raphael.min.js"></script>
+		<script src="plugins/jquery-mapael/jquery.mapael.min.js"></script>
+		<script src="plugins/jquery-mapael/maps/usa_states.min.js"></script>
+		<!-- ChartJS -->
+		<script src="plugins/chart.js/Chart.min.js"></script>
+		<!-- PAGE SCRIPTS -->
+		<script src="dist/js/pages/dashboard2.js"></script>
+		<!-- Select2 -->
+		<script src="../../plugins/select2/js/select2.full.min.js"></script>
+		<!-- InputMask -->
+		<script src="../../plugins/moment/moment.min.js"></script>
+		<script src="../../plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+		<!-- bootstrap color picker -->
+		<script src="../../plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+		<!-- Tempusdominus Bootstrap 4 -->
+		<script src="../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+		<!-- Page script -->
+		<script>
+		  $(function () {
+		
+		    //Date range picker
+		    $('#reservationdate').datetimepicker({
+		        format: 'L'
+		    });
+		
+		  })
+		</script>
+	</th:block>
+	
+	
+	
+</html>

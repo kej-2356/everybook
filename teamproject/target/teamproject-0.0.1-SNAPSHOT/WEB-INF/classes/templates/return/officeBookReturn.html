@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>반납 관리</title>
+</th:block>
+              
+<th:block layout:fragment="customCss">
+<link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<!-- overlayScrollbars -->
+<link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+</th:block>
+ 
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<div class="content-header">
+			<div class="register-logo">
+	    		<b>반납 등록</b>
+	  		</div>
+		</div>
+		<!-- /.content-header -->
+	 	<!-- Main content -->
+		<section class="content" style="background-color: white">	
+			<div class="card-header"></div>
+			<div class="row">
+				<div class="col-md-6">				
+				  <!-- Book Serch Form -->
+		            <div class="card card-white">
+		               <div class="card-header">
+			                <div class="row">
+			                	<div class="col-sm-2">			                
+									<a>도서 코드</a>																							               																																				
+			                	</div>	
+		                      <!-- SEARCH FORM -->
+		                     	<div class="col-sm-10">	                     	
+			                        <div class="input-group input-group-sm">
+			                          <input class="form-control" type="search" placeholder="#Book Code" aria-label="Search">
+			                          <div class="input-group-append">
+			                            <button class="btn btn-navbar" type="submit">
+			                              <i class="fas fa-search"></i>
+			                            </button>
+			                          </div>
+			                        </div>
+		                        </div>
+		                    </div>		                    
+	              		</div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form class="form-horizontal">
+                <div class="card-body">
+                  <div class="form-group row">
+                  	<label for="inputEmail3" class="col-sm-2 col-form-label">도서 코드</label>
+	                	<div class="col-sm-10">
+	                      <input type="text" class="form-control" placeholder="Book Code">
+	                    </div>
+	                  </div>
+	              <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">ISBN</label>
+	                    <div class="col-sm-10">
+	                      <input type="text" class="form-control" placeholder="ISBN">
+	                    </div>
+                  </div>
+	              <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">청구기호</label>
+	                    <div class="col-sm-10">
+	                      <input type="text" class="form-control" placeholder="Library Book Code">
+	                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">도서이름</label>
+	                    <div class="col-sm-10">
+	                      <input type="text" class="form-control" placeholder="Book Name">
+	                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">출판사</label>
+	                    <div class="col-sm-10">
+	                      <input type="text" class="form-control" placeholder="Publisher Code">
+	                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">저자</label>
+	                    <div class="col-sm-4">
+	                      <input type="text" class="form-control" placeholder="Writer Name">
+	                    </div>
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">가격</label>
+	                    <div class="col-sm-4">
+	                      <input type="text" class="form-control" placeholder="Book Price">
+	                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">출간날짜</label>
+	                    <div class="col-sm-4">
+	                      <input type="text" class="form-control" placeholder="Book Publish Date">
+	                    </div>
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">등록날짜</label>
+	                    <div class="col-sm-4">
+	                      <input type="text" class="form-control" placeholder="Book Reg Date">
+	                    </div>
+                  </div>
+                  <div class="form-group row">
+                  	<label for="inputPassword3" class="col-sm-2 col-form-label">도서상태</label>
+                  	<div class="col-sm-4">
+                  		<button type="button" class="fc-today-button btn btn-primary">대여중</button>
+                  	</div>
+                  	<label for="inputPassword3" class="col-sm-2 col-form-label">연체일수</label>
+                  	<div class="col-sm-4">
+                  		<button type="button" class="fc-today-button btn btn-primary">3일</button>
+                  	</div>
+                  </div>                 
+                </div>
+                <!-- /.card-body -->
+              </form>
+            </div>
+            <!-- /.card -->
+          </div>
+		<!-- /.col -->
+						
+				<div class="col-md-6">				
+					  <!-- Book Serch Form -->
+			          <div class="card card-white">
+			          	<div class="card-header">
+			                <div class="row">
+			                	<div class="col-sm-2">			                
+									<a>회원 아이디</a>																							               																																				
+			                	</div>	
+		                      <!-- SEARCH FORM -->
+		                     	<div class="col-sm-10">		                     	
+		                        <div class="input-group input-group-sm">
+		                          <input class="form-control" type="search" placeholder="#Member Id" aria-label="Search">
+		                          <div class="input-group-append">
+		                            <button class="btn btn-navbar" type="submit">
+		                              <i class="fas fa-search"></i>
+		                            </button>
+		                          </div>
+		                        </div>
+		                        </div>
+		                    </div>		                    
+	              		</div>
+	              <!-- /.card-header -->
+	              <!-- form start -->
+	              <form class="form-horizontal">
+	                <div class="card-body">
+	                  <div class="form-group row">
+	                    <label for="inputEmail3" class="col-sm-2 col-form-label">회원 아이디</label>
+		                    <div class="col-sm-10">
+		                      <input type="text" class="form-control" placeholder="Member Id">
+		                    </div>
+	                  </div>
+	                  <div class="form-group row">
+	                    <label for="inputEmail3" class="col-sm-2 col-form-label">회원 이름</label>
+		                    <div class="col-sm-10">
+		                      <input type="text" class="form-control" placeholder="Member Name">
+		                    </div>
+		              </div>
+	                  <div class="form-group row">
+	                    <label for="inputEmail3" class="col-sm-2 col-form-label">생년 월일</label>
+		                    <div class="col-sm-10">
+		                      <input type="Date" class="form-control">
+		                    </div>
+	                  </div>
+	                  <div class="form-group row">
+	                    <label for="inputPassword3" class="col-sm-2 col-form-label">회원 레벨</label>
+		                    <div class="col-sm-10">
+		                      <input type="text" class="form-control" placeholder="Member Level">
+		                    </div>
+	                  </div>
+	                  <div class="form-group row">
+	                    <label for="inputPassword3" class="col-sm-2 col-form-label">주소</label>
+		                    <div class="col-sm-10">
+		                      <input type="email" class="form-control" placeholder="Member Address">
+		                    </div>
+	                  </div>
+	                  <div class="form-group row">
+	                    <label for="inputPassword3" class="col-sm-2 col-form-label">전화번호</label>
+		                    <div class="col-sm-10">
+		                      <input type="email" class="form-control" placeholder="Member Tel">
+		                    </div>
+	                  </div>
+	                  <div class="form-group row">
+	                    <label for="inputPassword3" class="col-sm-2 col-form-label">이메일</label>
+		                    <div class="col-sm-10">
+		                      <input type="email" class="form-control" placeholder="Member Email">
+		                    </div>
+	                  </div>
+	                  <div class="form-group row">
+                  		<label for="inputPassword3" class="col-sm-2 col-form-label">현재대여중</label>
+		                  	<div class="col-sm-4">
+		                  		<button type="button" class="fc-today-button btn btn-danger">3권</button>
+		                  	</div>
+                  			<label for="inputPassword3" class="col-sm-3 col-form-label">대여가능권수</label>                 	
+                  			<button type="button" class="fc-today-button btn btn-danger">2권</button>               
+                  	  </div>	            
+	                </div>
+	                <!-- /.card-body -->
+	              </form>
+	            </div>
+	            <!-- /.card -->
+	          </div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
+			
+			<!-- modal-Return_button -->
+			<div class="row">
+				<div class="col-md-12" style="text-align: center; margin-bottom: 10px">				
+					<button type="button" class="fc-today-button btn btn-info" data-toggle="modal" data-target="#modal-Return">#반납하기</button>			
+				</div>
+			</div>
+			<!-- modal-Return_button -->
+			
+      <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+               <form role="form" action="officeReturnListSearch" method="get">
+							<div class="row">
+								<div class="col-sm-3">
+									<div class="form-group">
+				                        <select class="form-control custom-select" name="sk">
+				                          <option value= "t.return_code">반납 코드</option>
+				                           <option value= "t.member_id">회원 아이디</option>
+				                          <option value= "t.return_reg_date">반납 날짜(YYYYMMdd)</option>
+				                          <option value= "b.book_name">도서 이름</option>
+				                          <option value= "b.book_library_code">청구기호</option>
+				                          <option value= "w.writer_name">저자</option>
+				                          <option value= "c.category_name">카테고리</option>
+				                          <option value= "p.publisher_name">도서 출판사</option> 
+				                        </select>
+				                    </div>
+								</div>
+								<div class="col-sm-9">
+									<div class="row">
+										<div class="col-sm-10">
+											<input class="form-control" type="text" name="sv" placeholder="반납 도서 이력 검색하기">
+										</div>
+										<div class="col-sm-2">
+											<div class="input-group-append">
+			                          			 <button class="btn btn-navbar" type="submit">
+			                           			  <i class="fas fa-search"></i>
+			                          			  </button>
+			                          		</div>
+		                          		</div>
+	                          		</div>
+								</div>
+		                    </div>							
+						</form>
+		              </div>
+		           <!-- /.card-header -->
+		           
+		           <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">	 
+	                	<div class="row">
+	                		<div class="col-sm-12">
+				                <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" role="grid" aria-describedby="example2_info">
+				                  <thead>
+				                    <tr>
+				                      <th>반납코드</th>
+				                      <th>반납회원</th>
+				                      <th>반납날짜</th>
+				                      <th>도서이름</th>
+				                      <th>청구기호</th>
+				                      <th>저자</th>
+				                      <th>카테고리</th>
+				                      <th>도서출판사</th>
+				                      <th>미반납처리</th>
+				                  	  <th>삭제</th>
+				                    </tr>
+				                  </thead>
+				                  <tbody>
+				                    <tr th:each="R : ${officeReturnList}">
+				                      <td th:text="${R.returnCode}"></td>
+				                      <td th:text="${R.member}"></td>
+				                      <td th:text="${R.returnDate}"></td>
+				                      <td th:text="${R.book.bookName}"></td>
+				                      <td th:text="${R.book.bookLibraryCode}"></td>
+				                      <td th:text="${R.writer}"></td>
+				                      <td th:text="${R.category}"></td>
+				                      <td th:text="${R.publisher}"></td>
+				                      <td>
+				                      	<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-update" style="color: white">미반납처리</a>
+				                      </td>
+				                      <td class="">
+				                      	<a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-delete" style="color: white">삭제</a>
+							          </td>
+				                    </tr>
+				                 </tbody>
+				               </table>
+	                		</div>                		
+	                	</div>
+	               	</div>
+             
+	                <!-- modal --> 
+	                <div class="modal fade" id="modal-update">
+				        <div class="modal-dialog">
+				          <div class="modal-content bg-default">
+				            <div class="modal-header">
+				              <h4 class="modal-title">반납도서관리</h4>
+				              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				                <span aria-hidden="true">&times;</span></button>
+				            </div>
+				            <div class="modal-body">
+				              <p>해당 도서가 '대여 중' 상태로 바뀌어 포인트 1점 감점 됩니다.</p>
+				              <p>정말 하시겠습니까?</p>
+				            </div>
+				            <div class="modal-footer justify-content-between">
+				              <button type="button" class="btn" data-dismiss="modal">Close</button>
+				              <button type="button" class="btn">#OK</button>
+				            </div>
+				          </div>
+				          <!-- /.modal-content -->
+				        </div>
+				        <!-- /.modal-dialog -->
+		      		</div>
+		      		<div class="modal fade" id="modal-delete">
+				        <div class="modal-dialog">
+				          <div class="modal-content bg-default">
+				            <div class="modal-header">
+				              <h4 class="modal-title">반납도서관리</h4>
+				              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				                <span aria-hidden="true">&times;</span></button>
+				            </div>
+				            <div class="modal-body">
+				              <p>삭제 하시겠습니까?</p>
+				            </div>
+				            <div class="modal-footer justify-content-between">
+				              <button type="button" class="btn" data-dismiss="modal">Close</button>
+				              <button type="button" class="btn">#삭제하기</button>
+				            </div>
+				          </div>
+				          <!-- /.modal-content -->
+				        </div>
+				        <!-- /.modal-dialog -->
+		      		</div>
+		      <!-- /.modal -->
+		      
+		      	<div class="modal fade" id="modal-primary">
+		        <div class="modal-dialog">
+		          <div class="modal-content bg-default">
+		            <div class="modal-header">
+		              <h4 class="modal-title">반납관리</h4>
+		              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                <span aria-hidden="true">&times;</span></button>
+		            </div>
+		            <div class="modal-body">
+		              <p>반납 하시겠습니까?</p>
+		            </div>
+		            <div class="modal-footer justify-content-between">
+		              <button type="button" class="btn" data-dismiss="modal">Close</button>
+		              <button type="button" class="btn">#반납하기</button>
+		            </div>
+		          </div>
+		          <!-- /.modal-content -->
+		        </div>
+		        <!-- /.modal-dialog -->
+      		</div>
+      <!-- /.modal -->
+            </div>
+            <!-- /.card -->
+          </div>
+	</section>
+	<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+</th:block>
+<th:block layout:fragment="customFooterScript">
+<!-- jQuery -->
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables -->
+<script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script>
+	$(function(){
+		//데이터테이블
+		$("#example1").DataTable({
+	      "responsive": true,
+	      "autoWidth": false,
+	    });
+	    $('#example2').DataTable({
+	      "paging": true,
+	      "lengthChange": false,
+	      "searching": false,
+	      "ordering": true,
+	      "info": true,
+	      "autoWidth": false,
+	      "responsive": true,
+	    });
+		//삭제 버튼 클릭시 모달
+		/* $('.RentDeleteBtn').click(function(){
+			console.log("삭제클릭");
+			var value = $(this).val();
+			console.log(value);
+			var request = $.ajax({
+			  url: "/selectRent",
+  			  method: "get",
+  			  data: { rentCode : value },
+  			  dataType: "json"
+			});
+			request.done(function( data ) {
+	 			console.log(JSON.stringify(data) + " <- ajax");
+				$('#deleteRentCode').val(data.rentCode);
+				$('#deleteModal').modal();
+  			});
+			request.fail(function( jqXHR, textStatus ) {
+  			  alert( "Request failed: " + textStatus );
+  			});
+		}) */
+	});
+</script>
+</th:block>
+</html>

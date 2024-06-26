@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/default}">
+  	<th:block layout:fragment="customCss">
+		<link href="plugins/colorbox/colorbox.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+		<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+		<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">  	
+		<link rel="stylesheet" type="text/css" href="styles/courses.css">
+		<link rel="stylesheet" type="text/css" href="styles/course.css">
+		<link rel="stylesheet" type="text/css" href="styles/courses_responsive.css">
+		<link rel="stylesheet" type="text/css" href="styles/course_responsive.css">
+ 		<link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+		<link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+		<link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css"> 	
+  	</th:block>
+	<th:block layout:fragment="customTitle">
+		<title> 나의 대여 내역/연장신청  </title>
+	</th:block>
+	<!-- header 부분에 메뉴 활성화 -->
+	<th:block layout:fragment="customHeader">
+		<nav class="main_nav_contaner ml-auto">
+			<ul class="main_nav">
+				<li><a href="bookList">통합검색(서)</a></li>
+				<li class="active"><a href="myLibrary">나의 도서관(서)</a></li>
+				<li><a href="#">#공지사항</a></li>
+				<li><a href="libraryList">이용안내(유)</a></li>
+				<li><a href="#">#도서관 위치</a></li>
+			</ul>
+			<div class="search_button"><i class="fa fa-search" aria-hidden="true"></i></div>
+		</nav>
+	</th:block>
+	
+	<th:block layout:fragment="customContents">	
+		<!-- Home -->
+	<div class="home">
+		<div class="breadcrumbs_container">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="breadcrumbs">
+							<ul>
+								<li><a href="index">EveryBook</a></li>
+								<li><a href="myLibrary">나의 도서관</a></li>
+								<li><a href="">나의 서재</a></li>
+								<li><a href="addExtend">대여도서 / 연장신청</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>			
+	</div>
+	
+		<!-- Courses -->
+	<div class="courses">
+		<div class="container">
+			<div class="row">
+				<!-- Courses Main Content -->
+				<div class="col-lg-8" style="margin-top: 30px">	
+				<div class="card-header" style="background-color: AliceBlue;">
+					<label style="color: black; margin-top: 5px">[[${session.SID}]] 님 현재 대여중인 도서입니다.</label>
+				</div>								
+					<div class="courses_container">
+						<div class="table-responsive">
+							<table id="example2" class="table table-bordered table-hover dataTable dtr-inline" role="grid" aria-describedby="example2_info" style="color: black">
+			                  <thead>
+									<tr>
+										<th> 대여코드 </th>
+										<th> 도서관명 </th>
+										<th> 도서명 </th>
+										<th> 대여일시 </th>
+										<th> 반납기한 </th>
+										<th> 도서상태 </th>
+										<th> #연장하기(서)</th>
+									</tr>	
+								</thead>
+									<tr th:each="r : ${myRentList}">				
+										<td th:text="${r.rentCode}"></td>										
+										<td>[[${r.library.libraryName}]]</td>
+										<td>[[${r.book.bookName}]]</td>
+										<td th:text="${r.rentRegDate}"></td>
+										<td th:text="${r.rentReturnDate}"></td>
+										<td>[[${r.book.bookSituation}]] </td>
+										<td><button type="button" class="btn btn-info btn-sm addBookExtendBtn" th:value="${SLEVEL}">#연장 신청</button></td>
+									</tr>	
+			                </table>   							
+						</div>
+					</div>
+				</div>	
+				<!-- Courses Sidebar -->
+				<div class="col-lg-4">
+					<div class="course_container">	
+						<div class="course_tabs_container">
+							<div class="tab_panels">
+								<div class="tab_panel active">
+									<div class="tab_panel_title">나의 도서관</div>
+									<div class="tab_panel_content">
+										<div class="tab_panel_faq">
+											<!-- Accordions -->
+											<div class="accordions">
+												<div class="elements_accordions">
+													<div class="accordion_container">
+														<div class="accordion d-flex flex-row align-items-center"><div>나의 서재</div></div>
+														<div class="accordion_panel">
+															<p><a href="addExtend">대여 도서 / 연장 신청(서)</a></p>
+															<p><a href="myRent">나의 대여 이력(서) / 도서평 작성(김)</a></p>
+															<p><a href="myReserve">도서 예약 내역(유)</a></p>
+															<p><a href="myApply">나의 신청 도서(서)</a></p>
+															<p><a href="reviewList">나의 도서평 내역(김)</a></p>
+														</div>
+													</div>
+													<div class="accordion_container">
+														<div class="accordion d-flex flex-row align-items-center active"><div><a href="addBookApply">희망 도서 신청(서)</a></div></div>
+													</div>
+													<div class="accordion_container">
+														<div class="accordion d-flex flex-row align-items-center"><div><a href="#">#나의 점수 내역(유)</a></div></div>
+													</div>			
+												</div>			
+											</div>	
+										</div>
+									</div>
+								</div>			
+							</div>	
+						</div>
+					</div>
+				</div>	
+				<form action="/addBookExtend" method="post">
+					<div class="modal fade addBookExtend">
+						<div class="modal-dialog modal-sm">
+							<div class="modal-content">
+								<div class="modal-header">
+							        <h4 class="modal-title">대여도서 연장하기</h4>
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							        <span aria-hidden="true">&times;</span></button>
+							     </div>
+							     <div class="modal-body">
+							     <label style="color: black">대여 코드</label>
+							     	<input type="text" id="getRentCode" name="getRentCode" readonly="readonly" style="margin-left: 7px; text-align: center; background-color: Snow; width: 120px; border: ridge;"><br>
+							     <label style="color: black">반납 날짜</label>
+							     	<input type="text" id="getReturnDate" name="getReturnDate" readonly="readonly" style="margin-left: 7px; text-align: center; background-color: Snow; width: 120px; border: ridge;">
+							        <p style="color: black">도서의 대여기간을 7일 연장하시겠습니까?</p>
+							     </div>
+							     <div class="modal-footer">
+							        <button type="button"class="btn" data-dismiss="modal" style="background-color: Snow; border: outset;">Close</button>
+							        <button type="submit" class="btn" style="background-color: Snow; border: outset;">OK</button>
+							     </div>
+							</div>
+						</div>
+					</div>
+				</form>			
+			</div>
+		</div>		
+	</div>		
+	</th:block>
+	
+	<th:block layout:fragment="customFooterScript">
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="styles/bootstrap4/popper.js"></script>
+		<script src="styles/bootstrap4/bootstrap.min.js"></script>
+		<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+		<script src="plugins/easing/easing.js"></script>
+		<script src="plugins/parallax-js-master/parallax.min.js"></script>
+		<script src="plugins/colorbox/jquery.colorbox-min.js"></script>
+		<script src="js/courses.js"></script>
+		<script src="js/course.js"></script>
+		<!-- jQuery -->
+		<script src="../../plugins/jquery/jquery.min.js"></script>
+		<!-- Bootstrap 4 -->
+		<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- DataTables -->
+		<script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+		<script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+		<script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+		<script>
+			$(function(){
+				//데이터테이블
+				$("#example1").DataTable({
+			      "responsive": true,
+			      "autoWidth": false,
+			    });
+			    $('#example2').DataTable({
+			      "paging": true,
+			      "lengthChange": false,
+			      "searching": false,
+			      "ordering": true,
+			      "info": true,
+			      "autoWidth": false,
+			      "responsive": true,
+			    });
+			    //연장신청 클릭 시 모달
+			    $(document).on('click','.addBookExtendBtn',function(){
+			    	console.log("연장신청 클릭");
+			    	var addBookExtendBtn = $(this);
+					// addBookExtendBtn.parent() : checkBtn의 부모는 <td>이다.
+					// addBookExtendBtn.parent().parent() : <td>의 부모이므로 <tr>이다.
+					var tr = addBookExtendBtn.parent().parent();
+					var td = tr.children();
+					
+					var rentCode = td.eq(0).text();
+					var rentReturnDate = td.eq(4).text();
+			    	console.log("대여코드 : " + rentCode);
+			    	console.log("반납날짜 : " + rentReturnDate);
+			    	
+			    	$('#getReturnDate').val(rentReturnDate); //모달 input
+			    	$('#getRentCode').val(rentCode); //모달 input 
+			    	$('.addBookExtend').modal();
+			    	var SLEVEL = $(this).val() //회원 권한
+			    	console.log("회원 권한 --> " + SLEVEL);
+			    	
+			    	if(SLEVEL == 5){
+			    		
+			    	}else if(SLEVEL>1 && SLEVEL <5){
+			    		
+			    	}else{
+			    		
+			    	}
+			    	
+			    });
+			})
+		</script>
+	</th:block>
+	
+</html>

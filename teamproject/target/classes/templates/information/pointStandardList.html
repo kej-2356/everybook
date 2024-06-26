@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/default}">
+  	<th:block layout:fragment="customCss">
+		<link href="plugins/colorbox/colorbox.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="styles/blog_single.css">
+		<link rel="stylesheet" type="text/css" href="styles/blog_single_responsive.css">
+		<style>
+.search_container
+{
+	padding: 10px 20px;
+	
+	background: #f2f4f5;
+}
+.search form
+{
+	position: relative;
+	width: 100%;
+	height: 92px;
+}
+.search_select
+{
+	position: relative;
+	width:150px;
+	height:46px;
+	border-radius: 3px;
+	-webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    -webkit-box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+	-webkit-user-select: none;
+	background-image: url(../images/down.png);
+	background-position: center right;
+	background-repeat: no-repeat;
+	cursor: pointer;
+	padding-left: 10px;
+}
+.search_input
+{
+
+	width: 300px;
+	height: 46px;
+	border: solid 1px #d9d9d9;
+	border-radius: 3px;
+	background: #FFFFFF;
+	padding-left: 20px;
+	margin-left: 10px;
+}
+.search_form_button
+{
+	width: 161px;
+	height: 46px;
+	background: #14bdee;
+	color: #FFFFFF;
+	font-size: 14px;
+	font-weight: 500;
+	text-transform: uppercase;
+	border: none;
+	outline: none;
+	border-radius: 3px;
+	cursor: pointer;
+}
+		</style>
+  	</th:block>
+	<th:block layout:fragment="customTitle">
+		<title> 이용안내 > 상벌점 기준 </title>
+	</th:block>
+	<!-- header 부분에 메뉴 활성화 -->
+	<th:block layout:fragment="customHeader">
+		<nav class="main_nav_contaner ml-auto">
+			<ul class="main_nav">
+				<li><a href="bookList">통합검색</a></li>
+				<li><a href="mylibrary">나의 도서관</a></li>
+				<li><a href="#">#공지사항</a></li>
+				<li class="active"><a href="libraryList">이용안내</a></li>
+				<li><a href="#">#도서관 위치</a></li>
+			</ul>
+			<div class="search_button"><i class="fa fa-search" aria-hidden="true"></i></div>
+		</nav>
+	</th:block>
+	
+	<th:block layout:fragment="customContents">	
+		<!-- Home -->
+	<div class="home">
+		<div class="breadcrumbs_container">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="breadcrumbs">
+							<ul>
+								<li><a href="index">EveryBook</a></li>
+								<li><a href="libraryList">이용안내</a></li>
+								<li><a href="">상벌점 기준</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>			
+	</div>
+	
+	
+
+	<div class="blog">
+		<div class="container">
+			<div class="row">
+
+				<!-- Main Content -->
+				<div class="col-lg-8">
+					<div class="blog_content">상벌점 기준</div>					
+					<div class="search_container">
+						<form action="searchPsInfo" id="courses_search_form" method="get" class="search_form d-flex flex-row align-items-center justify-content-start">
+							<select class="search_select" name ="sk">
+								<option>검색 조건</option>
+								<option value="point_standard_code">상벌점 기준 코드</option>
+						        <option value="point_standard_division">상점 / 벌점</option>
+						        <option value="point_standard_score">점수</option>
+							</select>
+							<input type="text" class="search_input" name="sv">
+							<button type="submit" class="search_form_button ml-auto">검색</button>
+						</form>
+					</div>
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+			                  <tr>
+			                    <th>상벌점 코드</th>
+			                    <th>상점 / 벌점</th>
+			                    <th>점수 이름</th>
+			                    <th>점수</th>
+			                  </tr>
+		                  </thead>
+		                  <tbody>
+			                  <tr th:each="L : ${psList}">
+			                   <td>[[${L.psCode}]]</td>
+			                    <td>[[${L.psDivision}]]</td>
+			                    <td>[[${L.psName}]]</td>
+			                    <td>[[${L.psScore}]]</td>
+			                  </tr>
+		                  </tbody>
+		                  <tfoot>
+			                  <tr>
+			                    <th>상벌점 코드</th>
+			                    <th>상점 / 벌점</th>
+			                    <th>점수 이름</th>
+			                    <th>점수</th>
+			                  </tr>
+		                  </tfoot>
+						</table>							
+					</div>
+				</div>	
+				<!-- Side menu -->
+				<div class="col-lg-4">
+					<div class="sidebar">
+
+						<!-- Categories -->
+						<div class="sidebar_section">
+							<div class="sidebar_section_title">Categories</div>
+							<div class="sidebar_categories">
+								<ul class="categories_list">
+									<li><a href="libraryList" class="clearfix">>> 도서관 목록</a></li>
+									<li><a href="libraryTime" class="clearfix">>> 도서관 이용 시간</a></li>
+									<li><a href="pointStandard" class="clearfix">>> 상벌점 기준</a></li>
+								</ul>
+							</div>
+						</div>
+						
+					</div>	
+				</div>
+			</div>
+		</div>		
+	</div>
+	
+	
+	</th:block>
+	
+	<th:block layout:fragment="customFooterScript">
+		
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="styles/bootstrap4/popper.js"></script>
+		<script src="plugins/easing/easing.js"></script>
+		<script src="plugins/parallax-js-master/parallax.min.js"></script>
+		<script src="plugins/colorbox/jquery.colorbox-min.js"></script>
+		<script src="js/blog_single.js"></script>
+	</th:block>
+	
+</html>

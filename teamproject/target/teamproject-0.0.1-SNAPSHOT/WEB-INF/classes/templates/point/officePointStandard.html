@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>상벌점 기준</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+<link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</th:block>
+
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<div class="content-header">
+			<div class="container-fluid">
+				<h1 class="m-0 text-dark">상벌점 기준</h1>
+			</div><!-- /.container-fluid -->
+		</div>
+		<!-- /.content-header -->
+	 	
+	 	<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				
+				<div class="card">
+					<!-- start card-header -->
+					<div class="card-header">
+						<div class="row">
+							<div class="col-sm-8">
+								<form role="form" action="searchPs" method="get">
+									<div class="row">
+										<div class="col-sm-3">
+											<div class="form-group">
+						                        <select class="form-control custom-select" name ="sk">
+						                          <option value="point_standard_code">상벌점 기준 코드</option>
+						                          <option value="point_standard_division">상점 / 벌점</option>
+						                          <option value="point_standard_score">점수</option>
+						                        </select>
+						                    </div>
+										</div>
+										<div class="col-sm-9">
+											<div class="row">
+												<div class="col-sm-9">
+													<input class="form-control" type="search" name ="sv">
+												</div>
+												<div class="col-sm-3">
+													<div class="input-group-append">
+					                          			 <button class="btn btn-navbar" type="submit">
+					                           			  <i class="fas fa-search"></i>
+					                          			  </button>
+					                          		</div>
+				                          		</div>
+			                          		</div>
+										</div>
+				                    </div>							
+								</form>
+							</div>
+							<div class="col-sm-4">							
+								<div class="btn-group">
+									<button type="button" class="btn btn-outline-info btn-flat"  data-toggle="modal" data-target=".bs-add-modal-lg">기준 등록</button>
+									<button type="button" class="btn btn-outline-secondary btn-flat" id="modifyModalBtn">기준 수정</button>
+									<button type="button" class="btn btn-outline-danger btn-flat" id="deleteModalBtn">#기준 삭제</button>
+								</div>
+							</div>
+						</div>
+
+							<!-- start 기준 등록  modal -->
+							<div class="modal fade bs-add-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-lg">
+									<div class="modal-content">
+										
+										<!-- form start -->
+										<form role="form" action="addPs" method="post">
+											<div class="modal-header">
+												<h4 class="modal-title">상벌절 기준 등록하기</h4>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+											</div>
+											<div class="modal-body">
+												<div class="form-group row">
+													<label class="col-sm-2 col-form-label">상점 / 벌점</label>
+									         		<div class="col-sm-10">
+														<select class="form-control" name="psDivision">
+                     									    <option value="상점">상점</option>
+                          									<option value="벌점">벌점</option>
+                        								</select>
+									         		</div>
+									           	</div>
+												<div class="form-group row">
+													<label class="col-sm-2 col-form-label">점수 이름</label>
+									          		<div class="col-sm-10">
+														<input type="text" class="form-control" name="psName" placeholder="점수 이름을 입력하세요">
+									          		</div>
+									           </div>
+												<div class="form-group row">
+													<label class="col-sm-2 col-form-label">점수</label>
+									          		<div class="col-sm-10">
+														<input type="number" class="form-control" name="psScore" placeholder="해당 점수를 입력하세요 (숫자만)">
+									          		</div>
+									           </div>
+												<div class="form-group row">
+													<label class="col-sm-2 col-form-label">등록자</label>
+									          		<div class="col-sm-10">
+														<input type="text" class="form-control" name="officerId" th:value="${session.SID}">
+									          		</div>
+									           </div>
+											</div>
+											<div class="modal-footer">
+												<button type="submit" class="btn btn-primary">기준 등록</button>
+											</div>
+										</form>
+										<!-- form end -->
+									</div>	
+								</div>
+							</div>
+							<!--  end 기준 등록 modal -->
+							<!-- start 기준 수정  modal -->
+							<div class="modal fade bs-modify-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modifyModal">
+								<div class="modal-dialog modal-lg">
+									<div class="modal-content">
+										
+										<!-- form start -->
+										<form role="form" action="/modifyPs" method="post">
+											<div class="modal-header">
+												<h4 class="modal-title">상벌절 기준 수정하기</h4>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+											</div>
+											<div class="modal-body">
+												<div class="form-group row">
+													<label for="inputEmail3" class="col-sm-2 col-form-label">상벌점 코드</label>
+									         		<div class="col-sm-10">
+														<input type="text" id="modifyPsCode" class="form-control" name="psCode" readonly="readonly">
+									         		</div>
+									           	</div>											
+												<div class="form-group row">
+													<label for="inputEmail3" class="col-sm-2 col-form-label">상점 / 벌점</label>
+									         		<div class="col-sm-10">
+														<select class="form-control" id="modifyPsDivision" name="psDivision">
+                     									    <option value="상점">상점</option>
+                          									<option value="상점">벌점</option>
+                        								</select>
+									         		</div>
+									           	</div>
+												<div class="form-group row">
+													<label for="inputEmail3" class="col-sm-2 col-form-label">점수이름</label>
+									          		<div class="col-sm-10">
+														<input type="text" id="modifyPsName" class="form-control" name="psName">
+									          		</div>
+									           </div>
+												<div class="form-group row">
+													<label for="inputEmail3" class="col-sm-2 col-form-label">점수</label>
+									          		<div class="col-sm-10">
+														<input type="number" id="modifyPsScore" class="form-control" name="psScore">
+									          		</div>
+									           </div>
+									           <div class="form-group row">
+												<label for="inputEmail3" class="col-sm-2 col-form-label">등록자</label>
+								          		<div class="col-sm-10">
+													<input type="text" class="form-control" th:value="${session.SID}" name="officerId">
+								          		</div>
+								           </div>
+											</div>
+											<div class="modal-footer">
+												<button type="submit" class="btn btn-primary">기준 수정</button>
+											</div>
+										</form>
+										<!-- form end -->
+									</div>	
+								</div>
+							</div>
+							<!--  end 기준 수정 modal -->
+							<!-- start 기준 삭제  modal -->
+							<div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="deleteModal">
+								<div class="modal-dialog modal-sm">
+									<div class="modal-content">
+										
+										<!-- form start -->
+										<form role="form" action="deletePs" method="post">
+											<div class="modal-header">
+												<h4 class="modal-title">상벌절 기준 삭제하기</h4>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+											</div>
+											<div class="modal-body">
+												<div class="form-group">
+													<label>상벌점 코드</label>
+								         			<div>
+														<input type="text" class="form-control" id="deletePsCode" readonly="readonly" name="psCode">
+								         			</div>
+								           		</div>
+												<div class="form-group">
+													<p>해당 상벌점 기준을 삭제 하시겠습니까?</p>		
+									            </div>
+												<div class="form-group">
+													<label>비밀번호 확인</label>
+									          		<div>
+									          			<input type="text" class="form-control" th:value="${session.SID}" name="officerId" hidden="hidden">
+														<input type="password" class="form-control" name="officerPw" placeholder="비밀번호를 입력하세요" >
+									          		</div>
+									           </div>
+											</div>
+											<div class="modal-footer">
+												<button type="submit" class="btn btn-primary">기준 삭제</button>
+											</div>
+										</form>
+										<!-- form end -->
+									</div>	
+								</div>
+							</div>
+							<!--  end 기준 삭제 modal -->
+					</div>
+					<!--end card-header -->
+					
+					<div class="card-body">
+						<table id="pointStandard-table" class="table table-bordered table-hover" style="text-align: center;">
+		                  <thead>
+			                  <tr>
+			                  	<th><input type="checkbox" name="checkAll"></th>
+			                    <th>상벌점 코드</th>
+			                    <th>상점 / 벌점</th>
+			                    <th>점수 이름</th>
+			                    <th>점수</th>
+			                    <th>등록날짜</th>
+			                    <th>등록자</th>
+			                  </tr>
+		                  </thead>
+		                  <tbody>
+			                  <tr th:each="L : ${psList}">
+			                  	<td><input type="checkbox" name="checkRow" th:value="${L.psCode}"></td>
+			                    <td>[[${L.psCode}]]</td>
+			                    <td>[[${L.psDivision}]]</td>
+			                    <td>[[${L.psName}]]</td>
+			                    <td>[[${L.psScore}]]</td>
+			                    <td th:text="${#dates.format({L.psRegDate}, 'yyyy-MM-dd')}"></td>
+			                    <td>[[${L.officer.officerId}]]</td>
+			                  </tr>
+		                  </tbody>
+		                  <tfoot>
+			                  <tr>
+			                  	<th></th>
+			                    <th>상벌점 코드</th>
+			                    <th>상점 / 벌점</th>
+			                    <th>점수 이름</th>
+			                    <th>점수</th>
+			                    <th>등록날짜</th>
+			                    <th>등록자</th>
+			                  </tr>
+		                  </tfoot>
+		                </table>
+					</div>
+					<!-- /.card-body -->
+				</div>
+			</div>
+		</section>
+		<!-- /.content -->
+	</div>
+	<!-- /.content-wrapper -->
+</th:block>
+	<th:block layout:fragment="customFooterScript">
+<!-- DataTables -->
+<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/dist/js/checkbox.js"></script>
+<script>
+$(function () {
+	//반응형 테이블
+    $("#pointStandard-table").DataTable({
+    	"paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+    });
+	//수정 버튼클릭시 수정 모달 실행
+	$('#modifyModalBtn').click(function(){
+		console.log('수정 버튼 클릭');
+		if($('[name=checkRow]:checked').length == 1){
+			var value = $('[name=checkRow]:checked').val();
+			var request = $.ajax({
+	  			  url: "/getSelectPs",
+	  			  method: "get",
+	  			  data: { psCode : value },
+	  			  dataType: "json"
+	  			});
+	  			 
+	  			request.done(function( data ) {
+	  				console.log(JSON.stringify(data) + " <- ajax");
+					$('#modifyPsCode').val(data.psCode);
+					$('#modifyPsDivision').val(data.psDivision);
+					$('#modifyPsName').val(data.psName);
+					$('#modifyPsScore').val(data.psScore);
+			    	$('#modifyModal').modal();
+			    	
+	  			});
+	  			 
+	  			request.fail(function( jqXHR, textStatus ) {
+	  			  alert( "Request failed: " + textStatus );
+	  			});
+			
+		}else if($('[name=checkRow]:checked').length == 0) {
+			alert('수정할 지역코드를 선택하세요');
+		}else{
+			alert('수정할 지역코드를 하나만 선택하세요');
+		}
+	});
+	//삭제 버튼 클릭시 모달
+    $('#deleteModalBtn').click(function(){
+    	console.log("삭제하자");
+    	if($('[name=checkRow]:checked').length == 1){
+    		var value = $('[name=checkRow]:checked').val();
+    		console.log(value);
+    		var request = $.ajax({
+  			  url: "/getSelectPs",
+  			  method: "get",
+  			  data: { psCode : value },
+  			  dataType: "json"
+  			});
+  			 
+  			request.done(function( data ) {
+  				console.log(JSON.stringify(data) + " <- ajax");
+				$('#deletePsCode').val(data.psCode);
+				$('#deleteModal').modal();
+		    	
+  			});
+  			 
+  			request.fail(function( jqXHR, textStatus ) {
+  			  alert( "Request failed: " + textStatus );
+  			});
+  			
+	    	
+    	}else if($('[name=checkRow]:checked').length == 0) {
+    		alert('삭제할 지역코드를 선택하세요');
+    	}else{
+    		console.log('전체삭제를 하겠다고?');
+    	}
+    });
+
+
+});
+</script>
+	</th:block>
+</html>

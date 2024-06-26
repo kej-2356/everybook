@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+	<!-- Begin Footer -->
+	<!-- Footer -->
+	<footer class="footer" th:fragment="footerFragment">
+		<div class="footer_background" style="background-image:url(images/footer_background.png)"></div>
+		<div class="container">
+			<div class="row footer_row">
+				<div class="col">
+					<div class="footer_content">
+						<div class="row">
+							<div class="col-lg-6 footer_col">
+					
+								<!-- Footer About -->
+								<div class="footer_section footer_about">
+									<div class="footer_logo_container">
+										<a href="#">
+											<div class="footer_logo_text">Every<span>Book</span></div>
+										</a>
+									</div>
+									<div class="footer_about_text">
+										<p>당신의 독서 생활을 응원합니다.</p>
+									</div>
+								</div>
+								
+							</div>
+							<div class="col-lg-6 footer_col">
+								<!-- Footer links -->
+								<div class="footer_section footer_links">
+									<div class="footer_title">관련 사이트</div>
+									<div class="footer_links_container">
+										<select class="dropdown_item_select home_search_input">
+											<option>:: 관련 사이트 ::</option>
+											<option>국립 중앙 도서관</option>
+											<option>도서관 정보나루 </option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row copyright_row">
+				<div class="col">
+					<div class="copyright d-flex flex-lg-row flex-column align-items-center justify-content-start">
+						<div class="cr_text"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="#" target="_blank">한국스마트정보교육원 35기 1팀</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></div>
+						<div class="ml-lg-auto cr_links">
+							<ul class="cr_list">
+								<li><a href="office">직원업무</a></li>
+								<li><a href="#">이용약관</a></li>
+								<li><a href="#">이용수칙</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<!-- End Footer -->
+	<!-- 사용자 지정 footerScript -->
+	<th:block layout:fragment="customFooterScript"></th:block>
+</html>

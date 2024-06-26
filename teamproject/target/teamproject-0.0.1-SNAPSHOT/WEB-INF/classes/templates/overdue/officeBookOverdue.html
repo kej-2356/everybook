@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+  <!-- DataTables -->
+<th:block layout:fragment="customTitle">
+	<title>연체 도서 관리</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+<link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</th:block>
+
+<div class="wrapper">
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+  		<div class="content-header">
+			<div class="register-logo">
+	    		<b>연체 관리</b>
+	  		</div>
+		</div>
+		<!-- /.content-header -->
+	 	<!-- Main content -->
+		<section class="content" style="margin-left: 30px; margin-right: 30px;">				
+	   	<div class="row">
+			<div class="col-12">
+	            <div class="card">
+	              <div class="card-header">
+	                <h3 class="card-title">연체 도서 리스트</h3>
+	              </div>
+	              <!-- /.card-header -->
+	              <div class="card-body">
+	                <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">	 
+	                	<div class="row">
+	                		<div class="col-sm-12">
+				                <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" style="text-align: center">
+				                  <thead>
+					                   <tr>
+					                      <th>연체코드</th>
+					                      <th>도서이름</th>
+					                      <th>청구기호</th>
+					                      <th>연체회원아이디</th>
+					                      <th>반납예정일</th>
+					                      <th>연체일</th>
+					                      <th>수정</th>
+					                  	  <th>삭제</th>
+					                    </tr>
+					                  </thead>
+					                  <tbody>
+					                    <tr th:each="O : ${officeOverdueList}">
+					                      <td th:text="${O.overdueCode}"></td>
+					                      <td th:text="${O.book.bookName}"></td>
+					                      <td th:text="${O.book.bookLibraryCode}"></td>
+					                      <td th:text="${O.member}"></td>
+					                      <td th:text="${O.rent.rentReturnDate}"></td>
+					                      <td th:text="${O.overdueDate}" style="color: red"></td>
+					                     <td>
+					                      	<button class="btn btn-info btn-sm overdueBookListUpdate" style="color: white" th:value="${O.overdueCode}">
+								            <i class="fas fa-pencil-alt"></i>수정(서)</button>
+					                      </td>
+					                      <td class="">
+					                      	<button class="btn btn-danger btn-sm overdueBookListDelete" style="color: white" th:value="${O.overdueCode}">
+								            <i class="fas fa-trash"></i>삭제(서)</button>
+								          </td>
+					                  </tr>
+				                  </tbody>
+				                </table>
+				                <!-- modal -->
+				                <div class="modal fade" id="modal-delete">
+							        <div class="modal-dialog">
+							        <form action="deleteOfficeOverdue" method="get">
+							          <div class="modal-content bg-default">
+							            <div class="modal-header">
+							              <h4 class="modal-title">연체도서관리</h4>
+							              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							                <span aria-hidden="true">&times;</span></button>
+							            </div>
+							            <div class="modal-body">
+							            <label>연체 코드</label>
+			            				<input type="text" id="getOverdueCodeDelete" readonly="readonly" style="margin-left: 7px; text-align: center; background-color: Snow; width: 120px; border: ridge;">
+							              <p style="text-align: center; margin-top: 10px">정말 삭제 하시겠습니까?</p>
+							            </div>
+							            <div class="modal-footer justify-content-between">
+							              <button type="button" class="btn" data-dismiss="modal" style="background-color: Snow; border: outset;">Close</button>
+							              <button type="submit" class="btn overdueCodeDelete" name="overdueCodeDelete" style="background-color: Snow; border: outset;">OK</button>
+							            </div>
+							          </div>
+							          <!-- /.modal-content -->
+							          </form>
+							        </div>
+							        <!-- /.modal-dialog -->
+					      		</div>
+				                
+				                <div class="modal fade" id="modal-update">
+							        <div class="modal-dialog">
+							        <form action="officeBookOverdueModify" method="get">
+							          <div class="modal-content bg-default">
+							            <div class="modal-header">
+							              <h4 class="modal-title">연체도서관리</h4>
+							              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							                <span aria-hidden="true">&times;</span></button>
+							            </div>
+							            <div class="modal-body">
+							            <label>연체 코드</label>
+			            				<input type="text" id="getOverdueCodeModify" readonly="readonly" style="margin-left: 7px; text-align: center; background-color: Snow; width: 120px; border: ridge;">
+							              <p>수정 화면으로 이동합니다.</p>
+							            </div>
+							            <div class="modal-footer justify-content-between">
+							              <button type="button" class="btn" data-dismiss="modal" style="background-color: Snow; border: outset;">Close</button>
+							              <button type="submit" class="btn overdueCodeModify" name="overdueCodeModify" style="background-color: Snow; border: outset;">OK</button>
+							            </div>
+							          </div>
+							          <!-- /.modal-content -->
+							        </form>
+							        </div>
+							        <!-- /.modal-dialog -->
+					      		</div>
+					      <!-- /.modal -->
+	                		</div>                		
+	                	</div>
+	               	</div>
+	              </div>
+	              <!-- /.card-body -->
+	            </div>
+	            <!-- /.card -->	
+	          </div>
+	              <!-- /.card-body -->
+	        </div>
+	        	<!-- /.row -->
+  		</section>
+	</div>
+  <!-- /.content-wrapper -->
+</th:block>
+</div>
+<!-- ./content-wrapper -->
+
+<th:block layout:fragment="customFooterScript">
+<!-- jQuery -->
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables -->
+<script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+    
+    //삭제버튼 클릭시 모달
+    $('.overdueBookListDelete').click(function(){
+    	console.log("삭제하기 클릭");
+    	var val = $(this).val();
+    	console.log("선택한 코드 값 : " + val);
+    	
+    	$('#modal-delete').modal();
+    	$('.overdueCodeDelete').val(val); //OK버튼
+    	$('#getOverdueCodeDelete').val(val); //모달 input 
+    });
+    
+    //수정버튼 클릭시 모달
+    $('.overdueBookListUpdate').click(function(){
+    	console.log("수정하기 클릭");
+    	var val = $(this).val();
+    	console.log("선택한 코드 값 : " + val);
+    	
+    	$('#modal-update').modal();
+    	$('.overdueCodeModify').val(val); //OK버튼
+    	$('#getOverdueCodeModify').val(val); //모달 input 
+    });
+  });
+</script>
+</th:block>
+</html>

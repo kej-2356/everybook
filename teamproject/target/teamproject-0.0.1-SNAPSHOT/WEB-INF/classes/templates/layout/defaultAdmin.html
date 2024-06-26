@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="fragments/admin/headAdmin :: headFragment"></head>
+
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+	<div id="wrapper">
+		<div th:replace="fragments/admin/headerAdmin :: headerFragment"></div>
+		<!-- Main Sidebar Container -->	
+		<div th:replace="fragments/admin/leftmenuAdmin :: leftmenuFragment"></div>
+		
+
+		<!--  rightcolumn main contents  -->
+		<th:block layout:fragment="customContents"></th:block>
+		
+		<footer th:replace="fragments/admin/footerAdmin :: footerFragment"></footer>
+	</div>
+	
+	<!-- 사용자 지정 자바스크립트 라이브러리 파일 -->
+		<!-- jQuery -->
+		<script src="plugins/jquery/jquery.min.js"></script>
+		<!-- Bootstrap -->
+		<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- AdminLTE App -->
+		<script src="dist/js/adminlte.js"></script>	
+		<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+		<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+	<th:block layout:fragment="customFooterScript">	</th:block>
+</body>
+</html>

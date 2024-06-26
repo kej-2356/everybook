@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>직원 경력 등록</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+</th:block>
+
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+	 	<!-- Main content -->
+	<section class="content">			
+	  <div class="register-logo">
+	    <b>경력 등록</b>
+	  </div>
+	  <div class="card" style="margin-left: 150px; margin-right: 150px">
+	    <div class="card-body register-card-body" style="margin-left: 30px; margin-right: 30px">
+	      <p class="login-box-msg">Register a new officer</p>
+	
+	      <form action="addOfficerCareer" method="post">
+	       <label for="inputPassword3" class="col-sm-2 col-form-label">아이디</label>
+	        <div class="input-group mb-1">
+	          <input type="text" class="form-control" readonly="readonly" style="background-color: snow" th:value="${SID}" name="officer">
+	          <div class="input-group-append">
+	            <div class="input-group-text">
+	              <span class="fas fa-user"></span>
+	            </div>
+	          </div>
+	        </div>
+	       <label for="inputPassword3" class="col-sm-2 col-form-label">경력 이름</label>
+	        <div class="input-group mb-1">
+	          <input type="text" class="form-control" placeholder="Career Name" name="CareerName" id="CareerName">	          
+	          <div class="input-group-append">
+	            <div class="input-group-text">
+	              <span class="fas fa-user"></span>
+	            </div>
+	          </div>
+	        </div>
+	       <label for="inputPassword3" class="col-sm-2 col-form-label">입사일</label>                
+	        <div class="input-group mb-4">
+	          <input type="text" class="form-control" placeholder="YYYYMMdd" name="careerPeriodStart" id="careerPeriodStart">
+	          <div class="input-group-append">
+	           <div class="input-group-text">
+	              <span class="fas fa-user"></span>
+	            </div>
+	          </div>
+	        </div>
+	       <label for="inputPassword3" class="col-sm-2 col-form-label">퇴사일</label>                
+	        <div class="input-group mb-4">
+	          <input type="text" class="form-control" placeholder="YYYYMMdd" name="careerPeriodEnd" id="careerPeriodEnd">
+	          <div class="input-group-append">
+	           <div class="input-group-text">
+	              <span class="fas fa-user"></span>
+	            </div>
+	          </div>
+	        </div>
+	         <!--row-->
+		        <div class="row">
+		          <div class="col-md-3 offset-3" style="text-align: center; color: white">
+		            <a href="javascript:history.back();" class="btn btn-primary btn-block" >뒤로가기(서)</a>
+		          </div>
+		            <div class="social-auth-links text-center">
+		        
+		      </div>
+		          <div class="col-md-3" style="text-align: center">
+		            <button type="submit" class="btn btn-danger btn-block" id="CareerInsert" >등록하기(서)</button>
+		          </div>			
+	        </div>
+	         <!--/.row--> 
+	      </form>			
+	          
+	    </div><!--/.card-body  -->
+	  </div><!--/.card  -->
+	</section>
+		<!--/.content  --> 
+</div>
+	<!-- /.content-wrapper -->
+</th:block>
+<th:block layout:fragment="customFooterScript">
+<script>
+	 $(function (){
+		//직원등록 유효성 검사
+		$('#CareerInsert').click(function(){	
+			var CareerName = $('#CareerName');
+			var careerPeriodStart = $('#careerPeriodStart');
+			var careerPeriodEnd = $('#careerPeriodEnd');
+
+		 if(CareerName.val() == ""){
+		        alert("경력 이름을 입력하세요");
+		        CareerName.focus();
+		        return false;
+		      }
+		 if(careerPeriodStart.val() == ""){
+		        alert("입사일을 입력하세요");
+		        careerPeriodStart.focus();
+		        return false;
+		      }
+		 if(careerPeriodEnd.val() == ""){
+		        alert("퇴사일을 입력하세요");
+		        careerPeriodEnd.focus();
+		        return false;
+		      }		
+		});	
+	}) 
+	</script>
+</th:block>
+
+
+
+</html>

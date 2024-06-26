@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="team1.project.mapper.OverdueMapper">
+  
+  	<resultMap type="Overdue" id="overdueResultMap">
+  	<result property="overdueCode" column="overdue_code"/>
+  	<result property="library" column="library_name"/>
+  	<result property="member" column="member_id"/>
+  	<result property="overdueStartDate" column="overdue_start_date"/>
+  	<result property="overdueDate" column="overdue_date"/>
+  	<result property="overdueRegDate" column="overdue_reg_date"/>
+  	<result property="officer" column="officer_id"/>  
+  	
+  	<association property="book" javaType="Book">
+  		<result property="bookName" column="book_name"/>
+  		<result property="bookSituation" column="book_situation"/>
+  		<result property="bookLibraryCode" column="book_library_code"/>
+  	</association>
+  	<association property="rent" javaType="Rent">
+  		<result property="rentCode" column="rent_code"/>
+  		<result property="rentReturnDate" column="rent_return_date"/>
+  	</association>
+  		
+  	</resultMap>
+  	
+  	<!-- 연체관리 - 수정처리 -->
+  	<update id="officeOverdueModify" parameterType="String" >
+  		UPDATE 
+			tb_overdue AS o 
+		INNER JOIN
+			tb_rent AS r
+		on
+			o.rent_code = r.rent_code
+		SET
+			r.rent_return_date = #{rentReturnDate}
+		WHERE 
+			overdue_code= #{overdueCode}
+  	</update>
+  	
+  	<!-- 수정 선택한 정보 조회 -->
+  	<select id="getOverdueModify" parameterType="String" resultMap="overdueResultMap">
+  		SELECT
+			o.overdue_code
+			,b.book_name
+			,b.book_library_code
+			,o.member_id
+			,o.overdue_date
+			,b.book_situation
+			,r.rent_return_date
+		FROM
+			tb_overdue AS o
+			INNER JOIN
+			tb_book AS b
+			INNER JOIN
+			tb_rent AS r
+			ON 
+			o.book_code = b.book_code
+			AND
+			o.rent_code = r.rent_code
+		WHERE
+			overdue_code=#{overdueCodeModify}
+  	</select>
+  	
+  	<!-- 연체도서리스트 - 삭제 -->
+  	<delete id="deleteOfficeOverdue" parameterType="String">
+  		DELETE FROM 
+			tb_overdue 
+		WHERE 
+			overdue_code=#{overdueCodeDelete}
+  	</delete>
+  	
+  	<!-- 연체도서리스트 -->
+  	<select id="officeOverdueList" resultMap="overdueResultMap">
+  		SELECT
+			o.overdue_code
+			,b.book_name
+			,b.book_library_code
+			,o.member_id
+			,o.overdue_date
+			,b.book_situation
+			,r.rent_return_date
+		FROM
+			tb_overdue AS o
+			INNER JOIN
+			tb_book AS b
+			INNER JOIN
+			tb_rent AS r
+			ON 
+			o.book_code = b.book_code
+			AND
+			o.rent_code = r.rent_code
+  	</select>
+  
+  </mapper>

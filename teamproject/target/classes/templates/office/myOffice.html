@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>나의 정보</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+</th:block>
+
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper"  th:with="O=${getMyOffice}">
+		<!-- Content Header (Page header) -->
+		<div class="register-logo">
+	    	<b>마이 페이지</b>
+	  	</div>
+		<!-- /.content-header -->
+	 	<!-- Main content -->
+		<section class="content">
+			<!-- /.col -->
+			<div class="col-md-10 offset-1">
+	            <!-- TABLE: 공지사항 -->
+				<div class="card">
+					<div class="card-header border-transparent">
+						<h3 class="card-title">개인 정보</h3>
+					
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+						</div>
+					</div>
+					<!-- /.card-header -->
+					<div class="card-body p-0">
+						<div class="table-responsive">
+							<table class="table m-0" style="text-align: center">
+								<tbody>
+									<tr>
+										<th>아이디</th>
+										<td th:text="${O.officerId}"></td>
+									</tr>
+									<tr>
+										<th>패스워드</th>
+										<td th:text="${O.officerPw}"></td>
+									</tr>
+									<tr>
+										<th>이름</th>
+										<td th:text="${O.officerName}"></td>
+									</tr>
+									<tr>
+										<th>생년월일</th>
+										<td th:text="${O.officerBirth}"></td>
+									</tr>
+									<tr>
+										<th>레벨</th>
+										<td th:text="${O.level}"></td>
+									</tr>
+									<tr>
+										<th>도서관</th>
+										<td th:text="${O.library}"></td>
+									</tr>
+									<tr>
+										<th>주소</th>
+										<td th:text="${O.officerAddress}"></td>
+									</tr>
+									<tr>
+										<th>번호</th>
+										<td th:text="${O.officerTel}"></td>
+									</tr>
+									<tr>
+										<th>이메일</th>
+										<td th:text="${O.officerEmail}"></td>
+									</tr>
+									<tr>
+										<th>등록날짜</th>
+										<td th:text="${#dates.format(O.officerRegDate, 'YYYY-MM-dd')}"></td>
+									</tr>
+									<tr>
+										<th>보유 자격증</th>
+										<td><select>
+										<option>보유자격증</option>
+										<option th:each="L : ${license}">[[${L.licenseName}]]</option>
+										</select></td>
+									</tr>
+									<tr>
+										<th>과거 경력사항</th>
+										<td th:text="${O.career}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					  	<!-- /.table-responsive -->
+					</div>
+					<!-- /.card-body -->
+					<div class="card-footer clearfix">
+					  <a href="#" class="btn btn-sm btn-info float-right" data-toggle="modal" data-target="#modal-update">#수정하기</a>
+					</div>
+					<!-- /.card-footer -->
+					 <!-- modal -->
+				                <div class="modal fade" id="modal-update">
+							        <div class="modal-dialog">
+							        <form action="/myOfficeModify" method="get">
+							          <input type="hidden" name="officerId" th:value="${O.officerId}"/>
+							          <div class="modal-content bg-default">
+							            <div class="modal-header">
+							              <h4 class="modal-title">나의 정보</h4>
+							              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							                <span aria-hidden="true">&times;</span></button>
+							            </div>
+							            <div class="modal-body">
+							              <p>수정 하시겠습니까?</p>
+							            </div>
+							            <div class="modal-footer justify-content-between">
+							              <button type="button" class="btn" data-dismiss="modal" style="background-color: Snow; border: outset;">Close</button>
+				          				  <button type="submit" class="btn" id="libraryCodeInsert" style="background-color: Snow; border: outset;">OK</button>
+							            </div>
+							          </div>
+							        </form>
+							          <!-- /.modal-content -->
+							        </div>
+							        <!-- /.modal-dialog -->
+								</div>
+				</div>
+            	<!-- /.card -->
+			</div>
+			<!-- /.col -->
+		</section>
+		<!-- /.content -->
+	</div>
+</th:block>
+
+</html>

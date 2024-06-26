@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/default}">
+  	<th:block layout:fragment="customCss">
+		<link href="plugins/colorbox/colorbox.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="styles/blog_single.css">
+		<link rel="stylesheet" type="text/css" href="styles/blog_single_responsive.css">
+
+  	</th:block>
+	<th:block layout:fragment="customTitle">
+		<title> 이용안내 > 이용 시간 </title>
+	</th:block>
+	<!-- header 부분에 메뉴 활성화 -->
+	<th:block layout:fragment="customHeader">
+		<nav class="main_nav_contaner ml-auto">
+			<ul class="main_nav">
+				<li><a href="">#통합검색</a></li>
+				<li><a href="mylibrary">나의 도서관</a></li>
+				<li><a href="#">#공지사항</a></li>
+				<li class="active"><a href="libraryList">이용안내</a></li>
+				<li><a href="#">#도서관 위치</a></li>
+			</ul>
+			<div class="search_button"><i class="fa fa-search" aria-hidden="true"></i></div>
+		</nav>
+	</th:block>
+	
+	<th:block layout:fragment="customContents">	
+		<!-- Home -->
+	<div class="home">
+		<div class="breadcrumbs_container">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="breadcrumbs">
+							<ul>
+								<li><a href="index">EveryBook</a></li>
+								<li><a href="#">이용안내</a></li>
+								<li><a href="libraryList">이용시간</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>			
+	</div>
+	
+	
+
+	<div class="blog">
+		<div class="container">
+			<div class="row">
+
+				<!-- Main Content -->
+				<div class="col-lg-8">
+					<div class="blog_content">
+						<div class="blog_title"><i class="fa fa-quote-left" aria-hidden="true"></i>이용시간</div>		
+						<p></p>
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>구 분</th>
+										<th>화요일~금요일</th>
+										<th>토&middot;일요일</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tbody>
+										<tr>
+											<th scope="row">일반자료실</th>
+											<td>09:00~19:00</td>
+											<td>09:00~17:00</td>
+										</tr>
+								</tbody>
+							</table>							
+						</div>
+						<div class="blog_subtitle">자료실 쉬는날</div>
+						<p>매주 월요일 및 법정공휴일 휴무(2011년 1월 1일부터) <span class="fc_red">※ 열람실은 개방</span></p>
+						<div class="blog_subtitle">휴관일</div>
+						<p>신정, 설날, 추석 당일은 휴관</p>
+						
+					</div>
+					
+				</div>	
+				<!-- Side menu -->
+				<div class="col-lg-4">
+					<div class="sidebar">
+
+						<!-- Categories -->
+						<div class="sidebar_section">
+							<div class="sidebar_section_title">이용안내</div>
+							<div class="sidebar_categories">
+								<ul class="categories_list">
+									<li><a href="libraryList" class="clearfix">>> 도서관 목록</a></li>
+									<li><a href="libraryTime" class="clearfix">>> 도서관 이용 시간</a></li>
+									<li><a href="pointStandard" class="clearfix">>> 상벌점 기준</a></li>
+								</ul>
+							</div>
+						</div>
+						
+					</div>	
+				</div>
+			</div>
+		</div>		
+	</div>
+	
+	
+	</th:block>
+	
+	<th:block layout:fragment="customFooterScript">
+		
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="styles/bootstrap4/popper.js"></script>
+		<script src="plugins/easing/easing.js"></script>
+		<script src="plugins/parallax-js-master/parallax.min.js"></script>
+		<script src="plugins/colorbox/jquery.colorbox-min.js"></script>
+		<script src="js/blog_single.js"></script>
+	</th:block>
+	
+</html>

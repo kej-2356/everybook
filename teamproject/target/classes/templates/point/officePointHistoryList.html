@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>회원 상벌점 내역 목록</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</th:block>
+
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<div class="content-header">
+			<div class="container-fluid">
+				<h1 class="m-0 text-dark">회원 상벌점 내역 목록</h1>
+			</div><!-- /.container-fluid -->
+		</div>
+		<!-- /.content-header -->
+	 	
+	 	<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				
+				<div class="card">
+					<!-- start card-header -->
+					<div class="card-header">
+						<div class="row">
+							<!-- start 검색 폼 -->					
+							<div class="col-sm-6">
+								<form role="form">
+									<div class="row">
+										<div class="col-sm-3">
+											<div class="form-group">
+						                        <select class="form-control custom-select" name="sk">
+						                          <option>상벌점 내역 코드</option>
+						                          <option>회원 아이디</option>
+						                          <option>상벌점 기준 코드</option>
+						                          <option>상벌점 기준 이름</option>
+						                          <option>점수</option>
+						                          <option>상태</option>
+						                          <option>등록 직원</option>
+						                        </select>
+						                    </div>
+										</div>
+										<div class="col-sm-9">
+											<div class="row">
+												<div class="col-sm-10">
+													<input class="form-control" type="text" name="sv">
+												</div>
+												<div class="col-sm-2">
+													<div class="input-group-append">
+					                          			 <button class="btn btn-navbar" type="submit">
+					                           			  <i class="fas fa-search"></i>
+					                          			  </button>
+					                          		</div>
+				                          		</div>
+			                          		</div>
+										</div>
+				                    </div>							
+								</form>
+							</div>
+							<!-- end 검색 폼 -->					
+							<!-- start 버튼 그룹 -->
+							<div class="col-sm-6">							
+								<div class="btn-group">
+									<a class="btn btn-outline-info btn-flat" href="officePointHistoryAdd">상벌점 내역 등록</a>
+									<button type="button" class="btn btn-outline-secondary btn-flat"  data-toggle="modal" data-target=".bs-modify-modal-lg">상벌점 내역 수정</button>
+									<button type="button" class="btn btn-outline-danger btn-flat"  data-toggle="modal" data-target=".bs-delete-sm">상벌점 내역 삭제</button>
+								</div>
+							</div>
+							<!-- end 버튼 그룹 -->
+						</div>
+
+						<!-- start 상벌점 내역 수정  modal -->
+						<div class="modal fade bs-modify-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-lg">
+								<div class="modal-content">
+									
+									<!-- form start -->
+									<form role="form" action="#">
+										<div class="modal-header">
+											<h4 class="modal-title">상벌점 내역 수정하기</h4>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										</div>
+										<div class="modal-body">
+											<div class="form-group row">
+												<label for="inputEmail3" class="col-sm-2 col-form-label">상벌점 코드</label>
+								         		<div class="col-sm-10">
+													<input type="text" class="form-control" value="region_001" readonly="readonly">
+								         		</div>
+								           	</div>
+											<div class="form-group row">
+												<label for="inputEmail3" class="col-sm-2 col-form-label">회원 아이디</label>
+								         		<div class="col-sm-10">
+													<input type="text" class="form-control" value="member_001" readonly="readonly">
+								         		</div>
+								           	</div>
+											<div class="form-group row">
+												<label for="inputEmail3" class="col-sm-2 col-form-label">상벌점 기준 코드</label>
+								          		<div class="col-sm-10">
+													<select>
+														<option>기준 1</option>
+														<option>기준 2</option>
+													</select>
+								          		</div>
+								           </div>
+								           <div class="form-group row">
+												<label for="inputEmail3" class="col-sm-2 col-form-label">상벌점 기준 이름</label>
+								         		<div class="col-sm-10">
+													<input type="text" class="form-control" value="" readonly="readonly">
+								         		</div>
+								           	</div>
+								           <div class="form-group row">
+												<label for="inputEmail3" class="col-sm-2 col-form-label">상벌점 점수</label>
+								         		<div class="col-sm-10">
+													<input type="text" class="form-control" value="" readonly="readonly">
+								         		</div>
+								           	</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary">상벌점 내역 수정</button>
+										</div>
+									</form>
+									<!-- form end -->
+								</div>	
+							</div>
+						</div>
+						<!--  end 상벌점 내역 수정 modal -->
+						<!-- start 상벌점 삭제  modal -->
+						<div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-sm">
+								<div class="modal-content">
+									
+									<!-- form start -->
+									<form role="form" action="#">
+										<div class="modal-header">
+											<h4 class="modal-title">상벌점 내역 삭제하기</h4>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										</div>
+										<div class="modal-body">
+								            <div class="form-group">
+												<label>상벌점 내역 코드</label>
+								         		<div>
+													<input type="text" class="form-control" value="region_001" readonly="readonly">
+								         		</div>
+								           	</div>
+											<div class="form-group">
+												<p>해당 상벌점 내역을 삭제 하시겠습니까?</p>
+												<p><small>삭제를 원하시면 비밀 번호를 입력하세요.</small></p>	
+								            </div>
+											<div class="form-group">
+												<label>비밀번호 확인</label>
+								          		<div>
+													<input type="password" class="form-control" placeholder="비밀번호를 입력하세요">
+								          		</div>
+								           </div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary">상벌점 내역 삭제</button>
+										</div>
+									</form>
+									<!-- form end -->
+								</div>	
+							</div>
+						</div>
+						<!--  end 상벌점 내역 삭제 modal -->
+					</div>
+					
+					<div class="card-body">
+						<table id="list-table" class="table table-bordered table-hover" style="text-align: center;">
+		                  <thead>
+			                  <tr>
+			                  	<th><input type="checkbox" name="checkAll"></th>
+			                    <th>상벌점 내역 코드</th>
+			                    <th>회원 아이디</th>
+			                    <th>상벌점 기준 코드</th>
+			                    <th>상벌점 점수 이름</th>
+			                    <th>점수</th>
+			                    <th>상태</th>
+			                    <th>등록날짜</th>
+			                    <th>등록자</th>
+			                  </tr>
+		                  </thead>
+		                  <tbody>
+			                  <tr th:each="p : ${phList}">
+			                  	<td><input type="checkbox" name="checkRow" th:value="${p.phCode}"></td>
+			                    <td>[[${p.phCode}]]</td>
+			                    <td>[[${p.memberId}]]</td>
+			                    <td>[[${p.psCode}]]</td>
+			                    <td>[[${p.psName}]]</td>
+			                    <td>[[${p.psScore}]]</td>
+			                    <td>[[${p.phCondition}]]</td>
+			                    <td>[[${p.phRegDate}]]</td>
+			                    <td>[[${p.officerId}]]</td>
+			                  </tr>
+		                  </tbody>
+		                  <tfoot>
+			                  <tr>
+			                  	<th></th>
+			                    <th>상벌점 내역 코드</th>
+			                    <th>회원 아이디</th>
+			                    <th>상벌점 기준 코드</th>
+			                    <th>상벌점 점수 이름</th>
+			                    <th>점수</th>
+			                    <th>상태</th>
+			                    <th>등록날짜</th>
+			                    <th>등록 직원</th>
+			                  </tr>
+		                  </tfoot>
+		                </table>
+					</div>
+					<!-- /.card-body -->
+				</div>
+			</div>
+		</section>
+		<!-- /.content -->
+	</div>
+	<!-- /.content-wrapper -->
+</th:block>
+<th:block layout:fragment="customFooterScript">
+<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/dist/js/checkbox.js"></script>
+<script src="/dist/js/commonAjax.js"></script>
+<script>
+//반응형 테이블
+$("#list-table").DataTable({
+	"paging": true,
+    "lengthChange": false,
+    "searching": false,
+    "ordering": true,
+    "info": true,
+    "autoWidth": false,
+    "responsive": true,
+});
+</script>
+</th:block>
+
+</html>

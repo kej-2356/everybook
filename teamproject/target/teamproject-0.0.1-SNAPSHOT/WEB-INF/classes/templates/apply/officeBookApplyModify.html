@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+  <!-- DataTables -->
+<th:block layout:fragment="customTitle">
+	<title>신청 도서 관리</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+</th:block>
+
+<div class="wrapper">
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" th:with="A=${selectApply}">
+  		<div class="content-header">
+			<div class="register-logo">
+	    		<b>신청 도서 정보</b>
+	  		</div>
+		</div>
+		<!-- /.content-header -->
+	 	<!-- Main content -->
+		<section class="content" style="margin-left: 30px; margin-right: 30px;">			
+	   	<div class="row">
+			<div class="col-12">
+	            <div class="card">
+	             <div class="card-header">
+	              <h3 class="card-title">신청 도서 정보<label style="color: red; margin-left: 15px;"><small>#수정 불가</small></label></h3>
+	             </div>
+	             <!-- /.card-header -->
+	              <div class="card-body">
+	                <form action="/ModifyOfficeApply" method="post">
+						<div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">	 
+	                	<div class="row">
+	                		<div class="col-sm-12">
+				                <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" style="text-align: center">
+				                  <thead>
+					                  <tr role="row">
+						                  <th><label style="color: red"><small>＃</small></label>신청코드</th>
+						                  <th>도서이름</th>
+						                  <th>ISBN</th>
+						                  <th>신청회원아이디</th>
+						                  <th>신청도서가격</th>
+						                  <th>신청날짜</th>
+						                  <th>진행사항</th>
+						                  <th>#수정</th>
+						              </tr>					            	            
+				                  </thead>
+				                  <tbody>
+					                  <tr>
+				                    	  <td th:text="${A.applyCode}">
+				                    	  </td>
+				                    	  <td>
+				                    	  <input type="text" th:value="${A.bookName}" name="bookName">
+				                    	  </td>
+					                      <td>
+					                      <input type="text" th:value="${A.bookIsbn}" name="bookIsbn">
+					                      </td>
+					                      <td>
+					                      <input type="text" th:value="${A.memberId}" name="memberId" style="width: 80%">
+					                      </td>
+					                      <td>
+					                      <input type="text" th:value="${A.applyPrice}" name="applyPrice" style="width: 40%">
+					                      </td>
+					                      <td>
+					                      <input type="text" th:value="${A.applyRegDate}" name="applyRegDate" style="width: 50%">
+					                      </td>
+					                      <td>
+					                      <select style="height:30px;" id=selectApplySituation name="applySituation">
+					                      	<option value="">선택</option>
+					                      	<option value="진행 중">진행 중</option>
+					                      	<option value="구매완료">구매완료</option>
+					                      </select>
+					                      
+					                      </td>
+					                      <td>
+					                      	<button type="submit" class="btn btn-info btn-sm applyBookListModify" name="applyCode" style="color: white" th:value="${A.applyCode}">
+								            <i class="fas fa-pencil-alt"></i>수정</button>
+					                      </td>
+					                  </tr>
+				                   </tbody>
+				                 </table>
+				                </div>
+				               </div>
+				             </div>
+				          </form>
+					  </div>
+	              </div>
+	              <!-- /.card-body -->
+	            </div>
+	            <!-- /.card -->	
+	          </div>
+	              <!-- /.card-body -->
+  		</section>
+	</div>
+  <!-- /.content-wrapper -->
+</th:block>
+</div>
+<th:block layout:fragment="customFooterScript">
+<!-- jQuery -->
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script>
+	$(function(){
+		$('.applyBookListModify').click(function(){
+		var applySituation = $('#selectApplySituation');
+		if(applySituation.val() == ""){
+			alert("진행사항을 선택하여주세요");
+			applySituation.focus();
+			return false;
+			}
+		})
+	});
+</script>
+</th:block>
+</html>
+	

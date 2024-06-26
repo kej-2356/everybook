@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team1.project.mapper.PointHistoryMapper">
+	<resultMap type="PointHistory" id="PhSelect">
+		<result property="phCode" column="point_history_code"/>
+		<result property="libraryCode" column="library_code"/>
+		<result property="memberId" column="member_id"/>
+		<result property="psCode" column="point_standard_code"/>
+		<result property="psName" column="point_standard_name"/>
+		<result property="psScore" column="point_standard_score"/>
+		<result property="phRegDate" column="point_history_reg_date"/>
+		<result property="phCondition" column="point_history_condition"/>
+		<result property="officerId" column="officer_id"/>
+	</resultMap>
+	<!-- 상벌점 기준 검색 select -->
+	<select id="searchPs"  parameterType="String" resultMap="PhSelect">
+		SELECT
+			*
+		FROM
+			tb_point_standard 
+		<if test="sv != null and sv neq ''.toString()">	
+			WHERE
+				${sk} like CONCAT('%',#{sv},'%')
+		</if>
+	</select>
+	<!-- 상벌점 기준 delete -->
+	<delete id="deletePh">
+		DELETE FROM tb_point_standard
+		WHERE point_standard_code = #{psCode} 
+		AND officer_id = (SELECT 
+							officer_id
+						 FROM tb_officer
+						 WHERE officer_id=#{officer.officerId} 
+						 AND officer_pw=#{officer.officerPw})
+	</delete>
+	<!-- 상벌점 기준 update -->
+	<update id="modifyPh" parameterType="PointHistory">
+		UPDATE tb_point_standard
+			<trim prefix="set" suffixOverrides=",">
+				<if test="psDivision != null and psDivision != ''.toString()">point_standard_division = #{psDivision},</if>
+				<if test="psName != null and psName != ''.toString()">point_standard_name = #{psName},</if>
+				<if test="psScore != null and psScore != ''.toString()">point_standard_score = #{psScore},</if>
+				<if test="officer.officerId != null and officer.officerId != ''.toString()">officer_id = #{officer.officerId}</if>
+			</trim>
+			<where>
+				<if test="psCode != null and psCode != ''.toString()">point_standard_code = #{psCode}</if>
+			</where>
+	</update>
+	<!-- 하나의 상벌점 기준 select -->
+	<select id="getSelectPh" resultSets="PointHistory" resultMap="PhSelect">
+		SELECT
+			*
+		FROM
+			tb_point_standard
+		WHERE
+			point_history_code = #{phCode}	
+	</select>
+	<select id="getStandbyPsList" resultMap="PhSelect" parameterType="String">
+		SELECT
+			ph.*,
+			ps.point_standard_code,
+			ps.point_standard_name,
+			ps.point_standard_score
+		FROM
+			tb_point_history AS ph
+			JOIN
+			tb_point_standard AS ps
+			on
+			ph.point_standard_code = ps.point_standard_code
+		WHERE
+			ph.library_code = #{libraryCode}
+			and
+			ph.point_history_condition='대기'
+	</select>
+	<!-- 상벌점 기준 등록 insert -->
+	<insert id="addPh" parameterType="PointHistory">
+		INSERT INTO tb_point_history
+			(point_history_code, library_code, member_id, point_standard_code, point_history_reg_date, point_history_condition)
+			VALUES (#{phCode}, #{libraryCode}, #{memberId}, #{psCode}, NOW(), '대기')
+	</insert>
+	<!-- 상벌점 내역 코드 최대값 -->
+	<select id="getMaxPhCode" resultType="String">
+		SELECT max(point_history_code)
+		FROM tb_point_history
+	</select>
+	<!-- 상벌점 기준 리스트 select -->
+	<select id="getPhList" resultSets="PointHistory" resultMap="PhSelect" parameterType="String">
+		SELECT
+			ph.*,
+			ps.point_standard_code,
+			ps.point_standard_name,
+			ps.point_standard_score
+		FROM
+			tb_point_history AS ph
+			JOIN
+			tb_point_standard AS ps
+			on
+			ph.point_standard_code = ps.point_standard_code
+		WHERE
+			ph.library_code = #{libraryCode}
+	</select>
+</mapper>

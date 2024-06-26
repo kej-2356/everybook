@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="team1.project.mapper.ReturnMapper">
+	  <resultMap type="Return" id="returnResultMap">
+	  <result property="returnCode" column="return_code"/>
+	  <result property="returnDate" column="return_date"/>
+	  <result property="returnRegDate" column="return_reg_date"/>
+	  <result property="library" column="library_name"/>
+	  <result property="member" column="member_id"/>
+	  <result property="officer" column="officer_id"/>
+	  <result property="rent" column="rent_date"/>
+	  <result property="writer" column="writer_name"/>
+	  <result property="category" column="category_name"/>
+	  <result property="publisher" column="publisher_name"/>
+	  
+	  <association property="book" javaType="Book">
+			<result property="bookName" column="book_name"/>
+			<result property="bookSituation" column="book_situation"/>
+			<result property="bookLibraryCode" column="book_library_code"/>
+		</association>
+	  </resultMap>
+	  
+	  <!-- 반납관리 - 반납도서리스트 검색 -->
+	  <select id="officeReturnListSearch" parameterType="String" resultMap="returnResultMap">
+	  	SELECT
+			t.return_date
+			, t.return_code
+			, t.member_id
+			, b.book_name
+			, b.book_library_code
+			, w.writer_name
+			, c.category_name
+			, p.publisher_name
+			, b.book_situation
+			, t.return_reg_date
+		FROM
+			tb_return AS t
+			INNER JOIN
+			tb_book AS b
+			INNER JOIN 
+			tb_writer AS w
+			INNER JOIN
+			tb_category AS c
+			INNER JOIN
+			tb_publisher AS p
+		ON  
+			t.book_code = b.book_code		
+		AND
+			b.writer_code = w.writer_code	
+		AND
+			b.category_code = c.category_code
+		AND
+			b.publisher_code = p.publisher_code
+
+		<if test="sv != null and sv neq ''.toString()">
+		WHERE
+			${sk} like CONCAT ('%',#{sv},'%')
+		</if>
+		ORDER BY
+			t.return_reg_date DESC
+	  
+	  </select>
+	  
+	  <!-- 반납관리 - 반납도서리스트 조회 -->
+	  <select id="officeReturnList" resultMap="returnResultMap">
+	  	SELECT
+			t.return_date
+			, t.return_code
+			, t.member_id
+			, b.book_name
+			, b.book_library_code
+			, w.writer_name
+			, c.category_name
+			, p.publisher_name
+			, b.book_situation
+			, t.return_reg_date
+		FROM
+			tb_return AS t
+			INNER JOIN
+			tb_book AS b
+			INNER JOIN 
+			tb_writer AS w
+			INNER JOIN
+			tb_category AS c
+			INNER JOIN
+			tb_publisher AS p
+		ON  
+			t.book_code = b.book_code		
+		AND
+			b.writer_code = w.writer_code	
+		AND
+			b.category_code = c.category_code
+		AND
+			b.publisher_code = p.publisher_code
+		AND
+			b.book_situation = '보유 중'
+		ORDER BY
+			t.return_reg_date DESC
+	  </select>
+  </mapper>

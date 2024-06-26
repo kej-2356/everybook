@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="team1.project.mapper.CareerMapper">
+  
+  <resultMap type="Career" id="CareerResultMap">
+  	<result property="careerCode" column="career_code"/>
+  	<result property="careerName" column="career_name"/>
+  	<result property="careerPeriodStart" column="career_period_start"/>
+  	<result property="careerPeriodEnd" column="career_period_end"/>
+  	<result property="careerRegDate" column="career_reg_date"/>
+  	<result property="officer" column="officer_id"/>
+  </resultMap>
+  
+  <insert id="addOfficerCareer" parameterType="Career">
+  	<selectKey keyProperty="careerCode" resultType="String" order="BEFORE">
+  		<![CDATA[
+		SELECT 
+			(case 
+			when COUNT(*) = 0 then 'career_001'
+			when COUNT(*) < 9 then CONCAT('career_00',(MAX(CONVert(SUBSTR(career_code,8), SIGNED INTEGER))+1))
+			when COUNT(*) < 99 then CONCAT('career_0',(MAX(CONVert(SUBSTR(career_code,8), SIGNED INTEGER))+1))
+			when COUNT(*) < 999 then CONCAT('career_',(MAX(CONVert(SUBSTR(career_code,8), SIGNED INTEGER))+1))
+			ELSE CONCAT('career_',(max(CONVert(SUBSTR(career_code,8), SIGNED INTEGER))+1))
+			END) AS career_code
+		FROM
+			tb_career
+		]]>	
+  	</selectKey>
+  	INSERT INTO tb_career
+		(career_code
+		, officer_id
+		, career_name
+		, career_period_start
+		, career_period_end
+		, career_reg_date
+	)VALUES(
+		#{careerCode}
+		, #{officer}
+		, #{careerName}
+		, #{careerPeriodStart}
+		, #{careerPeriodEnd}
+		, NOW()
+		)
+  </insert>
+  
+  </mapper>

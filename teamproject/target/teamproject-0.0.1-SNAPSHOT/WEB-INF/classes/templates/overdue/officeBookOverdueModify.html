@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+  <!-- DataTables -->
+<th:block layout:fragment="customTitle">
+	<title>연체 도서 관리</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+<link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</th:block>
+
+<div class="wrapper">
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+  		<div class="content-header">
+			<div class="register-logo">
+	    		<b>연체관리-수정</b>
+	  		</div>
+		</div>
+		<!-- /.content-header -->
+	 	<!-- Main content -->
+		<section class="content" style="margin-left: 30px; margin-right: 30px;">				
+	   	<div class="row">
+			<div class="col-12">
+	            <div class="card">
+	              <div class="card-header">
+	                <h3 class="card-title">연체 도서 정보<label style="color: red; margin-left: 15px;"><small>#수정 불가</small></label></h3>
+	              </div>
+	              <!-- /.card-header -->
+	              <div class="card-body">
+	                <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">	 
+	                	<div class="row">
+	                		<div class="col-sm-12">
+	                		<form action="officeOverdueModify" method="post">
+				                <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" style="text-align: center">
+				                  <thead>
+					                   <tr>
+					                      <th><label style="color: red"><small>＃</small></label>연체코드</th>
+					                      <th><label style="color: red"><small>＃</small></label>도서이름</th>
+					                      <th><label style="color: red"><small>＃</small></label>청구기호</th>
+					                      <th><label style="color: red"><small>＃</small></label>연체회원아이디</th>
+					                      <th>반납예정일</th>
+					                      <th><label style="color: red"><small>＃</small></label>연체일</th>
+					                      <th>수정</th>
+					                    </tr>
+					                  </thead>
+					                  <tbody>
+					                    <tr th:each="O : ${selectOverdue}">
+					                      <td th:text="${O.overdueCode}"></td>
+					                      <td th:text="${O.book.bookName}"></td>
+					                      <td th:text="${O.book.bookLibraryCode}"></td>
+					                      <td th:text="${O.member}"></td>
+					                      <td>
+					                      <input type="text" name="rentReturnDate" th:value="${O.rent.rentReturnDate}"></td>
+					                      <td th:text="${O.overdueDate}" style="color: red"></td>
+					                     <td>
+					                      	<button type="submit" class="btn btn-info btn-sm" name="overdueCode" th:value="${O.overdueCode}" style="color: white">
+								            <i class="fas fa-pencil-alt"></i>수정하기</button>
+					                      </td>
+					                  </tr>
+				                  </tbody>
+				                </table>
+				                </form>
+	                		</div>                		
+	                	</div>
+	               	</div>
+	              </div>
+	              <!-- /.card-body -->
+	            </div>
+	            <!-- /.card -->	
+	          </div>
+	              <!-- /.card-body -->
+	        </div>
+	        	<!-- /.row -->
+  		</section>
+	</div>
+  <!-- /.content-wrapper -->
+</th:block>
+</div>
+<!-- ./content-wrapper -->
+
+<th:block layout:fragment="customFooterScript">
+</th:block>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>직원 자격증 신규 등록</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+</th:block>
+
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+	 	<!-- Main content -->
+	<section class="content">			
+	  <div class="register-logo">
+	    <b>자격증 신규 등록</b>
+	  </div>
+	  <div class="card" style="margin-left: 150px; margin-right: 150px">
+	    <div class="card-body register-card-body" style="margin-left: 30px; margin-right: 30px">
+	      <p class="login-box-msg">Register a new license</p>
+	
+	      <form action="/addOfficerNewLicense" method="post">
+	       <label for="inputPassword3" class="col-sm-2 col-form-label">아이디</label>
+	          <div class="input-group mb-1">
+	          		<input type="text" class="form-control" readonly="readonly" style="background-color: snow" th:value="${SID}" name="officerId">
+	          	<div class="input-group-append">
+	            	<div class="input-group-text">
+	              	<span class="fas fa-user"></span>
+	            	</div>
+	          	</div>
+	          </div>
+	       <label for="inputPassword3" class="col-sm-2 col-form-label">취득 날짜</label>
+	          <div class="input-group mb-1">
+	          		<input type="text" class="form-control" placeholder="License date" name="officerLicenseDate" id="officerLicenseDate">
+	         	<div class="input-group-append">
+	            	<div class="input-group-text">
+	              	<span class="fas fa-lock"></span>
+	            	</div>
+	            </div>
+	          </div>
+	       <label for="inputPassword3" class="col-sm-2 col-form-label">자격증 이름</label>
+	          <div class="input-group mb-1">
+	          		<input type="text" class="form-control" placeholder="License Name" name="licenseName" id="LicenseName">
+	         	<div class="input-group-append">
+	            	<div class="input-group-text">
+	              	
+	            	</div>
+	            </div>
+	          </div>
+		    
+		    <!-- row -->
+		        <div class="row" style="margin-top: 15px">
+		          <div class="col-md-3 offset-3" style="text-align: center; color: white">
+		            <a href="javascript:history.back();" class="btn btn-primary btn-block" >뒤로가기(서)</a>
+		          </div>
+		            <div class="social-auth-links text-center">
+		        
+		      </div>
+		          <div class="col-md-3" style="text-align: center">
+		            <button type="submit" class="btn btn-danger btn-block" id="LicenseInsert">등록하기(서)</button>
+		          </div>			
+	        </div>
+	          <!-- /.row -->
+	      </form>			
+	    </div><!-- /.card-body -->
+	  </div><!-- /.card -->
+	</section>
+		<!-- /.content -->
+</div>
+	<!-- /.content-wrapper -->
+</th:block>
+<th:block layout:fragment="customFooterScript">
+<script>
+	  $(function (){
+		//자격증등록 유효성 검사
+		$('#LicenseInsert').click(function(){	
+			var officerId = $('#officerId');
+			var officerLicenseDate = $('#officerLicenseDate');
+			var licenseCode = $('#licenseCode');
+
+
+		 if(officerLicenseDate.val() == ""){
+		        alert("자격증 취득날짜를 입력하세요");
+		        officerLicenseDate.focus();
+		        return false;
+		      }
+		 if(LicenseName.val() == ""){
+		        alert("자격증 이름을 입력하세요");
+		        LicenseName.focus();
+		        return false;
+		      }		 
+		});			
+	})  
+	</script>
+</th:block>
+</html>

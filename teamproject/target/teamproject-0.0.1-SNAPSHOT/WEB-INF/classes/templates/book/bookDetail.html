@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/default}">
+<th:block layout:fragment="customCss">
+<link href="plugins/colorbox/colorbox.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
+<link rel="stylesheet" type="text/css" href="styles/course.css">
+<link rel="stylesheet" type="text/css" href="styles/course_responsive.css">
+<link rel="stylesheet" type="text/css" href="styles/blog_single.css">
+<link rel="stylesheet" type="text/css" href="styles/blog_single_responsive.css">
+<style>
+	.code{
+		display: none;
+	}
+</style>
+</th:block>
+<th:block layout:fragment="customTitle">
+
+<title> 책 상세 페이지 (유)</title>
+
+</th:block>
+	<!-- header 부분에 메뉴 활성화 -->
+	<th:block layout:fragment="customHeader">
+		<nav class="main_nav_contaner ml-auto">
+			<ul class="main_nav">
+				<li class="active"><a href="bookList">통합검색(서)</a></li>
+				<li><a href="myLibrary">나의 도서관(서)</a></li>
+				<li><a href="#">#공지사항</a></li>
+				<li><a href="libraryList">이용안내(유)</a></li>
+				<li><a href="#">#도서관 위치</a></li>
+			</ul>
+			<div class="search_button"><i class="fa fa-search" aria-hidden="true"></i></div>
+		</nav>
+	</th:block>
+	
+	<th:block layout:fragment="customContents">	
+		<!-- Home -->
+	<div class="home">
+		<div class="breadcrumbs_container">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="breadcrumbs">
+							<ul>
+								<li><a href="index">EveryBook</a></li>
+								<li><a href="bookList">통합검색</a></li>
+								<li><a href="#">상세 보기</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>			
+	</div>
+	
+	<!-- Course -->	
+	
+	<div class="course">
+		<div class="container">
+
+			<!-- Course -->		
+			<div class="course_container">
+				<div class="course_title" th:text="${bookDetail.bookName}"></div>
+				<div class="row">
+					<div class="col-lg-4">
+						<!-- Course Image -->
+						<div class="course_image" style="align-content: center;"><img th:src="${bookDetail.bookImageURL}" alt="book_cover"></div>
+					</div>
+				
+					<div class="col-lg-8">
+				
+						<!-- Feature -->
+						<div class="sidebar_section ">
+							<div class="sidebar_feature">
+
+								<!-- Features -->
+								<div class="feature_list">
+
+									<!-- Feature -->
+									<div class="feature d-flex flex-row align-items-center justify-content-start">
+										<div class="feature_title"><span th:text="저자사항"></span></div>
+										<div class="feature_text ml-auto" th:text="${bookDetail.writerName}"></div>
+									</div>
+
+									<!-- Feature -->
+									<div class="feature d-flex flex-row align-items-center justify-content-start">
+										<div class="feature_title"><span th:text="발행사항"></span></div>
+										<div class="feature_text ml-auto" th:text="|${bookDetail.publisherName},${bookDetail.bookPublishDate}|"></div>
+									</div>
+
+									<!-- Feature -->
+									<div class="feature d-flex flex-row align-items-center justify-content-start">
+										<div class="feature_title"><span th:text="총서사항"></span></div>
+										<div class="feature_text ml-auto">/</div>
+									</div>
+
+									<!-- Feature -->
+									<div class="feature d-flex flex-row align-items-center justify-content-start">
+										<div class="feature_title"><span th:text="ISBN"></span></div>
+										<div class="feature_text ml-auto" th:text="${bookDetail.bookIsbn}"></div>
+									</div>
+									<!-- Feature -->
+									<div class="feature d-flex flex-row align-items-center justify-content-start">
+										<div class="feature_title"><span th:text="소장기관"></span></div>
+										<div class="feature_text ml-auto" th:text="${bookDetail.libraryName}"></div>
+									</div>
+
+								</div>
+								
+							</div>
+						</div>	
+						
+					</div>
+				</div>
+			</div>
+						
+			<!-- Course Tabs -->
+			<div class="course_tabs_container">
+				<div class="tab_panels">
+					<!-- Curriculum -->
+					<div class="tab_panel active">					
+						<div class="tab_panel_title" th:text="소장정보"></div>
+						<div class="tab_panel_content">
+							<ul class="dropdowns">
+								<li>
+									<div class="dropdown_item">
+										<div class="dropdown_item_title"><span>청구기호</span></div>
+										<div class="dropdown_item_text">
+											<p th:text="${bookDetail.bookLibraryCode}"></p>
+										</div>
+									</div>
+									<div class="dropdown_item">
+										<div class="dropdown_item_title"><span th:text="자료상태"></span></div>
+										<div class="dropdown_item_text">
+											<p style="color: red;" th:text="${bookDetail.bookSituation}"></p>
+										</div>
+									</div>
+									<div class="dropdown_item">
+										<div class="dropdown_item_title"><span th:text="반납예정일"></span></div>
+										<div class="dropdown_item_text">
+											<p></p>
+										</div>
+									</div>
+									<div class="dropdown_item">
+										<div class="dropdown_item_title"><span>예약</span></div>
+										<div class="dropdown_item_text">
+											<p  id="bookSituation" th:text="도서예약가능"></p>
+											<button type="submit" class="comment_button">예약하기</button>
+											<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+ 												<div class="modal-dialog modal-lg">
+    												<div class="modal-content">
+    													<div class="modal-header">
+													        <h4 class="modal-title">도서 예약하기</h4>
+													        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+													     </div>
+													     <form action="/rtcanReserveAdd" method="post">
+														     <div class="modal-body">
+														        <p>현재 시간   <span th:text="${#dates.format(#dates.createNow(), 'yyyy년 MM월  dd일  HH시 mm분')}"></span></p>
+														        <p><small>지금으로부터 24시간 예약이 유지되며 시간 경과로 예약 취소시에는 벌점이 부과 됩니다. </small></p>
+														        <p><small>예약 시간 내에 대여가 불가능 하시다면 예약 취소로 취소 해주세요.</small></p>
+														        <input type="hidden" name="libraryCode" th:value="${session.SLIBRARY}">
+														        <input type="hidden" name="memberId" th:value="${session.SID}">
+														        <input type="hidden" name="bookCode" th:value="bk_0001">
+														        <p>예약 하시겠습니까?</p>
+														     </div>
+														     <div class="modal-footer">
+														        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+														        <button type="submit" class="btn btn-primary">예약</button>
+														     </div>
+													     </form>
+   													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>	
+			</div>
+			
+			<div class="course_tabs_container">
+				<div class="tab_panels">
+
+					<!-- Description -->
+					<div class="tab_panel active">
+						<div class="tab_panel_title">상세정보</div>
+						<div class="tab_panel_content">
+							<div class="tab_panel_text">
+								<p th:text="${bookDetail.bookDescription}"></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="course_tabs_container">
+				<div class="tab_panels">
+				<!-- Reviews -->
+					<div class="tab_panel active">
+						<h3>도서평</h3>
+						
+						<!-- Comments -->
+						<div class="comments_container">
+							<h4>도서평 수     <small>[[${#lists.size(reviewList)}]]</small></h4>
+							<ul class="comments_list" th:each="r : ${reviewList}">
+								<li>
+									<div class="comment_item d-flex flex-row align-items-start jutify-content-start">
+										<div class="comment_content">
+											<div class="comment_title_container d-flex flex-row align-items-center justify-content-start">
+												<div class="comment" th:text="${r.memberId}"></div>
+												<div class="comment ml-auto" th:text="${r.reviewRegDate}"></div>
+											</div>
+											<div class="comment_text">
+												<p th:text="${r.reviewContent}"></p>
+											</div>
+											<div class="comment_extras d-flex flex-row align-items-center justify-content-start">
+												<div class="comment_extra comment_likes"><a href="#modal" data-toggle="modal" th:data-id="${r.memberId}" th:data-review="${r.reviewCode}" th:data-book="${r.bookCode}"><i class="fa fa-thumbs-down" aria-hidden="true"></i>신고하기</a></div>
+											</div>
+										</div>
+									</div>
+	 							</li>
+							</ul>
+						</div>
+						<!-- 신고 모달 -->
+						<div class="modal fade bs-example-modal-sm" id="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-sm">
+								<div class="modal-content">
+									<div class="modal-header">
+									    <h5 class="modal-title">도서평 신고하기</h5>
+									    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									 </div>
+									<form action="/addWarning" method="post">
+										<div class="modal-body">
+											<div class="code">
+											   <p>해당 도서 코드</p>
+											   <input type="text" id="bookCode" name="bookCode">
+											</div>
+											<div class="code">
+											   <p>해당 도서평 코드</p>
+											   <input type="text" id="reviewCode" name="reviewCode">
+											</div>
+											<div>
+											   <p>해당 도서평 작성자 아이디</p>
+											   <input type="text" class="form-control" id="memberId" name="warningSuspect" readonly>
+											</div>
+											<div>
+											   <p>신고 이유</p>
+											   <textarea class="form-control" name="warningContent"></textarea>
+											</div>
+											<div>
+											   <p>신고자 아이디</p>
+											   <input type="text" class="form-control" th:value="${session.SID}" name="warningBlower" readonly>
+											</div>
+										</div>
+										<div class="modal-footer">
+										   <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+										   <button type="submit" class="btn btn-primary">신고</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<!-- /신고 모달 -->
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	
+	</th:block>
+	<th:block layout:fragment="customFooterScript">
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="styles/bootstrap4/popper.js"></script>
+<script src="styles/bootstrap4/bootstrap.min.js"></script>
+<script src="plugins/scrollmagic/ScrollMagic.min.js"></script>
+<script src="plugins/greensock/animation.gsap.min.js"></script>
+<script src="plugins/greensock/ScrollToPlugin.min.js"></script>
+<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+<script src="plugins/easing/easing.js"></script>
+<script src="js/custom.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		$('.comment_button').click(function(){
+			var bookSituation = $('#bookSituation').text();
+			console.log(bookSituation);
+			if(bookSituation == '도서예약불가'){
+				$('.modal-body').html('<p>해당 도서를 예약 할 수 없습니다.</p>')
+				$('.modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>');
+				$('.bs-example-modal-lg').modal();
+			}else{
+				$('.bs-example-modal-lg').modal();
+			}
+		});
+		
+		//모달에 내용 보여주기
+		$('#modal').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget)
+			var id = button.data('id') 
+			var book = button.data('book') 
+			var review = button.data('review') 
+			
+			var modal = $(this)
+			modal.find('#memberId').val(id)
+			modal.find('#bookCode').val(book)
+			modal.find('#reviewCode').val(review)
+		})
+		
+	});
+</script>
+	</th:block>
+</html>

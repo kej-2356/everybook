@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team1.project.mapper.PublisherMapper">
+	
+	<resultMap type="Publisher" id="publisherResultMap">
+		<result property="publisherCode" column="publisher_code"/>
+		<result property="publisherName" column="publisher_name"/>
+		<result property="publisherPage" column="publisher_page"/>
+		<result property="publisherRegDate" column="publisher_reg_date"/>
+		<result property="officer" column="officer_id"/>
+	</resultMap>
+	
+	<!-- 출판사 삭제 -->
+	<delete id="deletePublisher" parameterType="String">
+		DELETE 
+		FROM 
+			tb_publisher
+		WHERE 
+			publisher_code= #{publisherCode}
+	</delete>
+	
+	<!-- 출판사 수정 -->
+	<update id="modifyPublisher" parameterType="Publisher">
+		UPDATE 
+		tb_publisher
+		SET
+			publisher_name= #{publisherName}
+			,publisher_page= #{publisherPage}
+			,publisher_reg_date=NOW()
+			,officer_id= #{officer}
+		WHERE publisher_code= #{publisherCode}
+	</update>
+	
+	<!-- 출판사 리스트 출력 -->
+	<select id="publisherList" resultMap="publisherResultMap">
+		SELECT 
+			publisher_code
+			, publisher_name
+			, publisher_page
+			, publisher_reg_date
+			, officer_id
+		FROM
+			tb_publisher
+	</select>
+	
+	<!-- 출판사 코드 등록 -->
+	<insert id="addPublisher" parameterType="Publisher">
+		<selectKey order="BEFORE" keyProperty="publisherCode" resultType="String">
+		<![CDATA[
+			SELECT 
+   				(case 
+   				when COUNT(*) = 0 then 'publisher_001'
+ 				when COUNT(*) < 10 then CONCAT('publisher_00',(MAX(SUBSTR(publisher_code,11))+1))
+				when COUNT(*) < 100 then CONCAT('publisher_0',(MAX(SUBSTR(publisher_code,11))+1))
+   				when COUNT(*) < 1000 then CONCAT('publisher_',(MAX(SUBSTR(publisher_code,11))+1))
+   				ELSE CONCAT('publisher_',(MAX(SUBSTR(publisher_code,11))+1))
+   				END) AS publisher_code
+			FROM
+				tb_publisher
+		]]>	
+		</selectKey>
+		INSERT INTO tb_publisher
+			(publisher_code, publisher_name, publisher_page, publisher_reg_date, officer_id)
+			VALUES (#{publisherCode}, #{publisherName}, #{publisherPage}, NOW(), #{officer})
+	</insert>
+	<!-- 책등록에 사용 : 출판사 이름으로 출판사 코드 조회 (유영주) -->
+	<select id="selectPublisherCode" parameterType="String" resultType="String">
+		SELECT publisher_code
+		FROM tb_publisher
+		WHERE publisher_name = #{publisherName}
+	</select>
+</mapper>

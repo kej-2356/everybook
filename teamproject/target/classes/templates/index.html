@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="layout/default">
+  	<th:block layout:fragment="customCss">
+		<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+		<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+		<link rel="stylesheet" type="text/css" href="plugins/OwlCarousel2-2.2.1/animate.css">
+		<link rel="stylesheet" type="text/css" href="styles/main_styles.css">
+		<link rel="stylesheet" type="text/css" href="styles/responsive.css">
+		<style>
+.xscroll
+		{
+		white-space: nowrap;/* 가로스크롤시 중요한 속성 */
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px 10px 5px;
+    width: auto;
+		}
+		</style>
+  	</th:block>
+	<th:block layout:fragment="customTitle">
+		<title> EveryBook </title>
+	</th:block>
+	<!-- header 부분에 메뉴 활성화 -->
+	<th:block layout:fragment="customHeader">
+		<nav class="main_nav_contaner ml-auto">
+			<ul class="main_nav">
+				<li><a href="bookList">통합검색(서)</a></li>
+				<li><a href="myLibrary">나의 도서관(서)</a></li>
+				<li><a href="#">#공지사항</a></li>
+				<li><a href="libraryList">이용안내(유)</a></li>
+				<li><a href="#">#도서관 위치</a></li>
+			</ul>
+			<div class="search_button"><i class="fa fa-search" aria-hidden="true"></i></div>
+
+		</nav>
+	</th:block>
+	
+	<th:block layout:fragment="customContents">
+		<!-- Home -->
+	
+		<div class="home">
+			<div class="home_slider_container">
+				
+				<!-- Home Slider -->
+				<div class="owl-carousel owl-theme home_slider">
+					
+					<!-- Home Slider Item -->
+					<div class="owl-item">
+						<div class="home_slider_background" style="background-image:url(images/home_slider_1.jpg); opacity: 0.4"></div>
+						<div class="home_slider_content">
+							<div class="container">
+								<div class="row">
+									<div class="col text-center">
+										<div class="home_slider_title">도서를 검색하세요</div>
+										<div class="home_slider_subtitle">책은 한 권 한 권이 하나의 세계다. </br> - W. 워즈워스 -</div>
+										<div class="home_slider_form_container">
+											<form action="#" class="home_search_form d-flex flex-lg-row flex-column align-items-center justify-content-between">
+												<div class="d-flex flex-row align-items-center justify-content-start">
+													<input type="search" class="home_search_input" placeholder="도서명을 입력하세요" required="required">
+													<select class="dropdown_item_select home_search_input" name = "regionMajor">
+														<option>:: 지역을 선택하세요 ::</option>
+														<option th:each="M : ${majorList}" th:value="${M.regionMajor}">[[${M.regionMajor}]]</option>
+													</select>
+													<select class="dropdown_item_select home_search_input" name ="regionMinor">
+														<option>:: 지역을 선택하세요 ::</option>
+													</select>
+												</div>
+												<button type="submit" class="home_search_button">#검색</button>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>	
+					
+				</div>
+				
+			</div>
+		</div>
+		
+		<!-- Features -->
+
+		<div class="features">
+			<div class="container">
+				<div class="row features_row">
+				
+				<!-- Features Item -->
+				<div class="col-lg-3 feature_col">
+					<div class="feature text-center trans_400">
+						<div class="feature_icon"><a href="addExtend"><img src="images/book_icon.png" alt="대여 연장"></a></div>
+						<h3 class="feature_title">대여 / 연장 (서)</h3>
+						<div class="feature_text"><p>도서 대여 내역 확인 <br> 대여 도서 연장 신청</p></div>
+					</div>
+				</div>
+
+				<!-- Features Item -->
+				<div class="col-lg-3 feature_col">
+					<div class="feature text-center trans_400">
+						<div class="feature_icon"><a href="addBookApply"><img src="images/icon_book.png" alt="도서 신청"></a></div>
+						<h3 class="feature_title">희망 도서 신청 (서)</h3>
+						<div class="feature_text"><p>읽고 싶은 도 서 신청하기</p></div>
+					</div>
+				</div>
+
+				<!-- Features Item -->
+				<div class="col-lg-3 feature_col">
+					<div class="feature text-center trans_400">
+						<div class="feature_icon"><a href="reviewList"><img src="images/wrtie_icon.png.png" alt="도서평작성"></a></div>
+						<h3 class="feature_title">나의 도서평 (김)</h3>
+						<div class="feature_text"><p>도서평 작성 및 도서평 확인</p></div>
+					</div>
+				</div>
+
+				<!-- Features Item -->
+				<div class="col-lg-3 feature_col">
+					<div class="feature text-center trans_400">
+						<div class="feature_icon"><a href="#"><img src="images/marker.png" alt="도서관 위치"></a></div>
+						<h3 class="feature_title">#나의 도서관 위치</h3>
+						<div class="feature_text"><p>내가 이용하는 도서관 위치 확인하기</p></div>
+					</div>
+				</div>
+
+			</div>
+			</div>
+		</div>
+		
+		<!-- 인기도서 리스트  -->
+		<div class="courses">
+			<div class="section_background parallax-window" data-parallax="scroll" data-image-src="images/courses_background.jpg" data-speed="0.8"></div>
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="section_title_container text-center">
+							<h2 class="section_title">인기 도서 (유)</h2>
+						</div>
+					</div>
+				</div>
+					<!-- 책카드 -->
+					<div class="xscroll">
+						<div class="course" style="width: 300px; display: inline-block;">
+							<div class="course_image"><img src="images/book_1.PNG" alt=""></div>
+								<div class="course_body">
+									<h3 class="course_title"><a href="#">더 해빙</a></h3>
+									<div class="course_teacher">저자 이서윤, 홍주연</div>
+									<div class="course_text">
+									<p>부와 행운을 끌어당기는 힘</p>
+								</div>
+							</div>
+							<div class="course_footer">
+								<div class="course_footer_content d-flex flex-row align-items-center justify-content-start">
+									<div class="course_info">
+										<i class="fa fa-graduation-cap" aria-hidden="true"></i>
+										<span>대여 횟수 20 회</span>
+									</div>
+									<div class="course_info">
+										<i class="fa fa-star" aria-hidden="true"></i>
+										<span>도서평 수 10</span>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				<div class="row">
+					<div class="col">
+						<div class="courses_button"><a href="/vogueBookList">모든 인기 도서 보기</a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 추천 도서 리스트 -->
+		<div class="courses">
+			<div class="section_background parallax-window" data-parallax="scroll" data-image-src="images/courses_background.jpg" data-speed="0.8"></div>
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="section_title_container text-center">
+							<h2 class="section_title">추천 도서 (유)</h2>
+						</div>
+					</div>
+				</div>
+					<!-- 책 카드 -->
+					<div class="xscroll">
+						<div class="course" style="width: 300px; display: inline-block;">
+							<div class="course_image"><img src="images/book_1.PNG" alt=""></div>
+								<div class="course_body">
+									<h3 class="course_title"><a href="#">더 해빙</a></h3>
+									<div class="course_teacher">저자 이서윤, 홍주연</div>
+									<div class="course_text">
+									<p>부와 행운을 끌어당기는 힘</p>
+								</div>
+							</div>
+							<div class="course_footer">
+								<div class="course_footer_content d-flex flex-row align-items-center justify-content-start">
+									<div class="course_info">
+										<i class="fa fa-graduation-cap" aria-hidden="true"></i>
+										<span>대여 횟수 20 회</span>
+									</div>
+									<div class="course_info">
+										<i class="fa fa-star" aria-hidden="true"></i>
+										<span>도서평 수 10</span>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				<div class="row">
+					<div class="col">
+						<div class="courses_button"><a href="/recommendList">모든 추천 도서 보기</a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+	
+	<th:block layout:fragment="customFooterScript">
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="styles/bootstrap4/popper.js"></script>
+		<script src="styles/bootstrap4/bootstrap.min.js"></script>
+		<script src="plugins/scrollmagic/ScrollMagic.min.js"></script>
+		<script src="plugins/greensock/animation.gsap.min.js"></script>
+		<script src="plugins/greensock/ScrollToPlugin.min.js"></script>
+		<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+		<script src="plugins/easing/easing.js"></script>
+		<script src="js/custom.js"></script>
+		<script>
+			$(function(){
+				var regionMajor = $('select[name=regionMajor]');
+				$(regionMajor).change(function(){
+					var value = $(this).val();
+					var request = $.ajax({
+			  			  url: "/getRegionMinorList",
+			  			  method: "get",
+			  			  data: { regionMajor : value },
+			  			  dataType: "json"
+			  			});
+			  			 
+			  			request.done(function( data ) {
+			  				console.log(JSON.stringify(data) + " <- ajax");
+			  				var regionMinor = $('select[name=regionMinor]');
+			  				for(var i =0; i < data.length; i++){
+			  					regionMinor.append('<option value ="'+data[i]['regionMinor']+'">'+data[i]['regionMinor']+'</option>');
+			  				}
+			  				
+			  			});
+			  			 
+			  			request.fail(function( jqXHR, textStatus ) {
+			  			  alert( "Request failed: " + textStatus );
+			  			});
+				});
+			});
+		</script>
+	</th:block>
+	
+</html>

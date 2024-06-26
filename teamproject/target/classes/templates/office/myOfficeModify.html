@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>나의 정보 수정화면</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+</th:block>
+
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper" th:with="O=${officerList}">
+		<!-- Content Header (Page header) -->
+		<div class="register-logo">
+	    	<b>나의 정보 수정하기</b>
+	  	</div>
+		<!-- /.content-header -->
+	 	<!-- Main content -->
+		<section class="content">
+			<!-- /.col -->
+			<div class="col-md-10 offset-1">
+	            <!-- TABLE: 공지사항 -->
+				<div class="card">
+					<div class="card-header border-transparent">
+						<h3 class="card-title">개인 정보<label style="color: red; margin-left: 15px;"><small>#수정 불가</small></label></h3>
+					
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+						</div>
+					</div>
+					<!-- /.card-header -->
+				<form action="/myOfficeModify" method="post">
+					<div class="card-body p-0">
+						<div class="table-responsive">
+							<table class="table m-0" style="text-align: center">
+								<tbody>
+									<tr>
+										<th><label style="color: red"><small>＃</small></label>아이디</th>
+										<td>
+											<input type="text" name="officerId" th:value="${O.officerId}" readonly="readonly" style="text-align: center; background-color: snow;">
+										</td>
+									</tr>
+									<tr>
+										<th>패스워드</th>
+										<td>
+											<input type="text" name="officerPw" th:value="${O.officerPw}" style="text-align: center;">
+										</td>
+									</tr>
+									<tr>
+										<th>이름</th>
+										<td>
+											<input type="text" name="officerName" th:value="${O.officerName}" style="text-align: center;">
+										</td>
+									</tr>
+									<tr>
+										<th>생년월일</th>
+										<td>
+											<input type="text" name="officerBirth" th:value="${O.officerBirth}" style="text-align: center;">
+										</td>
+									</tr>
+									<tr>
+										<th><label style="color: red"><small>#</small></label>레벨</th>
+										<td>
+											<input type="text" name="level" th:value="${O.level}" readonly="readonly" style="text-align: center; background-color: snow;">
+										</td>
+									</tr>
+									 <tr>
+										<th><label style="color: red"><small>#</small></label>도서관</th>
+										<td>
+											<input type="text" name="library" th:value="${O.library}" readonly="readonly" style="text-align: center; background-color: snow;">
+										</td>
+									</tr>
+									<tr>
+										<th>주소</th>
+										<td>
+											<input type="text" name="officerAddress" th:value="${O.officerAddress}" style="text-align: center;">
+										</td>
+									</tr>
+									<tr>
+										<th>번호</th>
+										<td>
+											<input type="text" name="officerTel" th:value="${O.officerTel}" style="text-align: center;">
+										</td>
+									</tr>
+									<tr>
+										<th>이메일</th>
+										<td>
+											<input type="text" name="officerEmail" th:value="${O.officerEmail}" style="text-align: center;">
+										</td>
+									</tr>
+									<tr>
+										<th><label style="color: red"><small>#</small></label>등록날짜</th>
+										<td>
+											<input type="text" th:value="${#dates.format(O.officerRegDate, 'YYYY-MM-dd')}" readonly="readonly" style="text-align: center; background-color: snow;">
+										</td>
+									</tr>
+									<tr>
+										<th><label style="color: red"><small>#</small></label>보유 자격증</th>
+										<td>
+											<select style="background-color: snow; width: 32%; height: 30px;">
+												<option>보유자격증</option>
+												<option th:each="L : ${licenseList}">[[${L.licenseName}]]</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th><label style="color: red"><small>#</small></label>과거 경력사항</th>
+										<td>
+											<input type="text" name="career" th:value="${O.career}" style="text-align: center; background-color: snow">
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					  	<!-- /.table-responsive -->
+					</div>
+					<!-- /.card-body -->
+					<div class="card-footer clearfix">
+					  <button type="submit" class="btn btn-sm btn-info float-right" >#수정하기</button>
+					</div>
+					<!-- /.card-footer -->
+				</form>
+			</div>
+				<!-- /.card -->
+		</div>
+			<!-- /.col -->
+	</section>
+		<!-- /.content -->
+</div>
+</th:block>
+
+</html>

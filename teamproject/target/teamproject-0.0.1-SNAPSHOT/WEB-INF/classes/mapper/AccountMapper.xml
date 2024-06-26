@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team1.project.mapper.AccountMapper">
+	<resultMap type="Account" id="account">
+		<result property="accountCode" column="account_code"/>
+		<result property="accountName" column="account_name"/>
+		<result property="accountKind" column="account_kind"/>
+		<result property="accountDescription" column="account_description"/>
+		<result property="accountRegDate" column="account_reg_date"/>
+		<result property="officerId" column="officer_id"/>
+	</resultMap>
+	<insert id="addAccount" parameterType="Account">
+		<selectKey order="BEFORE" keyProperty="accountCode" resultType="String">
+			<![CDATA[
+			SELECT
+				(CASE
+				  when COUNT(*) = 0 then 'ac_001'
+				  when COUNT(*) < 9 then CONCAT('ac_00',(max(SUBSTR(account_code,4))+1))
+				  when COUNT(*) < 99 then CONCAT('ac_0',(max(SUBSTR(account_code,4))+1))
+				  ELSE CONCAT('ac_',(max(SUBSTR(account_code,4))+1))
+				  END) AS account_code
+			FROM
+				tb_account
+			]]>	
+		</selectKey>
+		INSERT INTO tb_account
+		(account_code, account_name, account_kind, account_description, account_reg_date, officer_id)
+		VALUES (#{accountCode}, #{accountName}, #{accountKind}, #{accountDescription}, NOW(), #{officerId})
+	</insert>
+	<!-- 계정과목 코드로 하나의 계정과목 조회 -->
+	<select id="selectAccount" parameterType="String" resultMap="account">
+		SELECT account_name, account_kind, account_description, account_reg_date, officer_id
+		FROM tb_account
+		WHERE account_code = #{accountCode}
+	</select>
+	<!-- 계정과목 리스트 -->
+	<select id="getAccountList" resultMap="account">
+		SELECT *
+		FROM tb_account
+	</select>
+</mapper>

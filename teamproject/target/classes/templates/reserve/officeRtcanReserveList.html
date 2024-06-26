@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>온라인 도서 예약 리스트</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</th:block>
+
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<div class="content-header">
+			<div class="container-fluid">
+				<h1 class="m-0 text-dark">온라인 도서 예약 리스트</h1>
+			</div><!-- /.container-fluid -->
+		</div>
+		<!-- /.content-header -->
+	 	
+	 	<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				
+				<div class="card">
+					<!-- start card-header -->
+					<div class="card-header">
+						<div class="row">
+							<div class="col-sm-7">
+								<form role="form" action="/getSearchRtcanReserve" method="get">
+									<div class="row">
+										<div class="col-sm-3">
+											<div class="form-group">
+						                        <select class="form-control custom-select" name="sk">
+						                          <option value="rtcan_reserve_code">예약 코드</option>
+						                          <option value="member_id">예약 회원 아이디</option>
+						                          <option value="book_code">예약 도서 코드</option>
+						                          <option value="book_library_code">예약 도서 청구 코드</option>
+						                          <option value="book_name">예약 도서 제목</option>
+						                          <option value="rtcan_situation">예약 상태</option>
+						                          <option value="reserve_date">예약날짜</option>
+						                          <option value="officer_id">등록자</option>
+						                        </select>
+						                    </div>
+										</div>
+										<div class="col-sm-9">
+											<div class="row">
+												<div class="col-sm-9">
+													<input class="form-control" type="search" name="sv">
+												</div>
+												<div class="col-sm-3">
+													<div class="input-group-append">
+					                          			 <button class="btn btn-navbar" type="submit">
+					                           			  <i class="fas fa-search"></i>
+					                          			  </button>
+					                          		</div>
+				                          		</div>
+			                          		</div>
+										</div>
+				                    </div>							
+								</form>
+							</div>
+							<div class="col-sm-5">
+								<div class="btn-group">
+									<a class="btn btn-outline-info btn-flat" href="officeRtcanReserveAdd">예약 등록</a>
+									<button type="button" class="btn btn-outline-secondary btn-flat" id="modifyModalBtn">#예약 내역 수정</button>
+									<button type="button" class="btn btn-outline-danger btn-flat" id="deleteModalBtn">#예약 내역 삭제</button>
+								</div>							
+							</div>
+						</div>	
+						<!-- start 상벌점 내역 수정  modal -->
+						<div class="modal fade bs-modify-modal-lg" tabindex="-1" role="dialog" id="modifyModal" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-lg">
+								<div class="modal-content">
+									
+									<!-- form start -->
+									<form role="form" action="/officeRtcanReserveModify" method="post">
+										<div class="modal-header">
+											<h4 class="modal-title">예약 내역 수정하기</h4>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										</div>
+										<div class="modal-body">
+											<div class="form-group row">
+												<label class="col-sm-2 col-form-label">예약 코드</label>
+								         		<div class="col-sm-10">
+													<input type="text" class="form-control" name="rtcanCode" readonly="readonly">
+													<input type="text" name="officerId" hidden="hidden" th:value="${session.SID}">
+								         		</div>
+								           	</div>
+											<div class="form-group row">
+												<label class="col-sm-2 col-form-label">회원 아이디</label>
+								         		<div class="col-sm-10">
+													<input type="text" class="form-control" name="memberId" readonly="readonly">
+								         		</div>
+								           	</div>
+											<div class="form-group row">
+												<label class="col-sm-2 col-form-label">도서 코드</label>
+								          		<div class="col-sm-10">
+													<input type="text" class="form-control" name="bookLibraryCode" readonly="readonly">
+								          		</div>
+								           </div>
+								           <div class="form-group row">
+												<label  class="col-sm-2 col-form-label">도서 이름</label>
+								         		<div class="col-sm-10">
+													<input type="text" class="form-control" name="bookName" readonly="readonly">
+								         		</div>
+								           	</div>
+								           	<div class="form-group row">
+								           		<label  class="col-sm-2 col-form-label">예약 상태</label>
+								           		<div class="col-sm-10">
+												<select class="form-control" name="rtcanSituation">
+													<option>승인</option>
+													<option>거절</option>
+												</select>
+								           		</div>
+						          			</div>
+						          			<div id="noReason" hidden="hidden" style="margin-top: 5px;">
+							          			<label>거절 이유를 선택하세요.</label>
+							          			<select class="form-control" name="noReason">
+							          				<option>거절 이유</option>
+							          				<option>해당 도서 없음</option>
+							          			</select>
+							          		</div>
+										</div>
+										<div class="modal-footer">
+											<button type="submit" class="btn btn-primary">예약 내역 수정</button>
+										</div>
+									</form>
+									<!-- form end -->
+								</div>	
+							</div>
+						</div>
+						<!--  end 상벌점 내역 수정 modal -->
+						<!-- start 상벌점 삭제  modal -->
+						<div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" id="deleteModal" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-sm">
+								<div class="modal-content">
+									
+									<!-- form start -->
+									<form role="form" action="/deleteReserve" method="post">
+										<div class="modal-header">
+											<h4 class="modal-title">예약 내역 삭제하기</h4>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										</div>
+										<div class="modal-body">
+								            <div class="form-group">
+												<label>예약 코드</label>
+								         		<div>
+													<input type="text" class="form-control" name="rtcanCode" readonly="readonly">
+								         		</div>
+								           	</div>
+											<div class="form-group">
+												<p>해당 예약 내역을 삭제 하시겠습니까?</p>
+												<p><small>삭제를 원하시면 비밀 번호를 입력하세요.</small></p>	
+								            </div>
+											<div class="form-group">
+												<label>비밀번호 확인</label>
+								          		<div>
+								          			<input type="text" class="form-control" th:value="${session.SID}" name="officerId" hidden="hidden">
+													<input type="password" class="form-control" name="officerPw" placeholder="비밀번호를 입력하세요">
+								          		</div>
+								           </div>
+										</div>
+										<div class="modal-footer">
+											<button type="submit" class="btn btn-primary">예약 내역 삭제</button>
+										</div>
+									</form>
+									<!-- form end -->
+								</div>	
+							</div>
+						</div>
+						<!--  end 상벌점 내역 삭제 modal -->
+					</div>
+					<!--end card-header -->
+					
+					<div class="card-body">
+						<table id="list-table" class="table table-bordered table-hover" style="text-align: center;">
+		                  <thead>
+			                  <tr>
+			                  	<th><input type="checkbox" name="checkAll"></th>
+			                    <th>예약 코드</th>
+			                    <th>예약 회원 아이디</th>
+			                    <th>예약 도서 코드</th>
+			                    <th>예약 도서 청구 코드</th>
+			                    <th>예약 도서 제목</th>
+			                    <th>예약날짜</th>
+			                    <th>예약 상태</th>
+			                    <th>등록날짜</th>
+			                    <th>등록자</th>
+			                  </tr>
+		                  </thead>
+		                  <tbody>
+			                  <tr th:each="l : ${rtcanReserveList}">
+			                  	<td><input type="checkbox" name="checkRow" th:value="${l.rtcanCode}"></td>
+			                    <td th:text="${l.rtcanCode}"></td>
+			                    <td th:text="${l.memberId}"></td>
+			                    <td th:text="${l.book.bookCode}"></td>
+			                    <td th:text="${l.book.bookLibraryCode}"></td>
+			                    <td th:text="${l.book.bookName}"></td>
+			                    <td th:text="${l.rtcanDate}"></td>
+			                    <td th:text="${l.rtcanSituation}"></td>
+			                    <td th:text="${l.rtcanRegDate}"></td>
+			                    <td th:text="${l.officerId}"></td>
+			                  </tr>
+		                  </tbody>
+		                  <tfoot>
+			                  <tr>
+			                  	<th></th>
+			                    <th>예약 코드</th>
+			                    <th>예약 회원 아이디</th>
+			                    <th>예약 도서 코드</th>
+			                    <th>예약 도서 청구 코드</th>
+			                    <th>예약 도서 제목</th>
+			                    <th>예약날짜</th>
+			                    <th>예약 상태</th>
+			                    <th>등록날짜</th>
+			                    <th>등록자</th>
+			                  </tr>
+		                  </tfoot>
+		                </table>
+					</div>
+					<!-- /.card-body -->
+				</div>
+			</div>
+		</section>
+		<!-- /.content -->
+	</div>
+	<!-- /.content-wrapper -->
+</th:block>
+<th:block layout:fragment="customFooterScript">
+<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/dist/js/checkbox.js"></script>
+<script src="/dist/js/commonAjax.js"></script>
+<script>
+$(function(){
+	//반응형 테이블
+	$("#list-table").DataTable({
+    	"paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+    });
+	//수정 모달 버튼 클릭시
+	$('#modifyModalBtn').click(function(){
+		//체크박스의 체크 된 갯수가 1개라면
+    	if($('[name=checkRow]:checked').length == 1){
+    		var value = $('[name=checkRow]:checked').val();
+    		console.log(value);
+    		var errormsg ="예약 정보를 불러올수 없습니다."
+  			var fn = function( data ) {
+  				console.log(JSON.stringify(data) + " <- ajax");
+  				$('[name=rtcanCode]').val(data.rtcanCode);
+  				$('[name=memberId]').val(data.memberId);
+  				$('[name=bookLibraryCode]').val(data.book.bookLibraryCode);
+  				$('[name=bookName]').val(data.book.bookName);
+  				$('[name=rtcanSituation]').val(data.rtcanSituation);
+  				$('#modifyModal').modal();
+  				
+  			}
+    		commonAjax("/getSelectReserve", 
+    				{ rtcanCode : value },
+    				fn,
+    				'get',
+    				errormsg);
+    	//체크박스의 체크 된 갯수가 0개라면	
+    	}else if($('[name=checkRow]:checked').length == 0) {
+    		alert('수정할 지역코드를 선택하세요');
+    	}else{// 체크박스에 체크가 2개 이상 일때
+    		alert('수정할 지역코드를 하나만 선택하세요');
+    	}
+    });
+	//승인 모달에서 거절 선택시 거절 이유 보이게 하는 스크립트
+	var modalSelected = $('[name=rtcanSituation]')
+	$(modalSelected).on('change',function(){
+		if(modalSelected.val() == '거절'){
+			$('#noReason').prop('hidden',false);
+		}else{
+			$('#noReason').prop('hidden',true);
+		}
+	});	
+	//삭제 버튼 클릭시
+	$('#deleteModalBtn').on('click',function(){
+		console.log("삭제하자");
+		//체크 갯수 1개
+    	if($('[name=checkRow]:checked').length == 1){
+    		//alert('삭제 긔긔');
+    		var value = $('[name=checkRow]:checked').val();
+    		console.log(value);
+    		var errormsg ="예약 정보를 불러올수 없습니다."
+  			var fn = function( data ) {
+  				console.log(JSON.stringify(data) + " <- ajax");
+  				$('[name=rtcanCode]').val(data.rtcanCode);
+  				$('#deleteModal').modal();
+  				
+  			}
+    		commonAjax("/getSelectReserve", 
+    				{ rtcanCode : value },
+    				fn,
+    				'get',
+    				errormsg);
+    	//체크 갯수 0개	
+    	}else if($('[name=checkRow]:checked').length == 0) {
+    		alert('삭제할 지역코드를 선택하세요');
+    	//체크 갯수 2개 이상	
+    	}else{
+    		alert($('[name=checkRow]:checked').length+'건의 예약을 삭제하시겠습니까?');
+    		console.log('전체삭제를 하겠다고?');
+    	}	
+	});
+
+});
+</script>
+</html>

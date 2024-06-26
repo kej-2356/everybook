@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>소장 도서 리스트</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+<link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</th:block>
+
+<th:block layout:fragment="customContents">
+<div class="wrapper">
+	<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+  		<div class="content-header">
+			<div class="register-logo">
+	    		<b>소장 도서 리스트</b>
+	  		</div>
+		</div>
+		<!-- /.content-header -->
+	 	<!-- Main content -->
+		<section class="content">
+			
+   <div class="row">
+          <div class="col-12">
+            <div class="card">
+               <div class="card-header">
+	                <h3 class="card-title">소장 도서 리스트</h3>
+	              </div>
+	              <!-- /.card-header -->
+	              <div class="card-body">
+	                <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">	 
+	                	<div class="row">
+	                		<div class="col-sm-12">
+				                <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" role="grid" aria-describedby="example2_info" style="text-align: center">
+				                  <thead>
+					                  <tr role="row">
+						                  <th>청구기호</th>
+						                  <th>도서이름</th>
+						                  <th>ISBN</th>
+						                  <th>카테고리</th>
+						                  <th>저자</th>
+						                  <th>출판사</th>
+						                  <th>도서가격</th>
+						                  <th>도서상태</th>
+						                  <th>등록날짜</th>
+						                  <th>등록직원아이디</th>
+						                  <th>#수정</th>
+						                  <th>#삭제</th>
+						              </tr>					            	            
+				                  </thead>
+				                  <tbody>
+					                  <tr th:each="B : ${officeBookList}">
+				                    	  <td th:text="${B.bookLibraryCode}"></td>
+					                      <td th:text="${B.bookName}"></td>
+					                      <td th:text="${B.bookIsbn}"></td>
+					                      <td th:text="${B.categoryName}"></td>
+					                      <td th:text="${B.writerName}"></td>
+					                      <td th:text="${B.publisherName}"></td>
+					                      <td th:text="${B.bookPrice}"></td>
+					                      <td th:text="${B.bookSituation}"></td>
+					                      <td th:text="${B.bookRegDate}"></td>
+					                      <td th:text="${B.officerId}"></td>
+					                      <td>
+					                      	<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-update" style="color: white">
+								            <i class="fas fa-pencil-alt"></i>수정</a>
+					                      </td>
+					                      <td class="">
+					                      	<a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-delete" style="color: white">
+								            <i class="fas fa-trash"></i>삭제</a>
+								          </td>
+					                  </tr>
+				                  </tbody>
+				                </table>
+				                <!-- modal -->
+				                <div class="modal fade" id="modal-delete">
+							        <div class="modal-dialog">
+							          <div class="modal-content bg-default">
+							            <div class="modal-header">
+							              <h4 class="modal-title">신청도서관리</h4>
+							              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							                <span aria-hidden="true">&times;</span></button>
+							            </div>
+							            <div class="modal-body">
+							              <p>삭제 하시겠습니까?</p>
+							            </div>
+							            <div class="modal-footer justify-content-between">
+							              <button type="button" class="btn" data-dismiss="modal">Close</button>
+							              <button type="button" class="btn">#삭제하기</button>
+							            </div>
+							          </div>
+							          <!-- /.modal-content -->
+							        </div>
+							        <!-- /.modal-dialog -->
+					      		</div>
+				                
+				                <div class="modal fade" id="modal-update">
+							        <div class="modal-dialog">
+							          <div class="modal-content bg-default">
+							            <div class="modal-header">
+							              <h4 class="modal-title">신청도서관리</h4>
+							              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							                <span aria-hidden="true">&times;</span></button>
+							            </div>
+							            <div class="modal-body">
+							              <p>수정 하시겠습니까?</p>
+							            </div>
+							            <div class="modal-footer justify-content-between">
+							              <button type="button" class="btn" data-dismiss="modal">Close</button>
+							              <button type="button" class="btn">#수정하기</button>
+							            </div>
+							          </div>
+							          <!-- /.modal-content -->
+							        </div>
+							        <!-- /.modal-dialog -->
+					      		</div>
+					      <!-- /.modal -->
+	                		</div>                		
+	                	</div>
+	               	</div>
+	              </div>
+	              <!-- /.card-body -->
+	            </div>
+	            <!-- /.card -->	
+	          </div>
+	              <!-- /.card-body -->
+	        </div>
+	        	<!-- /.row -->
+  		</section>
+	</div>
+  <!-- /.content-wrapper -->
+</div>
+</th:block>
+<!-- ./content-wrapper -->
+
+<th:block layout:fragment="customFooterScript">
+<!-- jQuery -->
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables -->
+<script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true,
+      "autoWidth": false,
+    });
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+</th:block>
+</html>
+	
+	

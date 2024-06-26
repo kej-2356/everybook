@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+
+	<th:block layout:fragment="customTitle">
+		<title>도서평 목록</title>
+	</th:block>
+	
+	<th:block layout:fragment="customCss">
+		<!-- overlayScrollbars -->
+  		<link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+		<!-- DataTables -->
+		<link rel="stylesheet" href="/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+		<link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+	</th:block>
+
+	<th:block layout:fragment="customContents">
+		<div class="content-wrapper">
+			<section class="content-header">
+				<div class="register-logo">
+					<a>도서평 목록</a>
+				</div>
+			</section>
+			<section class="content">
+				<div class="card card-info">
+					<div class="card-body">
+						<div class="row ">
+							<div class="col-md-12">
+								<table id="example1" class="table table-bordered table-striped">
+									<thead>
+										<tr>
+										  <th>도서명</th>
+										  <th>도서평 내용</th>
+										  <th>작성자</th>
+										  <th>작성날짜</th>
+										  <th data-orderable="false">삭제</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each=" r : ${reviewList}">
+											<td th:text="${r.bookCode}"></td>
+											<td th:text="${r.reviewContent}"></td>
+											<td th:text="${r.memberId}"></td>
+						                  	<td th:text="${r.reviewRegDate}"></td>
+											<td>
+											   	<button type="button" class="btn btn-danger btn-sm" th:data-send="${r.reviewCode}">
+											        <i class="fas fa-trash"></i>
+											    	삭제
+											    </button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>	
+						</div>
+					</div>
+				          <!-- /.card-body -->
+				</div>
+			</section>	
+		</div> 
+	</th:block>
+	
+	<th:block layout:fragment="customFooterScript">
+		<!-- OPTIONAL SCRIPTS -->
+		<script src="dist/js/demo.js"></script>
+		<!-- overlayScrollbars -->
+		<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+		<!-- ionicons.com 아이콘 -->
+		<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+		<!-- PAGE PLUGINS -->
+		<!-- jQuery Mapael -->
+		<script src="plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+		<script src="plugins/raphael/raphael.min.js"></script>
+		<script src="plugins/jquery-mapael/jquery.mapael.min.js"></script>
+		<script src="plugins/jquery-mapael/maps/usa_states.min.js"></script>
+		<!-- ChartJS -->
+		<script src="plugins/chart.js/Chart.min.js"></script>
+		<!-- DataTables -->
+		<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+		<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+		<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+		<!-- sweetalert -->
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<!-- page script -->
+		<script>
+			$(function () {
+			
+				//데이터 테이블  
+				$("#example1").DataTable({
+				  "responsive": true,
+				  "autoWidth": false,
+				});
+			 
+			  	//삭제버튼 클릭시 뜨는 alert 창 
+				//$('.del').click(function(){
+				$('#example1 tbody').on('click', '.btn-danger', function () {			
+					swal ({
+						title : "삭제하시겠습니까?"
+						,icon : "error"
+						, buttons: {
+						    cancel: "취소",
+						    confirm: "삭제",
+						  }
+						,closeOnClickOutside : false
+					})
+				 	.then((del) => {
+				  		if(del){
+				  			console.log($(this).data('send'));
+				   		$.ajax({
+				               url: "/deleteReview",
+				               type: "get",
+				               data: { reviewCode : $(this).data('send')},
+				               dataType: "json",
+				               success: function (data) {
+				               	console.log(data);
+				                   if(data > 0){
+				               		swal("삭제 성공", " ", "success");
+				               		location.reload(true);
+				                   }else{
+				                   	swal("삭제실패!", " ", "error");
+				                   }
+				               },
+				               error: function (xhr, ajaxOptions, thrownError) {
+				                   swal("Error deleting!", "Please try again", "error");
+				               }
+				           });
+				  		}
+				  	});
+				}); 
+		    
+			});
+		</script>
+	</th:block>
+	
+	
+	
+</html>

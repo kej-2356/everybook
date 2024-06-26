@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  		xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="@{layout/defaultAdmin}">
+
+<th:block layout:fragment="customTitle">
+	<title>계정과목 리스트</title>
+</th:block>
+
+<th:block layout:fragment="customCss">
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+</th:block>
+
+<th:block layout:fragment="customContents">
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- content-header -->
+		<div class="content-header">
+			<div class="container-fluid">
+				<h1 class="m-0 text-dark">계정과목 목록</h1>
+			</div><!-- /.container-fluid -->
+		<!-- /.content-header -->
+		</div>
+		
+		<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<!-- start card-header -->
+							<div class="card-header">
+								<div class="row">
+									<div class="col-sm-8">
+										<form role="form">
+											<div class="row">
+												<div class="col-sm-3">
+													<div class="form-group">
+								                        <select class="form-control custom-select">
+								                          <option>계정과목 코드</option>
+								                          <option>계정과목 이름</option>
+								                          <option>계정과목 분류</option>
+								                          <option>계정과목 내용</option>
+								                          <option>등록자</option>
+								                        </select>
+								                    </div>
+												</div>
+												<div class="col-sm-9">
+													<div class="row">
+														<div class="col-sm-10">
+															<input class="form-control" type="search">
+														</div>
+														<div class="col-sm-2">
+															<div class="input-group-append">
+							                          			 <button class="btn btn-navbar" type="submit">!
+							                           			  <i class="fas fa-search"></i>
+							                          			  </button>
+							                          		</div>
+						                          		</div>
+					                          		</div>
+												</div>
+						                    </div>							
+										</form>
+									</div>
+									<div class="col-sm-4">		
+										<div class="text-right">
+											<div class="btn-group">
+												<button type="button" class="btn btn-outline-info btn-flat"  data-toggle="modal" data-target=".bs-add-modal-lg">계정과목 등록</button>
+												<button type="button" class="btn btn-outline-secondary btn-flat"  data-toggle="modal" data-target=".bs-modify-modal-lg">#계정과목 수정</button>
+												<button type="button" class="btn btn-outline-danger btn-flat" id="deleteModalBtn">#계정과목 삭제</button>
+											</div>
+										</div>					
+									</div>
+								</div>
+							</div>
+							<!--end card-header -->
+							
+							<div th:replace="budget/addAccount:: addAccountFragment"></div>
+							<div th:replace="budget/modifyAccount:: modifyAccountFragment"></div>
+							<!-- start 계정과목 삭제  modal -->
+							<div class="modal fade bs-delete-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="deleteModal">
+								<div class="modal-dialog modal-sm">
+									<div class="modal-content">
+										
+										<!-- form start -->
+										<form role="form" action="deleteAccount" method="post">
+											<div class="modal-header">
+												<h4 class="modal-title">계정과목 삭제하기</h4>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+											</div>
+											<div class="modal-body">
+									            <div class="form-group">
+													<label>계정과목 코드</label>
+									         		<div>
+														<input type="text" class="form-control" id="deleteAccountCode" readonly="readonly" name="accountCode">
+									         		</div>
+									           	</div>
+									            <div class="form-group">
+													<label>계정과목 이름</label>
+									         		<div>
+														<input type="text" class="form-control" id="deleteAccountName" readonly="readonly" name="accountName">
+									         		</div>
+									           	</div>
+												<div class="form-group">
+													<p>해당 계정과목을 삭제 하시겠습니까?</p>
+													<p><small>삭제를 원하시면 비밀 번호를 입력하세요.</small></p>	
+									            </div>
+												<div class="form-group">
+													<label>비밀번호 확인</label>
+									          		<div>
+									          			<input type="text" class="form-control" th:value="${session.SID}" name="officerId" hidden="hidden">
+														<input type="password" class="form-control" placeholder="비밀번호를 입력하세요" name="officerPw">
+									          		</div>
+									           </div>
+											</div>
+											<div class="modal-footer">
+												<button type="submit" class="btn btn-primary">계정과목 삭제</button>
+											</div>
+										</form>
+										<!-- form end -->
+									</div>	
+								</div>
+							</div>
+							<!--  end 계정과목 삭제 modal -->
+							
+							<div class="card-body">
+								<table id="account-table" class="table table-bordered table-hover" style="text-align: center;">
+				                  <thead>
+					                  <tr>
+					                  	<th><input type="checkbox" name="checkAll"></th>
+					                    <th>계정과목 코드</th>
+					                    <th>계정과목</th>
+					                    <th>계정과목 분류</th>
+					                    <th>계정과목 내용</th>
+										<th>등록 날짜</th>
+										<th>등록 직원</th>
+					                  </tr>
+				                  </thead>
+				                  <tbody>
+					                  <tr th:each="a : ${accountList}">
+					                  	<td><input type="checkbox"  name="checkRow" th:value="${a.accountCode}"></td>
+										<td>[[${a.accountCode}]]</td>
+										<td>[[${a.accountName}]]</td>
+										<td>[[${a.accountKind}]]</td>
+										<td>[[${a.accountDescription}]]</td>
+										<td>[[${a.accountRegDate}]]</td>
+										<td>[[${a.officerId}]]</td>
+					                  </tr>
+				                  </tbody>
+				                  <tfoot>
+					                  <tr>
+					                  	<th></th>
+					                   	<th>계정과목 코드</th>
+					                    <th>계정과목 이름</th>
+					                    <th>계정과목 분류</th>
+					                    <th>계정과목 내용</th>
+										<th>등록 날짜</th>
+										<th>등록 직원</th>
+					                  </tr>
+				                  </tfoot>
+				                </table>
+							<!-- /.card-body -->
+							</div>
+							
+						</div>
+						<!-- /.card -->
+					</div>
+				</div>
+			</div><!--/. container-fluid -->
+		</section>
+	<!-- /.content-wrapper -->
+	</div>
+</th:block>
+
+<th:block layout:fragment="customFooterScript">
+<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/dist/js/checkbox.js"></script>
+<script src="/dist/js/commonAjax.js"></script>
+<script>
+	//반응형 테이블
+    $("#account-table").DataTable({
+    	"paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+    });
+	$('#deleteModalBtn').on('click',function(){
+		if($('[name=checkRow]:checked').length == 1){
+    		var value = $('[name=checkRow]:checked').val();
+    		console.log(value);
+    		var errormsg ="계정과목을 불러올수 없습니다."
+  			var fn = function( data ) {
+  				console.log(JSON.stringify(data) + " <- ajax");
+  				$('#deleteAccountCode').val(value);
+  				$('#deleteAccountName').val(data.accountName);
+		    	$('#deleteModal').modal();
+  			}
+    		commonAjax("/selectAccount", 
+    				{ accountCode : value },
+    				fn,
+    				'get',
+    				errormsg);
+    	}else if($('[name=checkRow]:checked').length == 0) {
+    		alert('삭제할 지역코드를 선택하세요');
+    	}else{
+    		alert('전체삭제는 잠시만');
+    	}
+	});
+	
+</script>
+</th:block>
+
+</body>
+</html>
+	

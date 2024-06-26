@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team1.project.mapper.ReserveMapper">
+<!-- 온라인 예약 RtcanReserve resultMap -->
+<resultMap type="RtcanReserve" id="rtcanReserveSelect">
+	<result property="rtcanCode" column="rtcan_reserve_code"/>
+	<result property="libraryCode" column="library_code"/>
+	<result property="memberId" column="member_id"/>
+	<result property="rtcanDate" column="reserve_date"/>
+	<result property="rtcanSituation" column="rtcan_situation"/>
+	<result property="rtcanRegDate" column="reserve_reg_date"/>
+	<result property="officerId" column="officer_id"/>
+	<result property="officerPw" column="officer_pw"/>
+	<association property="book" javaType="Book">
+		<result property="bookCode" column="book_code"/>
+		<result property="bookName" column="book_name"/>
+		<result property="bookLibraryCode" column="book_library_code"/>
+		<result property="bookSituation" column="book_situation"/>
+	</association>
+</resultMap>
+<select id="getRtcanReserveTime" resultMap="rtcanReserveSelect">
+	SELECT	*
+	FROM tb_rtcan_reserve
+	WHERE rtcan_situation='승인'
+</select>
+<!-- 조건에 따른 예약 검색 -->
+<select id="getSearchRtcanReserve"  parameterType="String" resultMap="rtcanReserveSelect">
+	SELECT
+		rt.rtcan_reserve_code,
+		rt.member_id,
+		rt.book_code,
+		b.book_library_code,
+		b.book_name,
+		rt.rtcan_situation,
+		rt.reserve_date,
+		rt.reserve_reg_date,
+		rt.officer_id
+	FROM 
+		tb_rtcan_reserve AS rt
+		join
+		tb_book AS b
+		on
+		rt.book_code = b.book_code
+	<if test="sv != null and sv neq ''.toString()">	
+		WHERE
+			${sk} like CONCAT('%',#{sv},'%')
+	</if>
+</select>
+<!-- 하나의 예약 삭제 -->
+<delete id="deleteRtcanReserve" parameterType="RtcanReserve">
+	DELETE FROM tb_rtcan_reserve 
+	WHERE rtcan_reserve_code= #{rtcanCode} 
+	AND officer_id = (SELECT 
+						officer_id
+					 FROM tb_officer
+					 WHERE officer_id=#{officerId} 
+					 AND officer_pw=#{officerPw})
+</delete>
+<!-- 예약 코드르로 온라인 예약 하나 조회 -->
+<select id="getSelectRtcanReserve" parameterType="String" resultMap="rtcanReserveSelect">
+	SELECT 
+		rt.rtcan_reserve_code,
+		rt.member_id,
+		rt.book_code,
+		b.book_library_code,
+		b.book_name,
+		rt.rtcan_situation,
+		rt.reserve_date,
+		rt.reserve_reg_date,
+		rt.officer_id
+	FROM 
+		tb_rtcan_reserve AS rt
+		join
+		tb_book AS b
+		on
+		rt.book_code = b.book_code
+	WHERE
+		rt.rtcan_reserve_code= #{rtcanCode}
+</select>
+<!-- 미승인 된 온라인 예약 갯수 -->
+<select id="getReserveCount" resultType="int">
+	SELECT
+		COUNT(*)
+	FROM
+		tb_rtcan_reserve
+	WHERE
+		rtcan_situation = '대기'	
+</select>
+<!-- 직원이 처리된 온라인 예약 리스트 보기 -->
+<select id="getRtcanReserveList" parameterType="String" resultMap="rtcanReserveSelect">
+	SELECT 
+		rt.rtcan_reserve_code,
+		rt.member_id,
+		rt.book_code,
+		b.book_library_code,
+		b.book_name,
+		rt.rtcan_situation,
+		rt.reserve_date,
+		rt.reserve_reg_date,
+		rt.officer_id
+	FROM 
+		tb_rtcan_reserve AS rt
+		join
+		tb_book AS b
+		on
+		rt.book_code = b.book_code
+	WHERE
+		rt.library_code = #{libraryCode}
+</select>
+<!-- 직원이 온라인 예약 승인 업데이트 -->
+<update id="modifyRtcanReserve" parameterType="RtcanReserve">
+	UPDATE tb_rtcan_reserve
+	SET
+		rtcan_situation= #{rtcanSituation},
+		<if test="officerId != null and officerId neq ''.toString()">
+			officer_id= #{officerId},
+		</if>
+		reserve_reg_date= NOW()
+	WHERE 
+		rtcan_reserve_code = #{rtcanCode}
+</update>
+<!-- 직원이 대기 중인 온라인 예약 리스트 호출 -->
+<select id="addRtcanReserveList" parameterType="String" resultMap="rtcanReserveSelect">
+	SELECT 
+		rt.rtcan_reserve_code,
+		rt.member_id,
+		rt.book_code,
+		b.book_library_code,
+		b.book_name,
+		rt.rtcan_situation,
+		rt.reserve_date
+	FROM 
+		tb_rtcan_reserve AS rt
+		join
+		tb_book AS b
+		on
+		rt.book_code = b.book_code
+	WHERE
+		rt.library_code = #{libraryCode}
+		and
+		rtcan_situation	= '대기'
+</select>
+
+<!-- 회원이 책 상세페이지에서 현재 보유중인 도서 예약하는 예약 등록 -->
+<insert id="addRtcanReserve" parameterType="RtcanReserve">
+	<selectKey order="BEFORE" keyProperty="rtcanCode" resultType="String">
+		<![CDATA[
+			SELECT 
+   				(case 
+   				when COUNT(*) = 0 then 'rtcan_00001'
+ 				when COUNT(*) < 11 then CONCAT('rtcan_0000',(MAX(SUBSTR(rtcan_reserve_code,7))+1))
+				when COUNT(*) < 101 then CONCAT('rtcan_000',(MAX(SUBSTR(rtcan_reserve_code,7))+1))
+   				when COUNT(*) < 1001 then CONCAT('rtcan_00',(MAX(SUBSTR(rtcan_reserve_code,7))+1))
+   				when COUNT(*) < 10001 then CONCAT('rtcan_0',(MAX(SUBSTR(rtcan_reserve_code,7))+1))
+   				ELSE CONCAT('rtcan_',(MAX(SUBSTR(rtcan_reserve_code,8))+1))
+   				END) AS rtcan_reserve_code
+			FROM
+			   tb_rtcan_reserve
+		]]>	
+	</selectKey>
+	INSERT INTO tb_rtcan_reserve
+		(rtcan_reserve_code, library_code, member_id, book_code, reserve_date, rtcan_situation)
+		VALUES (#{rtcanCode}, #{libraryCode}, #{memberId}, #{bookCode}, NOW(), '대기')
+</insert>
+</mapper>

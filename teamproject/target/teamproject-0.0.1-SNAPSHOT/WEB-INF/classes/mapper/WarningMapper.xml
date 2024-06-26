@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team1.project.mapper.WarningMapper">
+
+	<resultMap type="Warning" id="WarningResultMap">
+		<result property="warningCode" column="warning_code"/>
+		<result property="bookCode" column="book_code"/>
+		<result property="reviewCode" column="review_code"/>
+		<result property="warningSuspect" column="warning_suspect"/>
+		<result property="warningBlower" column="warning_blower"/>
+		<result property="warningContent" column="warning_content"/>
+		<result property="warningRegDate" column="warning_reg_date"/>
+	</resultMap>
+	
+	<!-- 도서평신고 삭제 -->
+	<delete id="deleteWarning" parameterType="String">
+		DELETE 
+		FROM 
+			tb_warning 
+		WHERE 
+			warning_code = #{warningCode}
+	</delete>
+	
+	
+	<!-- 같은 도서관 코드를 가진 회원의 도서평 신고 내역(직원) -->
+	<select id="officeWarningList" parameterType="String" resultMap="WarningResultMap">
+		SELECT 
+			warning_code
+			,(
+			 	select
+			 		b.book_name
+			 	from
+			 		tb_book AS b
+			 	where
+				 	b.book_code = w.book_code
+		 	) AS book_code 
+			, review_code
+			, warning_suspect
+			, warning_blower
+			, warning_content
+			, warning_reg_date
+		FROM
+			tb_warning AS w
+			INNER JOIN 
+			tb_member AS m
+		WHERE
+			w.warning_suspect = m.member_id
+		AND
+			m.library_code = #{libraryCode}		
+	</select>
+
+	<!-- 도서평신고 등록 -->
+	<insert id="addWarning" parameterType="Warning">
+		<selectKey order="BEFORE" keyProperty="warningCode" resultType="String">
+			<![CDATA[
+				SELECT 
+					(case 
+					when COUNT(*) = 0 then 'warning_001'
+					when COUNT(*) < 10 then CONCAT('warning_00',(MAX(SUBSTR(warning_code,9))+1))
+					when COUNT(*) < 100 then CONCAT('warning_0',(MAX(SUBSTR(warning_code,9))+1))
+					when COUNT(*) < 1000 then CONCAT('warning_',(MAX(SUBSTR(warning_code,9))+1))
+					ELSE CONCAT('warning_',(MAX(SUBSTR(warning_code,9))+1))
+					END) AS warning_code
+				FROM
+					tb_warning
+			]]>
+		</selectKey>
+		INSERT INTO 
+		tb_warning
+			(warning_code
+			, book_code
+			, review_code
+			, warning_suspect
+			, warning_blower
+			, warning_content
+			, warning_reg_date)
+		VALUES 
+			(#{warningCode}
+			, #{bookCode}
+			, #{reviewCode}
+			, #{warningSuspect}
+			, #{warningBlower}
+			, #{warningContent}
+			, NOW())
+	</insert>
+
+</mapper>

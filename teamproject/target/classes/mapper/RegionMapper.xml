@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team1.project.mapper.RegionMapper">
+	<resultMap type="Region" id="regionSelect">
+		<result property="regionCode" column="region_code"/>
+		<result property="regionMajor" column="region_major"/>
+		<result property="regionMinor" column="region_minor"/>
+		<result property="regionRegDate" column="region_reg_date"/>
+		<association property="officer" javaType="Officer">
+			<result property="officerId" column="officer_id"/>
+			<result property="officerPw" column="officer_pw"/>
+		</association>
+	</resultMap>
+	
+	<!-- 등록화면에서 입력한 지역값으로 지역코드 출력 -->
+	<select id="selectRegionCode" parameterType="String" resultType="String">
+		SELECT
+			region_code
+		FROM
+			tb_region
+		WHERE 
+			region_major = #{rMagjor}
+		AND
+			region_minor = #{rMinor}
+	</select>
+	
+	<select id="getSearchRegion"  parameterType="String" resultMap="regionSelect">
+		SELECT
+			*
+		FROM
+			tb_region 
+		<if test="sv != null and sv neq ''.toString()">	
+			WHERE
+				${sk} like CONCAT('%',#{sv},'%')
+		</if>
+	</select>
+	
+	<delete id="deleteRegion">
+		DELETE FROM tb_region 
+		WHERE region_code= #{regionCode} 
+		AND officer_id = (SELECT 
+							officer_id
+						 FROM tb_officer
+						 WHERE officer_id=#{officer.officerId} 
+						 AND officer_pw=#{officer.officerPw})
+	</delete>
+	
+	
+	<update id="modifyRegion" parameterType="Region">
+		UPDATE tb_region
+			<trim prefix="set" suffixOverrides=",">
+				<if test="regionMajor != null and regionMajor != ''.toString()">region_major = #{regionMajor},</if>
+				<if test="regionMinor != null and regionMinor != ''.toString()">region_minor = #{regionMinor},</if>
+				<if test="regionRegDate != null and regionRegDate != ''.toString()">region_reg_date = now(),</if>
+				<if test="officer.officerId != null and officer.officerId != ''.toString()">officer_id = #{officer.officerId}</if>
+			</trim>
+			<where>
+				<if test="regionCode != null and regionCode != ''.toString()">region_code = #{regionCode}</if>
+			</where>
+	</update>
+	
+	<select id="getRegion" parameterType="String" resultMap="regionSelect">
+		SELECT
+			*
+		FROM
+			tb_region
+		WHERE 
+			region_code = #{regionCode}
+	</select>
+	
+	<insert id="addRegion" parameterType="Region">
+		<selectKey order="BEFORE" keyProperty="regionCode" resultType="String">
+		<![CDATA[
+			SELECT 
+   				(case 
+   				when COUNT(*) = 0 then 'region_001'
+ 				when COUNT(*) < 11 then CONCAT('region_00',(MAX(SUBSTR(region_code,8))+1))
+				when COUNT(*) < 101 then CONCAT('region_0',(MAX(SUBSTR(region_code,8))+1))
+   				when COUNT(*) < 1001 then CONCAT('region_',(MAX(SUBSTR(region_code,8))+1))
+   				ELSE CONCAT('region_',(MAX(SUBSTR(region_code,8))+1))
+   				END) AS region_code
+				FROM
+				   tb_region
+		]]>		   
+		</selectKey>
+		INSERT INTO tb_region
+		(region_code, region_major, region_minor, region_reg_date, officer_id)
+		VALUES (#{regionCode}, #{regionMajor}, #{regionMinor}, NOW(), #{officer.officerId})
+	
+	</insert>
+	
+	<select id="getRegionMinorList" resultSets="Region" resultMap="regionSelect">
+		SELECT
+			region_code,
+			region_minor
+		FROM tb_region
+		WHERE region_major = '${regionMajor}'
+	</select>
+	
+	<select id="getRegionMajorList" resultSets="Region" resultMap="regionSelect">
+		SELECT
+			DISTINCT region_major
+		FROM tb_region
+	</select>
+	
+	<select id="getRegionList" resultSets="Region" resultMap="regionSelect">
+		SELECT *
+		FROM tb_region
+	</select>
+
+</mapper>

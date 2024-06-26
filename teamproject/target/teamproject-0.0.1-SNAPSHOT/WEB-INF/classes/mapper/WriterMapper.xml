@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team1.project.mapper.WriterMapper">
+	
+	<resultMap type="Writer" id="writerResultMap">
+		<result property="writerCode" column="writer_code"/>
+		<result property="writerName" column="writer_name"/>
+		<result property="writerRegDate" column="writer_reg_date"/>
+		<result property="officer" column="officer_id"/>
+	</resultMap>
+	
+	<!-- 작가 삭제 -->
+	<delete id="deleteWriter" parameterType="String">
+		DELETE 
+		FROM 
+			tb_writer 
+		WHERE 
+			writer_code=#{writerCode}
+	</delete>
+	
+	<!-- 작가 수정 -->
+	<update id="modifyWriter" parameterType="Writer">
+		UPDATE tb_writer
+		SET
+			writer_name= #{writerName}
+			,writer_reg_date= NOW()
+			,officer_id= #{officer}
+		WHERE 
+			writer_code= #{writerCode}
+	</update>
+	
+	<!-- 작가 리스트 출력 -->
+	<select id="writerList" resultMap="writerResultMap">
+		SELECT 
+			writer_code
+			, writer_name
+			, writer_reg_date
+			, officer_id
+		FROM 
+			tb_writer
+	</select>
+	
+	<!-- 작가 코드 생성 -->
+	<insert id="addWriter" parameterType="Writer">
+		<selectKey order="BEFORE" keyProperty="writerCode" resultType="String">
+		<![CDATA[
+			SELECT 
+   				(case 
+   				when COUNT(*) = 0 then 'writer_001'
+ 				when COUNT(*) < 10 then CONCAT('writer_00',(MAX(SUBSTR(writer_code,8))+1))
+				when COUNT(*) < 100 then CONCAT('writer_0',(MAX(SUBSTR(writer_code,8))+1))
+   				when COUNT(*) < 1000 then CONCAT('writer_',(MAX(SUBSTR(writer_code,8))+1))
+   				ELSE CONCAT('writer_',(MAX(SUBSTR(writer_code,8))+1))
+   				END) AS writer_code
+			FROM
+				tb_writer
+		]]>	
+		</selectKey>
+		INSERT INTO tb_writer
+			(writer_code, writer_name, writer_reg_date, officer_id)
+			VALUES (#{writerCode}, #{writerName}, NOW(), #{officer})
+	</insert>
+	<!--책등록에 사용 : 작가 이름으로 작가 코드 조회 (유영주) -->
+	<select id="selectWriteCode" parameterType="String" resultType="String">
+		SELECT
+			w.writer_code
+		FROM
+			tb_writer AS w
+		WHERE
+			w.writer_name = #{writerName}
+	</select>
+</mapper>
